@@ -46,7 +46,7 @@
     "zod": "^3.23.6"
   },
   "devDependencies": {
-    "eslint": "^8",
+    "eslint": "^8.57.1",
     "eslint-config-next": "14.2.1",
     "postcss": "^8",
     "serwist": "^9.0.2",
