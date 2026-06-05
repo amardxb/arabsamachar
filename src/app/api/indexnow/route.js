@@ -1,22 +1,41 @@
 export async function POST(req) {
-  const body = await req.json();
+  try {
+    const body = await req.json();
 
-  const slug = body.slug?.current;
+    const slug = body?.slug?.current;
 
-  const url = `https://yourdomain.com/${slug}`;
+    if (!slug) {
+      // silently ignore invalid webhook
+      return Response.json({ ok: true });
+    }
 
-  await fetch("https://api.indexnow.org/indexnow", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      host: "www.arabsamachar.com",
-      key: "19f10a83510146a68509e47e8b42cc3f",
-      keyLocation: "https://www.arabsamachar.com/19f10a83510146a68509e47e8b42cc3f.txt",
-      urlList: [url],
-    }),
-  });
+    const url = `https://www.arabsamachar.com/${slug}`;
 
-  return Response.json({ success: true });
+    // 🔥 IMPORTANT: don't block request on external API
+    setTimeout(async () => {
+      try {
+        await fetch("https://api.indexnow.org/indexnow", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            host: "www.arabsamachar.com",
+            key: "19f10a83510146a68509e47e8b42cc3f",
+            keyLocation:
+              "https://www.arabsamachar.com/19f10a83510146a68509e47e8b42cc3f.txt",
+            urlList: [url],
+          }),
+        });
+      } catch (err) {
+        // ❌ silently fail, do nothing
+      }
+    }, 0);
+
+    // 🔥 respond immediately to Sanity (fast webhook)
+    return Response.json({ ok: true });
+  } catch (err) {
+    // even if everything fails, don't break site
+    return Response.json({ ok: true });
+  }
 }
