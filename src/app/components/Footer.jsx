@@ -192,7 +192,7 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/webstories" className="text-white transition hover:opacity-75 dark:text-gray-200">
+                  <Link href="/" className="text-white transition hover:opacity-75 dark:text-gray-200">
                     Webstories
                   </Link>
                 </li>
@@ -256,9 +256,10 @@ export default function Footer() {
             <ul className="col-span-2 flex justify-center gap-6 lg:col-span-5 lg:justify-end">
               <li>
                 <Link
-                  href="#"
+                  href="https://www.facebook.com/arabsamachar"
                   rel="noreferrer"
                   target="_blank"
+                  title="Facebook"
                   className="text-white transition hover:opacity-75 dark:text-gray-200"
                 >
                   <span className="sr-only">Facebook</span>
@@ -275,9 +276,10 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="#"
+                  href="https://www.instagram.com/arabsamacharnews/"
                   rel="noreferrer"
                   target="_blank"
+                  title="Instagram"
                   className="text-white transition hover:opacity-75 dark:text-gray-200"
                 >
                   <span className="sr-only">Instagram</span>
@@ -294,48 +296,59 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="#"
+                  href="https://x.com/arabsamachar"
                   rel="noreferrer"
                   target="_blank"
+                  title="X"
                   className="text-white transition hover:opacity-75 dark:text-gray-200"
                 >
-                  <span className="sr-only">Twitter</span>
+                  <span className="sr-only">X</span>
 
-                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"
-                    />
-                  </svg>
+                 <svg
+  className="h-6 w-6"
+  viewBox="0 0 24 24"
+  fill="currentColor"
+  aria-hidden="true"
+>
+  <path d="M18.244 2H21.5l-7.5 8.59L22 22h-6.828l-5.34-6.34L4.4 22H1l8.04-9.19L2 2h6.97l4.88 5.8L18.244 2zm-1.2 18h2.06L7.06 4H4.9l12.144 16z"/>
+</svg>
                 </Link>
               </li>
 
               <li>
                 <Link
-                  href="#"
+                  href="https://t.me/arabsamachar"
                   rel="noreferrer"
                   target="_blank"
+                  title="Telegram"
                   className="text-white transition hover:opacity-75 dark:text-gray-200"
                 >
-                  <span className="sr-only">GitHub</span>
+                  <span className="sr-only">Telegram</span>
 
-                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      fillRule="evenodd"
-                      d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+<svg
+  className="h-6 w-6"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  strokeWidth="1.8"
+  strokeLinecap="round"
+  strokeLinejoin="round"
+  aria-hidden="true"
+>
+  <path d="M22 3L2 11l7 2 2 7 3-5 5 5 3-17z" />
+</svg>
                 </Link>
               </li>
 
               <li>
                 <Link
-                  href="#"
+                  href="https://gulfistan.com"
                   rel="noreferrer"
                   target="_blank"
+                  title="Gulfistan"
                   className="text-white transition hover:opacity-75 dark:text-gray-200"
                 >
-                  <span className="sr-only">Dribbble</span>
+                  <span className="sr-only">Gulfistan</span>
 
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path
@@ -348,7 +361,7 @@ export default function Footer() {
               </li>
             </ul>
             <p className="text-xs text-white dark:text-gray-400 flex justify-center pt-4">
-              &copy; 2024. Arab Samachar. All rights reserved.
+              &copy; 2026. Arab Samachar. All rights reserved.
             </p>
           </div>
         </div>

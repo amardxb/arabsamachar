@@ -37,5 +37,5 @@ export async function POST(req) {
   } catch (err) {
     // even if everything fails, don't break site
     return Response.json({ ok: true });
-  }
+  }  
 }
