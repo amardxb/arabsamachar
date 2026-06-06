@@ -62,11 +62,9 @@ export async function GET() {
             <guid>${url}</guid>
             <pubDate>${safeDate}</pubDate>
 
-            ${
-              imageUrl
-                ? `<enclosure url="${imageUrl}" type="${mimeType}" />`
-                : ""
-            }
+            ${imageUrl
+  ? `<enclosure url="${imageUrl}" type="${mimeType}" length="0" />`
+  : ""}
 
             <description><![CDATA[
               ${post.description || ""}
