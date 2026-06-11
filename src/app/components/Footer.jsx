@@ -90,7 +90,7 @@ export default function Footer() {
             <div className="col-span-2">
               <div>
                 <Image src='/arabsamacharwidelogotp.png' alt="arab samachar wide logo" height={40} width={100} className='inline-block pr-2' />
-                <h2 className="text-2xl font-bold text-white dark:text-white inline-block">दुनिया भर की सच्ची ख़बरें </h2>
+                <p className="text-2xl font-bold text-white dark:text-white inline-block">दुनिया भर की सच्ची ख़बरें </p>
                 <p className="mt-4 text-white dark:text-gray-400">
                   जुड़े 'अरब समाचार' से जो  देता है ख़बरें, सच्चाई की हर हद तक ! बिना डरे, बिना रुके।
                 </p>
@@ -145,8 +145,8 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/international" className="text-white transition hover:opacity-75 dark:text-gray-200">
-                    International
+                  <Link href="/world" className="text-white transition hover:opacity-75 dark:text-gray-200">
+                    World
                   </Link>
                 </li>
               </ul>
@@ -169,11 +169,7 @@ export default function Footer() {
                     Finance
                   </Link>
                 </li>
-                <li>
-                  <Link href="/sports" className="text-white transition hover:opacity-75 dark:text-gray-200">
-                    Sports
-                  </Link>
-                </li>
+               
 
               </ul>
             </div>
@@ -188,12 +184,12 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link href="/auto" className="text-white transition hover:opacity-75 dark:text-gray-200">
-                    Automobiles
+                    Auto 
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" className="text-white transition hover:opacity-75 dark:text-gray-200">
-                    Webstories
+                  <Link href="/sports" className="text-white transition hover:opacity-75 dark:text-gray-200">
+                    Sports
                   </Link>
                 </li>
               </ul>
