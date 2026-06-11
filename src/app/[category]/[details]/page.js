@@ -203,7 +203,7 @@ export default async function ArticlePage({ params }) {
           <article>
             <div className="w-full mt-0 md:mt-4 lg:mt-6 pl-0">
               <h1 className="text-2xl md:text-3xl font-bold mb-6">
-                {news_content?.tag ? `${news_content.tag}:` : 'टैग:'} {news_content?.heading ?? 'शीर्षक प्राप्त करने में असमर्थ !!'}
+                 {news_content?.heading ?? 'शीर्षक प्राप्त करने में असमर्थ !!'}
               </h1>
               <div>
                <div className="flex items-center gap-2 flex-wrap text-[12px] md:text-sm leading-none">
