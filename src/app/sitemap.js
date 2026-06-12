@@ -122,6 +122,12 @@ export default async function sitemap() {
   changeFrequency: "hourly",
   priority: 1,
 },
+    {
+  url: `${baseurl}/tools/uae-gratuity-calculator`,
+  lastModified: new Date(),
+  changeFrequency: "monthly",
+  priority: 0.9,
+},
     ...posts,
   ];
 }
