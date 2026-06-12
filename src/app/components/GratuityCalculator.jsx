@@ -298,8 +298,8 @@ export default function GratuityCalculator() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-amber-50 py-4 px-2">
-      <div className="max-w-2xl mx-auto">
+    <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-amber-50 py-4 px-2">
+  <div className="w-[90%] md:w-[60%] md:max-w-2xl mx-auto">
               {/* Header */}
         <div className="text-center mb-4">
   <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-emerald-600 text-white text-xs font-medium px-4 py-2 rounded-full mb-2 shadow-md">
