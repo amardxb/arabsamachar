@@ -1,4 +1,5 @@
 import GratuityCalculator from "@/app/components/GratuityCalculator";
+import Link from "next/link";
 
 export const metadata = {
   // ✅ HINDI-SPECIFIC METADATA (2026 UPDATED)
@@ -157,50 +158,50 @@ export default function Page() {
             "mainEntity": [
               {
                 "@type": "Question",
-                "name": "UAE में ग्रेच्युटी की गणना कैसे होती है?",
+                "name": "Basic Salary और Total Salary में क्या फर्क है?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "UAE में ग्रेच्युटी की गणना बेसिक सैलरी, सेवा अवधि और कॉन्ट्रैक्ट प्रकार के आधार पर होती है। Limited कॉन्ट्रैक्ट वालों को पूरी ग्रेच्युटी मिलती है। Unlimited कॉन्ट्रैक्ट पर इस्तीफा देने पर सेवा वर्षों के अनुसार 1/3 से 2/3 मिलती है।",
+                  "text": "Basic Salary वह राशि है जो Labour Contract में clearly लिखी होती है । इसमें Housing Allowance, Transport Allowance, Food Allowance जैसे भत्ते शामिल नहीं होते। ग्रेच्युटी की गणना सिर्फ Basic Salary पर होती है ।",
                 },
               },
               {
                 "@type": "Question",
-                "name": "ग्रेच्युटी के लिए न्यूनतम सेवा अवधि कितनी है?",
+                "name": "बर्खास्तगी (Termination) पर कितनी ग्रेच्युटी मिलती है?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "UAE में ग्रेच्युटी के लिए कम से कम 1 पूरे साल की लगातार सेवा आवश्यक है। MOHRE के नियमों के अनुसार यह अनिवार्य है।",
+                  "text": "अगर कंपनी बिना कारण नौकरी से निकालती है तो पूरी ग्रेच्युटी मिलती है साथ ही नोटिस पीरियड की सैलरी भी। अगर Labour Law के Article 44 के तहत कारण है तो ग्रेच्युटी नहीं मिलती।",
                 },
               },
               {
                 "@type": "Question",
-                "name": "Limited और Unlimited कॉन्ट्रैक्ट में ग्रेच्युटी में क्या फर्क है?",
+                "name": "ग्रेच्युटी के लिए कितने साल की नौकरी जरूरी है?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Limited कॉन्ट्रैक्ट: 1 साल बाद पूरी ग्रेच्युटी। Unlimited कॉन्ट्रैक्ट: इस्तीफा पर 1-3 साल में 1/3, 3-5 साल में 2/3। 5+ साल बाद दोनों को समान लाभ।",
+                  "text": "UAE Labour Law के अनुसार कम से कम 1 पूरा साल लगातार काम करना जरूरी है। 1 साल से कम नौकरी पर कोई ग्रेच्युटी नहीं मिलती, चाहे कारण कुछ भी हो।",
                 },
               },
               {
                 "@type": "Question",
-                "name": "UAE में ग्रेच्युटी की अधिकतम सीमा क्या है?",
+                "name": "अगर कंपनी ग्रेच्युटी न दे तो क्या करें?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "अधिकतम ग्रेच्युटी 24 महीने की बेसिक सैलरी तक सीमित है।",
+                  "text": "MOHRE की वेबसाइट या MOHRE App पर Complaint दर्ज करें। आप 800-60 पर call भी कर सकते हैं। MOHRE आमतौर पर 2 हफ्ते में मामला सुलझाता है।",
                 },
               },
               {
                 "@type": "Question",
-                "name": "क्या यह कैलकुलेटर सही है?",
+                "name": "क्या ग्रेच्युटी पर कोई Tax लगता है?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "यह कैलकुलेटर MOHRE Federal Decree-Law No. 33 of 2021 के अनुसार काम करता है। अनुमानित परिणाम हैं। सटीक गणना के लिए MOHRE या कानूनी सलाहकार से संपर्क करें।",
+                  "text": "UAE में कोई Income Tax नहीं है। ग्रेच्युटी पूरी तरह Tax-Free मिलती है। हालांकि भारत में यह राशि आने पर भारतीय Tax नियम लागू हो सकते हैं।",
                 },
               },
               {
                 "@type": "Question",
-                "name": "बर्खास्तगी (Termination) पर ग्रेच्युटी कितनी मिलती है?",
+                "name": "यह कैलकुलेटर कितना सटीक है?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "कंपनी द्वारा बिना कारण बर्खास्तगी पर पूरी ग्रेच्युटी + 3 महीने की सैलरी मिलती है। कारण के साथ बर्खास्तगी पर कुछ कम हो सकती है।",
+                  "text": "यह कैलकुलेटर MOHRE Federal Decree-Law No. 33 of 2021 के नियमों पर आधारित है और सामान्य मामलों के लिए सटीक है। जटिल मामलों जैसे partial year, unpaid leave, या disputes के लिए MOHRE या कानूनी सलाहकार से संपर्क करें।",
                 },
               },
             ],
@@ -230,10 +231,138 @@ export default function Page() {
           }),
         }}
       />
+<div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-amber-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-amber-50">
+  <GratuityCalculator />
+</div>
+         {/* — BELOW FOLD CONTENT — */}
+     <div className="w-[90%] md:w-[70%] mx-auto px-4 pb-16 space-y-10 mt-4 ">
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">UAE ग्रेच्युटी कैलक्यूलेटर कैसे उपयोग करें ?</h2>
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4 text-gray-800 text-md md:text-lg leading-relaxed">
+              <p>
+                UAE ग्रेच्युटी कैलक्यूलेटर के सबसे पहले सेक्शन मे आपको अपनी <strong>बेसिक सैलरी</strong> जो आपके लेबर कान्ट्रैक्ट मे लिखी हो वो UAE दिरहम मे लिखनी है । </p>
+                <p>याद रखिए जो कुल सैलरी आपके बैंक अकाउंट मे या एक्सचेंज मे आती है वो बेसिक सैलरी से अलग हो सकती है क्युकी कुल सैलरी मे बेसिक सैलरी और भत्ता जैसे रहने का खर्च या ट्रांसपोर्ट का खर्च भी शामिल होता है । 
+              </p>
+               <p>इसके बाद आपको <strong>नौकरी शुरू करने की तारीख</strong>और<strong>नौकरी के आखरी दिन की तारीख</strong> डालनी है । नौकरी शुरू करने की तारीख भी वही होगी जो आपके लेबर कान्ट्रैक्ट पर लिखी हो । आपके रेज़िडन्सी वीजा पर लिखी तारीख अलग हो सकती है इसलिए सही तारीख के लिए हमेशा लेबर कान्ट्रैक्ट पर लिखी तारीख ही देखें । </p>
+               <p>आपका लेबर कान्ट्रैक्ट <strong>लिमिटेड या अनलिमिटेड</strong> है वो सिलेक्ट करें । ज्यादातर केस में लिमिटेड ही होता है क्युकी 2023 के बाद से MoHRE ने अनलिमिटेड कान्ट्रैक्ट को लगभग खत्म कर दिया है । </p>
+               <p>इसके बाद <strong>नौकरी छोड़ने का कारण </strong> सिलेक्ट करें । जैसे आपने नौकरी कान्ट्रैक्ट खत्म होने से पहले खुद छोड़ दी है या आपको कंपनी ने नौकरी से निकाल दिया है या फिर आपका लेबर कान्ट्रैक्ट पूरा हो गया है और अब उस कंपनी मे काम नही करना चाहते । </p>
+               <p>इसके बाद <strong>Gratuity Calculate करें</strong> बटन दबाएं । कैलक्यूलेटर के हिसाब से जो gratuity बनती है वो स्क्रीन पर लिख कर या जाएगी इसे आपक pdf मे डाउनलोड भी कर सकते हैं । </p>  
+               <p>UAE ग्रेच्युटी के साथ आप <Link href="/national/uae-employees-sick-leave-certificate" className="text-blue-600 underline">UAE Sick Leave                
+               </Link> के नियमों के बारे मे भी जानकारी ले सकते हैं ।                 
+              </p>                
+            </div>         
+             
 
-      <div className="py-10 px-4">
-        <GratuityCalculator />
+          </section>
+         {/* HOW IT WORKS */}
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 mt-4">UAE ग्रेच्युटी कैसे काम करती है?</h2>
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4 text-gray-700 text-md md:text-lg leading-relaxed">
+              <p>
+                UAE में काम करने वाला हर कर्मचारी, चाहे वो किसी भी देश का हो — <strong>End of Service Gratuity (ग्रेच्युटी)</strong> पाने का अधिकार है।
+                यह Federal Decree-Law No. 33 of 2021 के तहत कानूनी रूप से अनिवार्य है और आपकी कंपनी इसे देने से इनकार नही कर सकती ।
+              </p>
+              <p>
+                ग्रेच्युटी की गणना आपकी <strong>Basic Salary</strong> पर ही होती है — Housing, Transport Allowance या किसी और प्रकार का भत्ता इसमें शामिल नहीं होता।
+                Labour Contract में जो सैलरी लिखी है, वही Basic Salary मानी जाती है।
+              </p>
+
+              <div className="bg-blue-50 rounded-xl p-4 space-y-2">
+                <p className="font-semibold text-blue-900">📐 गणना का फॉर्मूला:</p>
+                <p className="text-blue-800"><strong>पहले 5 साल:</strong> Daily Salary × 21 दिन × सेवा वर्ष</p>
+                <p className="text-blue-800"><strong>5 साल के बाद:</strong> Daily Salary × 30 दिन × अतिरिक्त सेवा वर्ष</p>
+                <p className="text-blue-800"><strong>Daily Salary</strong> = Basic Salary ÷ 30</p>
+              </div>
+
+              <p>
+                ग्रेच्युटी की <strong>अधिकतम सीमा 24 महीने</strong> की कुल Basic Salary है।
+                चाहे नौकरी 30 साल की हो, इससे ज्यादा ग्रेच्युटी नहीं मिलेगी।
+              </p>
+               <p>UAE में अब कामगारों को इस तारीख तक मिलेगा वेतन <Link href="/national/uae-employees-sick-leave-certificate" className="text-blue-600 underline">UAE Salary Rule               
+               </Link>                 
+              </p>   
+            </div>
+          </section>
+          {/* LIMITED vs UNLIMITED */}
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 mt-4">Limited और Unlimited Contract में फर्क </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="bg-white rounded-2xl border border-blue-100 shadow-sm p-5">
+                <p className="font-bold text-blue-700 mb-2">✅ Limited Contract</p>
+                <ul className="text-md text-gray-600 space-y-2">
+                  <li>• तय समय सीमा के लिए होता है (जैसे 2 साल)</li>
+                  <li>• इस्तीफा देने पर भी <strong>पूरी ग्रेच्युटी</strong> मिलती है । </li>
+                  <li>• UAE में 2023 के बाद अधिकतर नए कॉन्ट्रैक्ट Limited हैं ।</li>
+                </ul>
+              </div>
+              <div className="bg-white rounded-2xl border border-amber-100 shadow-sm p-5">
+                <p className="font-bold text-amber-700 mb-2">⚠️ Unlimited Contract</p>
+                <ul className="text-md text-gray-600 space-y-2">
+                  <li>• इस्तीफा पर 1-3 साल: <strong>1/3 ग्रेच्युटी</strong></li>
+                  <li>• इस्तीफा पर 3-5 साल: <strong>2/3 ग्रेच्युटी</strong></li>
+                  <li>• 5 साल बाद: <strong>पूरी ग्रेच्युटी</strong></li>
+                </ul>
+              </div>
+            </div>
+          </section>
+           {/* FAQ */}
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 mt-4">अक्सर पूछे जाने वाले सवाल (faq)</h2>
+            <div className="space-y-3">
+              {[
+                
+                {
+                  q: "Basic Salary और Total Salary में क्या फर्क है?",
+                  a: "Basic Salary वह राशि है जो Labour Contract में clearly लिखी होती है। इसमें Housing Allowance, Transport Allowance, Food Allowance जैसे भत्ते शामिल नहीं होते। ग्रेच्युटी की गणना सिर्फ Basic Salary पर होती है।"
+                },
+                {
+                  q: "बर्खास्तगी (Termination) पर कितनी ग्रेच्युटी मिलती है?",
+                  a: "अगर कंपनी बिना कारण नौकरी से निकालती है तो पूरी ग्रेच्युटी मिलती है साथ ही नोटिस पीरियड की सैलरी भी। अगर Labour Law के Article 44 के तहत कारण है तो ग्रेच्युटी नहीं मिलती।"
+                },
+                {
+                  q: "ग्रेच्युटी के लिए कितने साल की नौकरी जरूरी है?",
+                  a: "UAE Labour Law के अनुसार कम से कम 1 पूरा साल लगातार काम करना जरूरी है। 1 साल से कम नौकरी पर कोई ग्रेच्युटी नहीं मिलती, चाहे कारण कुछ भी हो।"
+                },
+               
+                {
+                  q: "अगर कंपनी ग्रेच्युटी न दे तो क्या करें?",
+                  a: "MOHRE की वेबसाइट या MOHRE App पर Complaint दर्ज करें। आप 800-60 पर call भी कर सकते हैं। MOHRE आमतौर पर 2 हफ्ते में मामला सुलझाता है।"
+                },
+                 {
+                  q: "क्या ग्रेच्युटी पर कोई Tax लगता है?",
+                  a: "UAE में कोई Income Tax नहीं है। ग्रेच्युटी पूरी तरह Tax-Free मिलती है। हालांकि भारत में यह राशि आने पर भारतीय Tax नियम लागू हो सकते हैं।"
+                },
+                {
+                  q: "यह कैलकुलेटर कितना सटीक है?",
+                  a: "यह कैलकुलेटर MOHRE Federal Decree-Law No. 33 of 2021 के नियमों पर आधारित है और सामान्य मामलों के लिए सटीक है। जटिल मामलों जैसे partial year, unpaid leave, या disputes के लिए MOHRE या कानूनी सलाहकार से संपर्क करें।"
+                },
+              ].map((item, i) => (
+                <details key={i} className="bg-white rounded-2xl border border-gray-100 shadow-sm group">
+                  <summary className="px-5 py-4 cursor-pointer font-semibold text-gray-800 text-md list-none flex justify-between items-center">
+                    {item.q}
+                    <span className="text-gray-400 group-open:rotate-180 transition-transform text-lg">▾</span>
+                  </summary>
+                  <div className="px-5 pb-4 text-sm text-gray-600 leading-relaxed border-t border-gray-50 pt-3">
+                    {item.a}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+          {/* DISCLAIMER */}
+          <section>
+            <div className="bg-gray-50 rounded-2xl border border-gray-200 p-5 text-xs text-gray-500 leading-relaxed mt-4">
+              <p className="font-semibold text-gray-600 mb-1 ">⚠️ अस्वीकरण (Disclaimer)</p>
+              <p>
+                यह कैलकुलेटर केवल सामान्य जानकारी के लिए है। परिणाम अनुमानित हैं।
+                बिलकुल सटीक गणना और कानूनी सलाह के लिए (<a href="https://www.mohre.gov.ae" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">MoHRE</a>) या किसी अधिकृत कानूनी सलाहकार से संपर्क करें।                 
+              </p>
+            </div>
+          </section>
       </div>
+      </div>
+       
     </>
   );
 }
