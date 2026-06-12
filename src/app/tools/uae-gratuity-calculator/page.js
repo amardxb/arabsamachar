@@ -2,7 +2,7 @@ import GratuityCalculator from "@/app/components/GratuityCalculator";
 
 export const metadata = {
   // ✅ HINDI-SPECIFIC METADATA (2026 UPDATED)
-  title: "UAE ग्रेच्युटी कैलकुलेटर - ईओएस बेनिफिट्स कैलकुलेटर 2026 | अरब समाचार",
+  title: "UAE ग्रेच्युटी कैलकुलेटर - ईओएस बेनिफिट्स कैलकुलेटर 2026",
   description: "फ्री UAE ग्रेच्युटी कैलकुलेटर - MOHRE फेडरल डिक्री लॉ नंबर 33/2021 के अनुसार। Limited, Unlimited, इस्तीफा, बर्खास्तगी - सभी प्रकार के कॉन्ट्रैक्ट के लिए तुरंत गणना करें। हिंदी, अंग्रेजी, उर्दू में उपलब्ध।",
   keywords: "UAE ग्रेच्युटी कैलकुलेटर, सर्विस अवधि, MOHRE, नौकरी छोड़ना, सेवानिवृत्ति, अंत में सेवा लाभ, UAE लेबर लॉ, 2026, end of service benefits, gratuity calculator",
   
