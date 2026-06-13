@@ -23,10 +23,16 @@ export async function GET() {
 
     const diffHours = (now - created) / (1000 * 60 * 60);
 
-    return diffHours <= 48;
+    return diffHours <= 120;
   });
 
-  const urls = recentNews
+  // ✅ FIX: fallback added (IMPORTANT)
+  const finalNews =
+    recentNews.length > 0
+      ? recentNews
+      : news.slice(0, 10);
+
+  const urls = finalNews
     .filter((item) => item.slug && item.category)
     .map((item) => {
       return `
