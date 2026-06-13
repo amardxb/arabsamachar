@@ -30,7 +30,9 @@ export async function generateMetadata({ params }) {
     { slug },
     [`article-${slug}`]
   )
-  if (!meta) return { title: 'Article Not Found' }
+  if (!meta) {
+  notFound();
+}
 
   const ogImage = meta?.image ? urlForImage(meta.image) : 'https://www.arabsamachar.com/arabsamacharwidelogo.jpg'
   return {
