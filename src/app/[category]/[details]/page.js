@@ -83,7 +83,8 @@ export default async function ArticlePage({ params }) {
       `*[_type=='news' && slug.current==$slug][0]{
         image, intro, "caption":image.caption, "alt":image.alt,
         content, tag, _updatedAt, title, description,
-       heading, "highlight":highlight[], author, date, "faq":faq[]{ question, answer }`,
+       heading, "highlight":highlight[], author, date, "faq":faq[]{ question, answer }
+        }`,
       { slug },
       [`article-${slug}`]
     ),
