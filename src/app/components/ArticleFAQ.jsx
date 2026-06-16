@@ -9,27 +9,27 @@ export default function ArticleFAQ({ faqs }) {
 
   const toggle = (i) => setOpenIndex(openIndex === i ? null : i)
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqs.map(f => ({
-      "@type": "Question",
-      "name": f.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": f.answer
-      }
-    }))
-  }
+  // const faqSchema = {
+  //   "@context": "https://schema.org",
+  //   "@type": "FAQPage",
+  //   "mainEntity": faqs.map(f => ({
+  //     "@type": "Question",
+  //     "name": f.question,
+  //     "acceptedAnswer": {
+  //       "@type": "Answer",
+  //       "text": f.answer
+  //     }
+  //   }))
+  // }
 
   return (
     <section style={{ marginTop: '2.5rem' }}>
 
-      {/* Google Schema */}
+      {/* Google Schema
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      /> */}
 
       <h2 style={{
         fontSize: '1.2rem',

@@ -143,11 +143,35 @@ export default async function ArticlePage({ params }) {
     datePublished: news_content?.date,
     dateModified: news_content?._updatedAt,
   }
+ const faqs = news_content?.faq || []
+
+const faqSchema = faqs.length
+  ? {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs.map(f => ({
+        "@type": "Question",
+        "name": f.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": f.answer
+        }
+      }))
+    }
+  : null
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      {faqSchema && (
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify(faqSchema)
+    }}
+  />
+)}
 
       <div className="min-h-screen relative w-full flex m-auto justify-center mt-4">
 
@@ -277,7 +301,7 @@ export default async function ArticlePage({ params }) {
             </p>
 
             <PortableText value={news_content?.content} components={components} />
-            <ArticleFAQ faqs={news_content?.faq} />
+            <ArticleFAQ faqs={news_content?.faq || []} />
           </article>
 
           <hr className="mt-6" />
