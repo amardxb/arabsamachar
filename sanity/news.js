@@ -209,5 +209,42 @@ export const news = {
         },
       ],
     },
+    // =========================
+// ✅ FAQ SECTION (OPTIONAL)
+// =========================
+{
+  name: 'faq',
+  title: 'FAQ — अक्सर पूछे जाने वाले सवाल (Optional)',
+  type: 'array',
+  of: [
+    {
+      type: 'object',
+      title: 'सवाल-जवाब',
+      fields: [
+        {
+          name: 'question',
+          title: 'सवाल (Question)',
+          type: 'string',
+          validation: Rule => Rule.required()
+        },
+        {
+          name: 'answer',
+          title: 'जवाब (Answer)',
+          type: 'text',
+          rows: 3,
+          validation: Rule => Rule.required()
+        }
+      ],
+      preview: {
+        select: { title: 'question' },
+        prepare({ title }) {
+          return { title: title || 'नया सवाल' }
+        }
+      }
+    }
+  ]
+},
+
   ],
+  
 }

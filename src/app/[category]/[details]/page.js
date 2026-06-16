@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/breadcrumb'
 import { getReadTime } from '@/lib/readTime'
 import ReadTimeBadge from '@/app/components/ReadTimeBadge'
+import ArticleFAQ from '@/app/components/ArticleFAQ'
 
 export const revalidate = false
 export const dynamicParams = true
@@ -82,7 +83,7 @@ export default async function ArticlePage({ params }) {
       `*[_type=='news' && slug.current==$slug][0]{
         image, intro, "caption":image.caption, "alt":image.alt,
         content, tag, _updatedAt, title, description,
-        heading, "highlight":highlight[], author, date
+        heading, "highlight":highlight[], author, date, faq[]{ question, answer
       }`,
       { slug },
       [`article-${slug}`]
@@ -276,6 +277,7 @@ export default async function ArticlePage({ params }) {
             </p>
 
             <PortableText value={news_content?.content} components={components} />
+            <ArticleFAQ faqs={news_content?.faq} />
           </article>
 
           <hr className="mt-6" />
