@@ -22,7 +22,7 @@ export default function Footer() {
     return Object.keys(validationErrors).length === 0; // Return true if no errors
   };
 
-  
+
   const sendEmail = (e) => {
     e.preventDefault();
     if (!validateForm(formData)) {
@@ -74,6 +74,9 @@ export default function Footer() {
           setFormData({ user_email: '' });
           setErrors({}); // Clear errors on successful submission
         },
+        (error) => {
+          toast.error('Something went wrong. Please try again.');
+        }
       );
   }
   const handleInputChange = (event) => {
@@ -149,16 +152,16 @@ export default function Footer() {
                     World
                   </Link>
                 </li>
-              </ul>
-            </div>
-            <div className="col-span-2 sm:col-span-1">
-              <p className="font-medium text-white dark:text-white">Navigation</p>
-              <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <Link href="/lifestyle" className="text-white transition hover:opacity-75 dark:text-gray-200">
                     Lifestyle
                   </Link>
                 </li>
+              </ul>
+            </div>
+            <div className="col-span-2 sm:col-span-1">
+              <p className="font-medium text-white dark:text-white">Navigation</p>
+              <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <Link href="/technology" className="text-white transition hover:opacity-75 dark:text-gray-200">
                     Technology
@@ -169,14 +172,6 @@ export default function Footer() {
                     Finance
                   </Link>
                 </li>
-               
-
-              </ul>
-            </div>
-            <div className="col-span-2 sm:col-span-1">
-              <p className="font-medium text-white dark:text-white">Navigation</p>
-
-              <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <Link href="/entertainment" className="text-white transition hover:opacity-75 dark:text-gray-200">
                     Entertainment
@@ -184,12 +179,39 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link href="/auto" className="text-white transition hover:opacity-75 dark:text-gray-200">
-                    Auto 
+                    Auto
                   </Link>
                 </li>
                 <li>
                   <Link href="/sports" className="text-white transition hover:opacity-75 dark:text-gray-200">
                     Sports
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="col-span-2 sm:col-span-1">
+              <p className="font-medium text-white dark:text-white">Navigation</p>
+
+              <ul className="mt-6 space-y-4 text-sm">
+                <li>
+                  <Link href="/tools/uae-gratuity-calculator" className="text-white transition hover:opacity-75 dark:text-gray-200">
+                    Gratuity Calculator
+                  </Link>
+                </li>
+
+                <li>
+                  <Link href="/tools/gold-silver-rate/uae" className="text-white transition hover:opacity-75 dark:text-gray-200">
+                    Gold & Silver Rate
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/tools/exchange-rate/uae" className="text-white transition hover:opacity-75 dark:text-gray-200">
+                    Money Exchange
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/tools/weather/uae" className="text-white transition hover:opacity-75 dark:text-gray-200">
+                    Weather
                   </Link>
                 </li>
               </ul>
@@ -300,14 +322,14 @@ export default function Footer() {
                 >
                   <span className="sr-only">X</span>
 
-                 <svg
-  className="h-6 w-6"
-  viewBox="0 0 24 24"
-  fill="currentColor"
-  aria-hidden="true"
->
-  <path d="M18.244 2H21.5l-7.5 8.59L22 22h-6.828l-5.34-6.34L4.4 22H1l8.04-9.19L2 2h6.97l4.88 5.8L18.244 2zm-1.2 18h2.06L7.06 4H4.9l12.144 16z"/>
-</svg>
+                  <svg
+                    className="h-6 w-6"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M18.244 2H21.5l-7.5 8.59L22 22h-6.828l-5.34-6.34L4.4 22H1l8.04-9.19L2 2h6.97l4.88 5.8L18.244 2zm-1.2 18h2.06L7.06 4H4.9l12.144 16z" />
+                  </svg>
                 </Link>
               </li>
 
@@ -321,18 +343,18 @@ export default function Footer() {
                 >
                   <span className="sr-only">Telegram</span>
 
-<svg
-  className="h-6 w-6"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  strokeWidth="1.8"
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  aria-hidden="true"
->
-  <path d="M22 3L2 11l7 2 2 7 3-5 5 5 3-17z" />
-</svg>
+                  <svg
+                    className="h-6 w-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M22 3L2 11l7 2 2 7 3-5 5 5 3-17z" />
+                  </svg>
                 </Link>
               </li>
 

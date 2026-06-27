@@ -25,6 +25,32 @@ export default async function sitemap() {
     priority: isRecent(item._updatedAt) ? 0.7 : 0.5,
   }));
 
+  const goldCountries = ["uae", "saudi", "qatar", "oman", "bahrain", "kuwait"];
+
+  const goldPages = goldCountries.map((country) => ({
+    url: `${baseurl}/tools/gold-silver-rate/${country}`,
+    lastModified: new Date(),
+    changeFrequency: "hourly",
+    priority: 0.8,
+  }));
+
+  const exchangeCountries = ["uae", "saudi", "qatar", "oman", "bahrain", "kuwait"];
+
+const exchangePages = exchangeCountries.map((country) => ({
+  url: `${baseurl}/tools/exchange-rate/${country}`,
+  lastModified: new Date(),
+  changeFrequency: "hourly",
+  priority: 0.8,
+}));
+const weatherCountries = ["uae", "saudi", "qatar", "oman", "bahrain", "kuwait"];
+
+const weatherPages = weatherCountries.map((country) => ({
+  url: `${baseurl}/tools/weather/${country}`,
+  lastModified: new Date(),
+  changeFrequency: "hourly",
+  priority: 0.8,
+}));
+
   return [
     {
       url: `${baseurl}/`,
@@ -75,59 +101,62 @@ export default async function sitemap() {
       priority: 0.8,
     },
     {
-  url: `${baseurl}/national`,
-  lastModified: new Date(),
-  changeFrequency: "daily",
-  priority: 0.9,
-},
-{
-  url: `${baseurl}/world`,
-  lastModified: new Date(),
-  changeFrequency: "daily",
-  priority: 0.9,
-},
-{
-  url: `${baseurl}/lifestyle`,
-  lastModified: new Date(),
-  changeFrequency: "daily",
-  priority: 0.9,
-},
-{
-  url: `${baseurl}/technology`,
-  lastModified: new Date(),
-  changeFrequency: "daily",
-  priority: 0.9,
-},
-{
-  url: `${baseurl}/sports`,
-  lastModified: new Date(),
-  changeFrequency: "daily",
-  priority: 0.9,
-},
-{
-  url: `${baseurl}/finance`,
-  lastModified: new Date(),
-  changeFrequency: "daily",
-  priority: 0.9,
-},
-{
-  url: `${baseurl}/breaking`,
-  lastModified: new Date(),
-  changeFrequency: "hourly",
-  priority: 1,
-},
-{
-  url: `${baseurl}/entertainment`,
-  lastModified: new Date(),
-  changeFrequency: "hourly",
-  priority: 1,
-},
+      url: `${baseurl}/national`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
     {
-  url: `${baseurl}/tools/uae-gratuity-calculator`,
-  lastModified: new Date(),
-  changeFrequency: "monthly",
-  priority: 0.9,
-},
+      url: `${baseurl}/world`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      url: `${baseurl}/lifestyle`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      url: `${baseurl}/technology`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      url: `${baseurl}/sports`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      url: `${baseurl}/finance`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
+      url: `${baseurl}/breaking`,
+      lastModified: new Date(),
+      changeFrequency: "hourly",
+      priority: 1,
+    },
+    {
+      url: `${baseurl}/entertainment`,
+      lastModified: new Date(),
+      changeFrequency: "hourly",
+      priority: 1,
+    },
+    {
+      url: `${baseurl}/tools/uae-gratuity-calculator`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    ...goldPages,
+    ...exchangePages,
+    ...weatherPages,
     ...posts,
   ];
 }

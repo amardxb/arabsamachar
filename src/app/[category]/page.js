@@ -59,7 +59,7 @@ export default async function CategoryPage({ params }) {
   const [mainData, mustReadData, readAlsoData, autoData] = await Promise.all([
     // Section 1 — current category, 21 items
     sanityFetch(
-      `*[_type=='news' && category==$cat] | order(_createdAt desc)[0...21]${PROJ}`,
+      `*[_type=='news' && category==$cat] | order(_createdAt desc)[0...20]${PROJ}`,
       { cat: category },
       [`category-${category}`]
     ),
@@ -84,9 +84,9 @@ export default async function CategoryPage({ params }) {
   ])
 
   const filteredCategoryData = mainData ?? []
-  const mustRead             = mustReadData ?? []
-  const readThisAlso         = readAlsoData ?? []
-  const autonews             = autoData ?? []
+  const mustRead = mustReadData ?? []
+  const readThisAlso = readAlsoData ?? []
+  const autonews = autoData ?? []
 
   return (
     <div className="min-h-screen w-full mt-10">
@@ -114,7 +114,7 @@ export default async function CategoryPage({ params }) {
               prefetch={false}
             >
               <div className={index === 0
-                ? 'h-[250px] md:h-[450px] w-full relative xl:h-[450px] lg:h-[350px] flex items-start pt-2 border-b'
+                ? 'h-[250px] md:h-[450px] w-full relative xl:h-[450px] lg:h-[350px] flex items-start pt-2 border-b mt-3'
                 : 'flex items-center h-[80px] w-[40%] relative'}>
                 {result?.image && (
                   <BlurImage

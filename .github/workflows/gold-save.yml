@@ -1,0 +1,15 @@
+name: Save Gold Prices Daily
+
+on:
+  schedule:
+    - cron: '0 5 * * *'  # UTC 5:00 AM = UAE 9:00 AM
+  workflow_dispatch:      # Manual trigger bhi possible
+
+jobs:
+  save-gold:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Gold Save API
+        run: |
+          curl -X GET "${{ secrets.SITE_URL }}/api/cron/gold-save" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}"

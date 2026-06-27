@@ -1,0 +1,17 @@
+name: Save Exchange Rates
+
+on:
+  schedule:
+    - cron: '0 4 * * *'   # UAE 8:00 AM
+    - cron: '0 13 * * *'  # UAE 5:00 PM
+  workflow_dispatch:
+
+jobs:
+  save:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call API
+        run: |
+          curl --fail --silent --show-error \
+          "${{ secrets.SITE_URL }}/api/cron/exchange-save" \
+          -H "x-cron-secret: ${{ secrets.CRON_SECRET }}"

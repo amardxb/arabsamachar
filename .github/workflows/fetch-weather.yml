@@ -1,0 +1,15 @@
+name: Fetch Weather Data
+
+on:
+  schedule:
+    - cron: '0 */3 * * *'  # every 3 hours
+  workflow_dispatch:  # allows manual trigger from GitHub UI
+
+jobs:
+  fetch-weather:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call weather-save API route
+        run: |
+          curl -X GET "https://arabsamachar.com/api/cron/weather-save" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}"

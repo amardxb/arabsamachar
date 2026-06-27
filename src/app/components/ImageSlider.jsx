@@ -22,10 +22,10 @@ export default function ImageSlider({ className, news2, image_className, dynamic
         onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}
       >
-        <CarouselContent className="m-auto">
+        <CarouselContent className="m-auto items-stretch">
           {news2.map((post, index) => (
             <CarouselItem className={dynamicBasis} key={index}>
-              <Link href={`/${post.category}/${post.slug}`} className="h-full w-full block" title={post?.heading}>
+              <Link href={`/${post.category}/${post.slug}`} className="h-full w-full flex flex-col" title={post?.heading}>
                 <div className={image_className}>
                   <Image
                     src={imgUrl(post?.image, 320)}   // was full-size — now 320px
@@ -35,7 +35,7 @@ export default function ImageSlider({ className, news2, image_className, dynamic
                     className="rounded mb-2 absolute object-cover"
                   />
                 </div>
-                <div className="block w-full p-1">
+                <div className="block w-full p-1 min-h-[90px] overflow-hidden flex-1">
                   <TitleCard
                     title={post?.heading}
                     className="font-bold text-sm line-clamp-4 text-ellipsis text-wrap overflow-hidden break-words"

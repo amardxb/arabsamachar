@@ -188,20 +188,21 @@ const faqSchema = faqs.length
               key={i}
               href={`/${post.category}/${post.slug}`}
               title={post?.heading ?? 'क्षमा करें, शीर्षक लाने में असमर्थ !!'}
-              className="w-[94%] border-b h-24 flex flex-row gap-y-6 justify-between p-2 m-auto mb-2 border"
+              className="w-[94%] border-b flex flex-row items-start gap-y-6 justify-between p-2 m-auto mb-2 border"
               prefetch={false}
             >
-              <div className="w-[40%] h-20 relative">
+              <div className="w-[40%] aspect-video relative flex-shrink-0">
                 <BlurImage
                   src={imgUrl(post.image, 160)}
                   alt={post?.alt}
                   sizes="100px"
-                  className="rounded-sm mt-0 absolute"
+                  className="rounded-sm absolute inset-0 w-full h-full object-cover"
                 />
               </div>
               <TitleCard
                 title={post?.heading ?? 'क्षमा करें, शीर्षक लाने में असमर्थ !!'}
-                className="p-2 w-[60%] text-md text-wrap line-clamp-3 break-words overflow-hidden"
+                className=" pl-2 w-[60%] text-md leading-[1.4] text-wrap break-words overflow-hidden line-clamp-3"
+                style={{ maxHeight: 'calc(1.4em * 3)' }}
               />
             </Link>
           ))}
@@ -288,12 +289,13 @@ const faqSchema = faqs.length
             <Intro intro_content={news_content?.intro} />
 
             {/* Article hero image — priority=true because it's the LCP */}
-            <div className="mt-4 w-full relative h-[240px] md:h-[480px] lg:h-[500px] flex flex-col justify-between" title={news_content?.heading}>
+            <div className="mt-4 w-full relative aspect-video" title={news_content?.heading}>
               <BlurImage
                 src={imgUrl(news_content?.image, 960)}
                 alt={news_content?.alt}
                 priority
                 sizes="(max-width: 768px) 100vw, 55vw"
+                className="absolute inset-0 w-full h-full object-cover"
               />
             </div>
             <p className="relative text-center mb-4 text-[14px] md:text-md" title="Image caption">
@@ -309,14 +311,14 @@ const faqSchema = faqs.length
             <Share url={`https://www.arabsamachar.com/${category}/${slug}`} />
           </div>
 
-          {carosuelNews.length > 0 && (
+        {carosuelNews.length > 0 && (
             <ImageSlider
-              className="w-[100%] m-auto mt-6 h-[220px] mb-10 rounded justify-center items-center"
-              image_className="h-[100px] relative"
-              dynamicBasis="h-[220px] m-auto items-center p-2 border basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/4"
+              className="w-full mb-10"
+              image_className="relative w-full aspect-video overflow-hidden rounded flex-shrink-0"
+              dynamicBasis="m-auto p-2 border basis-1/2 sm:basis-1/3 md:basis-1/3 lg:basis-1/4 flex flex-col gap-2"
               news2={carosuelNews}
             />
-          )}
+)}
 
           {/* Bottom related articles */}
           <div className="w-full mt-20">
@@ -329,16 +331,16 @@ const faqSchema = faqs.length
                 prefetch={false}
               >
                 <div className="w-full md:w-1/3">
-                  <div className="relative w-full h-[180px] md:h-[150px] lg:h-[160px] overflow-hidden">
+                  <div className="relative w-full aspect-video overflow-hidden">
                     <BlurImage
                       src={imgUrl(post?.image, 480)}
                       alt={post?.alt}
                       sizes="(max-width: 768px) 100vw, 33vw"
-                      className="absolute inset-0 w-full h-full object-cover"
+                      className="absolute inset-0 w-full h-full object-cover rounded"
                     />
                   </div>
                 </div>
-                <div className="w-full md:w-2/3 flex flex-col justify-between p-2">
+                <div className="w-full md:w-2/3 flex flex-col justify-between pl-2">
                   <TitleCard
                     title={post?.heading ?? 'क्षमा करें, शीर्षक लाने में असमर्थ !!'}
                     className="text-xl font-bold md:text-2xl text-wrap line-clamp-2 break-words overflow-hidden"
