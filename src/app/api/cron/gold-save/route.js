@@ -28,10 +28,10 @@ const fx = {
 
 export async function GET(req) {
   // Secret check - unauthorized access se bachao
-  // const secret = req.headers.get('x-cron-secret')
-  // if (secret !== process.env.CRON_SECRET) {
-  //   return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  // }
+  const secret = req.headers.get('x-cron-secret')
+  if (secret !== process.env.CRON_SECRET) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
 
   try {
     // Gold spot price fetch karo

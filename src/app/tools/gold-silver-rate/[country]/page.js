@@ -3,6 +3,8 @@ import GulfGoldTable from "@/app/components/GulfGoldTable"
 import GoldChart from "@/app/components/GoldChart"
 import Image from "next/image"
 import { sanityFetch } from "../../../../../sanity/lib/client";
+import { createClient } from '@sanity/client'
+import { buildSlots } from '@/lib/goldSlots'
 import ArticleFAQ from "@/app/components/ArticleFAQ"
 import {
   Breadcrumb, BreadcrumbItem, BreadcrumbLink,
@@ -12,6 +14,98 @@ import GoldHistoryTable from "@/app/components/GoldHistoryTable"
 import GoldValueCalculator from "@/app/components/GoldValueCalculator"
 import GulfSilverTable from "@/app/components/GulfSilverTable";
 import countryContent from "@/lib/countryContent"
+
+/* ───── DIRECT SANITY CLIENT (build-safe, no self-fetch) ───── */
+const goldClient = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+  apiVersion: '2024-01-01',
+  useCdn: false,
+})
+
+const goldCurrencyMap = {
+  uae: 'AED', qatar: 'QAR', saudi: 'SAR',
+  oman: 'OMR', kuwait: 'KWD', bahrain: 'BHD',
+}
+
+const goldFx = {
+  AED: 3.67, QAR: 3.64, SAR: 3.75,
+  OMR: 0.385, KWD: 0.31, BHD: 0.38,
+}
+
+async function getGoldSilverData(country) {
+  const currency = goldCurrencyMap[country] || 'AED'
+
+  try {
+    // Yesterday ki date (UAE timezone)
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
+    const yesterdayDate = yesterday.toLocaleDateString('en-CA', {
+      timeZone: 'Asia/Dubai',
+    })
+
+    // Sanity se yesterday ka data fetch karo
+    const savedYesterday = await goldClient.fetch(
+      `*[_type == "goldPrice" && country == $country && date == $date][0]`,
+      { country, date: yesterdayDate }
+    )
+
+    // ───── GOLD ─────
+    const res = await fetch('https://api.gold-api.com/price/XAU/USD')
+    const data = await res.json()
+    const goldPerGramUSD = data.price / 31.1035
+    const priceLocal = goldPerGramUSD * goldFx[currency]
+    const retail = priceLocal * 1.023
+
+    // ───── SILVER ─────
+    const silverRes = await fetch('https://api.gold-api.com/price/XAG/USD')
+    const silverData = await silverRes.json()
+    const silverPerGramUSD = silverData.price / 31.1035
+    const silverPriceLocalPerGram = silverPerGramUSD * goldFx[currency]
+    const silverRetailPerGram = silverPriceLocalPerGram * 1.023
+    const silverRetailPerKg = silverRetailPerGram * 1000
+
+    // Helper - yesterday value Sanity se ya fallback
+    const getYesterday = (key, multiplier) => {
+      if (savedYesterday?.[key]) return savedYesterday[key]
+      return retail * multiplier * 0.99
+    }
+
+    const getSilverYesterday = () => {
+      if (savedYesterday?.silver999) return savedYesterday.silver999
+      return silverRetailPerKg * 0.99
+    }
+
+    const buildSlotsWithYesterday = (livePrice, yesterdayPrice) => {
+      const slots = buildSlots(livePrice)
+      return {
+        ...slots,
+        yesterday: yesterdayPrice,
+      }
+    }
+
+    return {
+      country,
+      currency,
+      '24k': buildSlotsWithYesterday(retail, getYesterday('gold24k', 1)),
+      '22k': buildSlotsWithYesterday(retail * 0.9175, getYesterday('gold22k', 0.9175)),
+      '21k': buildSlotsWithYesterday(retail * 0.877, getYesterday('gold21k', 0.877)),
+      '18k': buildSlotsWithYesterday(retail * 0.752, getYesterday('gold18k', 0.752)),
+      '14k': buildSlotsWithYesterday(retail * 0.586, getYesterday('gold14k', 0.586)),
+      silver999: buildSlotsWithYesterday(silverRetailPerKg, getSilverYesterday()),
+      updated: new Date().toISOString(),
+    }
+  } catch (err) {
+    console.error('getGoldSilverData error:', err)
+    return {
+      country,
+      currency,
+      '24k': {}, '22k': {}, '21k': {}, '18k': {}, '14k': {},
+      silver999: {},
+      updated: new Date().toISOString(),
+    }
+  }
+}
 
 const FINANCE_QUERY = `
 *[_type == "news" && category == "finance"]
@@ -61,17 +155,8 @@ export async function generateMetadata({ params }) {
   }
   const name = countryNames[country] || country
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-  let currency = ""
-  try {
-    const res = await fetch(`${baseUrl}/api/gold-silver?country=${country}`, {
-      next: { revalidate: 3600 }
-    })
-    const json = await res.json()
-    currency = json?.currency || ""
-  } catch (e) {
-    currency = ""
-  }
+  const data = await getGoldSilverData(country)
+  const currency = data?.currency || ""
 
   const title = `${name} Gold & Silver Price Today${currency ? ` (${currency})` : ""} | Live Rates & 30-Day Chart`
   const description = `Check today's live gold and silver prices in ${name}${currency ? ` in ${currency}` : ""}. 24K, 22K, 21K, 18K rates updated hourly with 30-day historical trend chart.`
@@ -151,16 +236,8 @@ export default async function Page({ params }) {
     
   ]
 
-  /* ───── GOLD DATA (cached API) ───── */
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-
-  const res = await fetch(
-    `${baseUrl}/api/gold-silver?country=${country}`,
-    { next: { revalidate: 3600 } }
-  )
-
-  const data = await res.json()
+  /* ───── GOLD DATA (direct Sanity + external API, build-safe) ───── */
+  const data = await getGoldSilverData(country)
 
   /* ───── SANITY DATA (FAST SSR) ───── */
   const [financeArticles, featuredArticle] = await Promise.all([

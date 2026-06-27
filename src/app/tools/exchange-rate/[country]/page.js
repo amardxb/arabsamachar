@@ -1,10 +1,10 @@
-
 import Link from "next/link"
 import Image from "next/image"
 import ExchangeTable from "@/app/components/ExchangeTable"
 import ExchangeHistoryChart from "@/app/components/ExchangeHistoryChart"
 import ExchangeHistoryTable from "@/app/components/ExchangeHistoryTable"
 import { sanityFetch } from "../../../../../sanity/lib/client"
+import { createClient } from '@sanity/client'
 import ArticleFAQ from "@/app/components/ArticleFAQ"
 import {
   Breadcrumb, BreadcrumbItem, BreadcrumbLink,
@@ -12,8 +12,62 @@ import {
 } from '@/components/ui/breadcrumb'
 import exchangeContent from "@/lib/exchangeContent"
 import ExchangeValueCalculator from "@/app/components/ExchangeValueCalculator"
- 
- 
+
+/* ───── DIRECT SANITY CLIENT (build-safe, no self-fetch) ───── */
+const exchangeClient = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+  apiVersion: '2024-01-01',
+  useCdn: false,
+})
+
+const exchangeCurrencyMap = {
+  uae: 'AED', qatar: 'QAR', saudi: 'SAR',
+  oman: 'OMR', kuwait: 'KWD', bahrain: 'BHD',
+}
+
+async function getExchangeData(country) {
+  try {
+    const currency = exchangeCurrencyMap[country] || 'AED'
+    const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Dubai' })
+    const yesterdayObj = new Date()
+    yesterdayObj.setDate(yesterdayObj.getDate() - 1)
+    const yesterdayDate = yesterdayObj.toLocaleDateString('en-CA', { timeZone: 'Asia/Dubai' })
+
+    const todayRecords = await exchangeClient.fetch(
+      `*[_type == "exchangeRate" && country == $country && date == $today]`,
+      { country, today }
+    )
+    const yesterdayRecords = await exchangeClient.fetch(
+      `*[_type == "exchangeRate" && country == $country && date == $yesterdayDate] | order(slot desc)`,
+      { country, yesterdayDate }
+    )
+
+    const morningRecord = todayRecords?.find(r => r.slot === 'morning')
+    const eveningRecord = todayRecords?.find(r => r.slot === 'evening')
+    const yesterdayRecord = yesterdayRecords?.[0]
+
+    const currencyKeys = ['INR', 'PKR', 'PHP', 'LKR', 'NPR', 'BDT']
+    const rates = {}
+    currencyKeys.forEach((key) => {
+      rates[key] = {
+        morning: morningRecord?.rates?.[key] ?? null,
+        evening: eveningRecord?.rates?.[key] ?? null,
+        yesterday: yesterdayRecord?.rates?.[key] ?? null,
+      }
+    })
+
+    return { country, currency, rates, updated: new Date().toISOString() }
+  } catch (err) {
+    console.error('getExchangeData error:', err)
+    return {
+      country,
+      currency: exchangeCurrencyMap[country] || 'AED',
+      rates: {},
+      updated: new Date().toISOString(),
+    }
+  }
+}
 
 const FINANCE_QUERY = `
 *[_type == "news" && category == "finance"]
@@ -85,17 +139,8 @@ export async function generateMetadata({ params }) {
   const country = params.country?.toLowerCase()
   const name = countryNames[country] || country
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-  let currency = ""
-  try {
-    const res = await fetch(`${baseUrl}/api/exchange-rate?country=${country}`, {
-      next: { revalidate: 3600 }
-    })
-    const json = await res.json()
-    currency = json?.currency || ""
-  } catch (e) {
-    currency = ""
-  }
+  const data = await getExchangeData(country)
+  const currency = data?.currency || ""
 
   const title = `${name} Money Transfer Exchange Rate Today${currency ? ` (${currency})` : ""} | Live Rates & 30-Day History`
   const description = `Check today's live money transfer exchange rates from ${name} to India, Pakistan, Philippines, Sri Lanka, Nepal and Bangladesh. Updated rates with 30-day historical trend.`
@@ -173,16 +218,8 @@ export default async function Page({ params }) {
     { name: "Kuwait", slug: "kuwait", code: "kw" },
   ]
 
-  /* ───── EXCHANGE DATA (cached API) ───── */
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-
-  const res = await fetch(
-    `${baseUrl}/api/exchange-rate?country=${country}`,
-    { next: { revalidate: 3600 } }
-  )
-
-  const data = await res.json()
+  /* ───── EXCHANGE DATA (direct Sanity, build-safe) ───── */
+  const data = await getExchangeData(country)
 
   /* ───── SANITY DATA (FAST SSR) ───── */
   const [
@@ -308,9 +345,8 @@ export default async function Page({ params }) {
             </p>
           ))}
           <ExchangeValueCalculator data={data} country={country} />
-         
 
- 
+
 
           {/* CALCULATOR TEXT */}
           {content.calculator?.map((para, i) => (

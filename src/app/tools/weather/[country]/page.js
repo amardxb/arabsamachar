@@ -3,11 +3,72 @@ import Image from "next/image"
 import WeatherCard from "@/app/components/WeatherCard"
 import WeatherForecast from "@/app/components/WeatherForecast"
 import { sanityFetch } from "../../../../../sanity/lib/client";
+import { createClient } from '@sanity/client'
 import ArticleFAQ from "@/app/components/ArticleFAQ"
 import {
   Breadcrumb, BreadcrumbItem, BreadcrumbLink,
   BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+
+/* ───── DIRECT SANITY CLIENT (build-safe, no self-fetch) ───── */
+const weatherClient = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
+  apiVersion: '2024-01-01',
+  useCdn: false,
+})
+
+const countryCoords = {
+  uae: { lat: 25.2048, lon: 55.2708 },
+  qatar: { lat: 25.2854, lon: 51.5310 },
+  saudi: { lat: 24.7136, lon: 46.6753 },
+  oman: { lat: 23.5880, lon: 58.3829 },
+  kuwait: { lat: 29.3759, lon: 47.9774 },
+  bahrain: { lat: 26.2285, lon: 50.5860 },
+}
+
+async function getWeatherData(country) {
+  try {
+    const coords = countryCoords[country] || countryCoords.uae
+    const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Dubai' })
+
+    const current = await weatherClient.fetch(
+      `*[_type == "weatherData" && country == $country && date == $today][0]`,
+      { country, today }
+    )
+
+    const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,weather_code,sunrise,sunset&timezone=auto&forecast_days=7`
+
+    const forecastRes = await fetch(forecastUrl)
+    const forecastData = await forecastRes.json()
+
+    const forecast = forecastData?.daily?.time?.map((dateStr, i) => ({
+      date: dateStr,
+      maxTemp: forecastData.daily.temperature_2m_max[i],
+      minTemp: forecastData.daily.temperature_2m_min[i],
+      apparentMax: forecastData.daily.apparent_temperature_max[i],
+      apparentMin: forecastData.daily.apparent_temperature_min[i],
+      weatherCode: forecastData.daily.weather_code[i],
+      sunrise: forecastData.daily.sunrise[i],
+      sunset: forecastData.daily.sunset[i],
+    })) || []
+
+    return {
+      country,
+      current: current || null,
+      forecast,
+      updated: new Date().toISOString(),
+    }
+  } catch (err) {
+    console.error('getWeatherData error:', err)
+    return {
+      country,
+      current: null,
+      forecast: [],
+      updated: new Date().toISOString(),
+    }
+  }
+}
 
 // mixed latest news (no weather news yet, so general latest)
 const LATEST_NEWS_QUERY = `
@@ -83,13 +144,8 @@ export default async function Page({ params }) {
     { name: "Kuwait", slug: "kuwait", code: "kw" },
   ]
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-
-  const res = await fetch(
-    `${baseUrl}/api/weather?country=${country}`,
-    { next: { revalidate: 3600 } }
-  )
-  const data = await res.json()
+  /* ───── WEATHER DATA (direct Sanity + Open-Meteo, build-safe) ───── */
+  const data = await getWeatherData(country)
 
   const latestNews = await sanityFetch(LATEST_NEWS_QUERY)
 
