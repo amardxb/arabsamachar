@@ -21,7 +21,9 @@ const countryCoords = {
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url)
-  const country = searchParams.get('country')?.toLowerCase() || 'uae'
+  const validCountries = Object.keys(countryCoords)
+const requested = searchParams.get('country')?.toLowerCase()
+const country = validCountries.includes(requested) ? requested : 'uae'
   const coords = countryCoords[country] || countryCoords.uae
 
   const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Dubai' })
