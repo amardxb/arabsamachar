@@ -1,7 +1,5 @@
 export const dynamic = 'force-dynamic'
-
 import { createClient } from '@sanity/client'
-
 
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
@@ -22,22 +20,28 @@ const countryCoords = {
 export async function GET(req) {
   const { searchParams } = new URL(req.url)
   const validCountries = Object.keys(countryCoords)
-const requested = searchParams.get('country')?.toLowerCase()
-const country = validCountries.includes(requested) ? requested : 'uae'
-  const coords = countryCoords[country] || countryCoords.uae
+  const requested = searchParams.get('country')?.toLowerCase()
+  const country = validCountries.includes(requested) ? requested : 'uae'
 
+  console.log('DEBUG projectId:', process.env.NEXT_PUBLIC_SANITY_PROJECT_ID)
+  console.log('DEBUG dataset:', process.env.NEXT_PUBLIC_SANITY_DATASET)
+  console.log('DEBUG country:', country)
+
+  const coords = countryCoords[country] || countryCoords.uae
   const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Dubai' })
+
+  console.log('DEBUG today:', today)
 
   const current = await client.fetch(
     `*[_type == "weatherData" && country == $country && date == $today][0]`,
     { country, today }
   )
 
-  const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,weather_code,sunrise,sunset&timezone=auto&forecast_days=7`
+  console.log('DEBUG current result:', current)
 
+  const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,weather_code,sunrise,sunset&timezone=auto&forecast_days=7`
   const forecastRes = await fetch(forecastUrl)
   const forecastData = await forecastRes.json()
-
   const forecast = forecastData.daily.time.map((dateStr, i) => ({
     date: dateStr,
     maxTemp: forecastData.daily.temperature_2m_max[i],
