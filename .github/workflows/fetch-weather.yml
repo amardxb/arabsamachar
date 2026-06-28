@@ -11,5 +11,5 @@ jobs:
     steps:
       - name: Call weather-save API route
         run: |
-          curl -fL -X GET "https://www.arabsamachar.com/api/cron/weather-save" \
+          curl -L -X GET "https://www.arabsamachar.com/api/cron/weather-save" \
             -H "x-cron-secret: ${{ secrets.CRON_SECRET }}"
