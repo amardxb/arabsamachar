@@ -35,13 +35,15 @@ async function getExchangeData(country) {
     yesterdayObj.setDate(yesterdayObj.getDate() - 1)
     const yesterdayDate = yesterdayObj.toLocaleDateString('en-CA', { timeZone: 'Asia/Dubai' })
 
-    const todayRecords = await exchangeClient.fetch(
+const todayRecords = await exchangeClient.fetch(
       `*[_type == "exchangeRate" && country == $country && date == $today]`,
-      { country, today }
+      { country, today },
+      { cache: 'no-store', next: { revalidate: 0 } }
     )
     const yesterdayRecords = await exchangeClient.fetch(
       `*[_type == "exchangeRate" && country == $country && date == $yesterdayDate] | order(slot desc)`,
-      { country, yesterdayDate }
+      { country, yesterdayDate },
+      { cache: 'no-store', next: { revalidate: 0 } }
     )
 
     const morningRecord = todayRecords?.find(r => r.slot === 'morning')
