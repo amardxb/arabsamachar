@@ -19,8 +19,8 @@ export default function HomeWeatherWidget({ asLink = true }) {
   useEffect(() => {
     async function load() {
       const code = await detectUserCountry();
-      const mapped = mapToGulfCountry(code);
-      setCountry(mapped);
+const mapped = mapToGulfCountry(code) || 'uae';
+setCountry(mapped);
 
       try {
         const res = await fetch(`/api/weather?country=${mapped}`);
