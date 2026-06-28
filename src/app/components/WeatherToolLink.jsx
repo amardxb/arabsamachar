@@ -19,8 +19,8 @@ export default function WeatherToolLink() {
 
   useEffect(() => {
     async function load() {
-      const code = await detectUserCountry();
-      setCountry(mapToGulfCountry(code));
+     const code = await detectUserCountry();
+setCountry(mapToGulfCountry(code) || 'uae');
     }
     load();
   }, []);
