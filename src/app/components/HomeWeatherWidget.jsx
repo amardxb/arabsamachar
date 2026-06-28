@@ -23,7 +23,7 @@ const mapped = mapToGulfCountry(code) || 'uae';
 setCountry(mapped);
 
       try {
-        const res = await fetch(`/api/weather?country=${mapped}`);
+        const res = await fetch(`/api/weather?country=${mapped}`, { cache: 'no-store' });
         const data = await res.json();
         setWeather(data.current);
       } catch (err) {
