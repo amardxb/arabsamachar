@@ -264,13 +264,13 @@ export default function Home() {
         </h1>
         <div className="hidden lg:flex flex-col items-center md:mt-2">
           <Image
-            src="/arab-samachar-heading.png"
-            alt="अरब समाचार – खाड़ी देशों की ताज़ा खबरें हिंदी में"
-            width={320}
-            height={80}
-            priority
-            className="mx-auto"
-          />
+  src="/arab-samachar-heading.png"
+  alt="अरब समाचार – खाड़ी देशों की ताज़ा खबरें हिंदी में"
+  width={767}
+  height={149}
+  priority
+  className="mx-auto w-[320px] h-auto"
+/>
           <HomeDate />
         </div>
 
