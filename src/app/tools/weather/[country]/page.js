@@ -213,7 +213,7 @@ export default async function Page({ params }) {
             ))}
           </div>
 
-          <WeatherCard current={data?.current} />
+        <WeatherCard current={data?.current} country={country} />
 
           {/* SEO TEXT — baad mein likhenge */}
 
