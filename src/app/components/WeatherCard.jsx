@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { getWeatherIcon, getWeatherLabel, isDayTime } from '@/lib/weatherCodeMap';
 
-export default function WeatherCard({ current }) {
+export default function WeatherCard({ current, country }) {
   if (!current) {
     return (
       <div className="w-full bg-gradient-to-r from-sky-400 to-blue-700 rounded-lg p-6 text-white text-center">
@@ -10,7 +10,7 @@ export default function WeatherCard({ current }) {
     );
   }
 
-  const dayTime = isDayTime(current.sunrise, current.sunset);
+ const dayTime = isDayTime(current.sunrise, current.sunset, country);
   const iconName = getWeatherIcon(current.weatherCode, dayTime);
   const label = getWeatherLabel(current.weatherCode);
 
