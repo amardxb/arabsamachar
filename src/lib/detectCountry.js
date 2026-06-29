@@ -1,4 +1,4 @@
-export async function detectUserCountry() {
+ 
 export async function detectUserCountry() {
   try {
     const res = await fetch('/api/geo');
