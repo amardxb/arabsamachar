@@ -42,7 +42,19 @@ export function getWeatherLabel(code) {
   return weatherCodeMap[code]?.label || 'अज्ञात';
 }
 
-export function isDayTime(sunrise, sunset) {
-  const now = new Date();
-  return now >= new Date(sunrise) && now < new Date(sunset);
+const countryOffsets = {
+  uae: '+04:00',
+  oman: '+04:00',
+  qatar: '+03:00',
+  saudi: '+03:00',
+  kuwait: '+03:00',
+  bahrain: '+03:00',
+}
+
+export function isDayTime(sunrise, sunset, country = 'uae') {
+  const offset = countryOffsets[country] || '+04:00'
+  const now = new Date()
+  const sunriseUTC = new Date(sunrise + offset)
+  const sunsetUTC = new Date(sunset + offset)
+  return now >= sunriseUTC && now < sunsetUTC
 }
