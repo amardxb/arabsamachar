@@ -1,8 +1,9 @@
 export async function detectUserCountry() {
+export async function detectUserCountry() {
   try {
-    const res = await fetch('https://ipapi.co/json/');
+    const res = await fetch('/api/geo');
     const data = await res.json();
-    return data?.country_code || null; // e.g. "AE", "IN", "QA"
+    return data?.country || null; // e.g. "AE", "IN", "QA"
   } catch (err) {
     console.error('Country detection failed:', err);
     return null;
