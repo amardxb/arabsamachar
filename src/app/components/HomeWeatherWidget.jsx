@@ -44,7 +44,7 @@ setCountry(mapped);
 
   if (!weather) return null;
 
-  const dayTime = isDayTime(weather.sunrise, weather.sunset);
+  const dayTime = isDayTime(weather.sunrise, weather.sunset, country);
   const iconName = getWeatherIcon(weather.weatherCode, dayTime);
   const label = getWeatherLabel(weather.weatherCode);
 
