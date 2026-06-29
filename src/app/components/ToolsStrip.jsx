@@ -67,12 +67,13 @@ export default function ToolsStrip() {
             href={tool.href}
             className="flex flex-col md:flex-row items-center justify-center gap-0.5 md:gap-2 py-1.5 md:py-1.5 text-black hover:bg-white/5 hover:text-[#c4132a] transition"
           >
-            <span className="[&>svg]:w-5 [&>svg]:h-5 md:[&>svg]:w-4 md:[&>svg]:h-4">
-              {tool.icon}
-            </span>
-            <span className="hidden md:inline text-sm font-medium">
-              {tool.label}
-            </span>
+           <span className="[&>svg]:w-5 [&>svg]:h-5 md:[&>svg]:w-4 md:[&>svg]:h-4">
+  {tool.icon}
+</span>
+<span className="sr-only md:hidden">{tool.label}</span>
+<span className="hidden md:inline text-sm font-medium">
+  {tool.label}
+</span>
           </Link>
         ))}
         <WeatherToolLink />
