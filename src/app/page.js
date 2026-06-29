@@ -1,18 +1,12 @@
 import { memo } from 'react'
 import { sanityFetch } from '../../sanity/lib/client'
-import { imgUrl } from '../../sanity/lib/image'
- 
+import { imgUrl } from '../../sanity/lib/image' 
 import BlurImage from './components/BlurImage'
 import Link from 'next/link'
 import Image from 'next/image'
 import HomeDate from './components/HomeDate'
 import ToolsStrip from './components/ToolsStrip'
-
-import dynamic from 'next/dynamic'
-
-const ImageSlider = dynamic(() => import('./components/ImageSlider'), {
-  loading: () => <div className="w-full aspect-video mb-10" />,
-})
+import ImageSlider from './components/ImageSlider'
 
 
 
