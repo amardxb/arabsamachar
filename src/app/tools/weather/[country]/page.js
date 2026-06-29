@@ -32,10 +32,11 @@ async function getWeatherData(country) {
     const coords = countryCoords[country] || countryCoords.uae
     const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Dubai' })
 
-    const current = await weatherClient.fetch(
-      `*[_type == "weatherData" && country == $country && date == $today][0]`,
-      { country, today }
-    )
+ const current = await weatherClient.fetch(
+  `*[_type == "weatherData" && country == $country && date == $today][0]`,
+  { country, today },
+  { cache: 'no-store', next: { revalidate: 0 } }
+)
 
     const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,weather_code,sunrise,sunset&timezone=auto&forecast_days=7`
 
