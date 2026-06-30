@@ -22,9 +22,7 @@ export async function GET(req) {
         }
 
         return Response.json({
-            city,
-            latitude,   // 🔍 debug ke liye temporarily add kiya
-            longitude,  // 🔍 debug ke liye temporarily add kiya
+            city,            
             timings: data.data.timings,
         })
     } catch (err) {

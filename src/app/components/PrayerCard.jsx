@@ -20,7 +20,7 @@ export default function PrayerCard({ data }) {
         return () => clearInterval(timer);
     }, []);
 
-    if (!data || !data.timings) {
+    if (!data || !data.timings || !data.hijri) {
         return (
             <div className="w-full bg-gradient-to-r from-emerald-500 to-teal-700 rounded-lg p-6 text-white text-center">
                 नमाज़ का समय उपलब्ध नहीं है
