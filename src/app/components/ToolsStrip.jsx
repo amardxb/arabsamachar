@@ -54,13 +54,26 @@ const tools = [
       </text>
     </svg>
   ),
-}
+  },
+ {
+    name: 'prayer-time',
+    label: 'नमाज़',
+    href: '/tools/prayer-time/uae',
+   icon: (
+     <Image
+       src="/prayer-time.png"
+       alt="Gulf Prayer Time"
+       width={30}
+       height={30}
+     />
+   ),
+  },
 ];
 
 export default function ToolsStrip() {
   return (
     <div className="w-full border-b-[1px] border-gray-100 md:mt-2">
-      <div className="max-w-screen-xl mx-auto grid grid-cols-4 divide-x divide-white/10 text-black">
+      <div className="max-w-screen-xl mx-auto grid grid-cols-5  divide-x divide-white/10 text-black">
         {tools.map((tool) => (
           <Link
             key={tool.name}

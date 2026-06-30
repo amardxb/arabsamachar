@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+ 
 import { createClient } from '@sanity/client'
 
 const client = createClient({
@@ -29,7 +29,7 @@ export async function GET(req) {
   const current = await client.fetch(
     `*[_type == "weatherData" && country == $country && date == $today][0]`,
     { country, today },
-    { cache: 'no-store', next: { revalidate: 0 } }
+    { next: { revalidate: 0 } }
   )
 
   const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,weather_code,sunrise,sunset&timezone=auto&forecast_days=7`
