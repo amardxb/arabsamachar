@@ -6,6 +6,7 @@ export async function GET(req) {
     const rawCity = req.headers.get('x-vercel-ip-city')
     const city = rawCity ? decodeURIComponent(rawCity) : null
 
+    // fallback: agar local dev ho ya geo-headers na milein
     const latitude = lat || '21.4225'
     const longitude = lng || '39.8262'
 
@@ -22,9 +23,7 @@ export async function GET(req) {
         }
 
         return Response.json({
-            city,
-            latitude,   // 🔍 debug ke liye temporarily add kiya
-            longitude,  // 🔍 debug ke liye temporarily add kiya
+            city: city || null,
             timings: data.data.timings,
         })
     } catch (err) {
