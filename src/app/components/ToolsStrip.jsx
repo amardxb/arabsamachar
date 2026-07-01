@@ -10,7 +10,7 @@ const tools = [
     icon: (
       <Image
         src="/gold_silver_coin.webp"
-        alt="Gold Bar"
+        alt="Gold and Silver Coins"
         width={30}
         height={30}
       />

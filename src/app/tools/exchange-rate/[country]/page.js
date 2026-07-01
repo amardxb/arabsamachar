@@ -38,12 +38,12 @@ async function getExchangeData(country) {
 const todayRecords = await exchangeClient.fetch(
       `*[_type == "exchangeRate" && country == $country && date == $today]`,
       { country, today },
-      { cache: 'no-store', next: { revalidate: 0 } }
+  { next: { revalidate: 3600 } }
     )
     const yesterdayRecords = await exchangeClient.fetch(
       `*[_type == "exchangeRate" && country == $country && date == $yesterdayDate] | order(slot desc)`,
       { country, yesterdayDate },
-      { cache: 'no-store', next: { revalidate: 0 } }
+      { next: { revalidate: 3600 } }
     )
 
     const morningRecord = todayRecords?.find(r => r.slot === 'morning')
@@ -60,7 +60,12 @@ const todayRecords = await exchangeClient.fetch(
       }
     })
 
-    return { country, currency, rates, updated: new Date().toISOString() }
+    return {
+      country,
+      currency,
+      rates,
+      updated: eveningRecord?.fetchedAt || morningRecord?.fetchedAt || yesterdayRecord?.fetchedAt || new Date().toISOString()
+    }
   } catch (err) {
     console.error('getExchangeData error:', err)
     return {

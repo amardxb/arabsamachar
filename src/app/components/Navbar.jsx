@@ -14,7 +14,13 @@ const Navbar = () => {
     <div className="fixed left-0 top-0 w-full z-10 ease-in duration-300  bg-[#0a112d]">
       <div className="max-w-screen m-auto flex justify-between items-center text-white h-12 sm:h-10">
         <Link href="/" className="pl-8">
-          <Image src='/arabsamacharwidelogotp.png' alt="arab samachar wide logo" height={30} width={80} />
+          <Image
+            src='/arabsamacharwidelogotp.png'
+            alt="arab samachar wide logo"
+            width={510}
+            height={236}
+            style={{ width: '80px', height: 'auto' }}
+          />
         </Link>
         <ul className="hidden sm:flex w-5/6 justify-between pr-8">
           <li className="p-2 hover:underline decoration decoration-2 underline-offset-4">
