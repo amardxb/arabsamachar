@@ -30,9 +30,12 @@ setCountry(mapToGulfCountry(code) || 'uae');
       href={`/tools/weather/${country}`}
      className="flex flex-col md:flex-row items-center justify-center gap-0.5 md:gap-2 py-1.5 md:py-1.5 text-black hover:bg-white/5 hover:text-[#c4132a] transition"
     >
-    <span className="[&>svg]:w-5 [&>svg]:h-5 md:[&>svg]:w-4 md:[&>svg]:h-4">
-  <HomeWeatherWidget asLink={false} />
-</span>
+      <span
+        className="[&>svg]:w-5 [&>svg]:h-5 md:[&>svg]:w-4 md:[&>svg]:h-4"
+        style={{ minWidth: '36px', minHeight: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <HomeWeatherWidget asLink={false} />
+      </span>
 <span className="sr-only md:hidden">{countryCityNames[country]}</span>
 <span className="hidden md:inline text-sm font-medium">{countryCityNames[country]}</span>
     </Link>

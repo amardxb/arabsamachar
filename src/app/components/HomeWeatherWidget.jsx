@@ -36,9 +36,11 @@ setCountry(mapped);
   }, []);
 
   if (loading) {
-    // skeleton placeholder — avoids layout shift
     return (
-      <div className="w-10 h-10 rounded-full bg-gray-100 animate-pulse" />
+      <div className="flex items-center gap-2">
+        <div style={{ width: '36px', height: '36px' }} className="rounded-full bg-gray-100 animate-pulse" />
+        <div className="hidden md:inline w-8 h-3 bg-gray-100 rounded animate-pulse" />
+      </div>
     );
   }
 

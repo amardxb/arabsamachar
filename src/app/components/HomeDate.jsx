@@ -35,20 +35,18 @@ function getHindiDateTime() {
 }
 
 export default function HomeDate() {
-  const [dateTime, setDateTime] = useState("")
+  const [dateTime, setDateTime] = useState(getHindiDateTime)
 
   useEffect(() => {
     setDateTime(getHindiDateTime())
-
     const interval = setInterval(() => {
       setDateTime(getHindiDateTime())
     }, 60000)
-
     return () => clearInterval(interval)
   }, [])
 
   return (
-    <p className="text-sm text-gray-500 mt-2">
+    <p className="text-sm text-gray-500 mt-2" suppressHydrationWarning>
       {dateTime}
     </p>
   )
