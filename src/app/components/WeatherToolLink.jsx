@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { detectUserCountry, mapToGulfCountry } from '@/lib/detectCountry';
 import HomeWeatherWidget from './HomeWeatherWidget';
- export const countryCityNames = {
+
+export const countryCityNames = {
   uae: 'दुबई',
   qatar: 'दोहा',
   saudi: 'रियाद',
@@ -13,14 +14,31 @@ import HomeWeatherWidget from './HomeWeatherWidget';
   bahrain: 'मनामा',
 };
 
+function Tooltip({ text }) {
+  return (
+    <span className="
+      hidden md:block
+      absolute -top-9 left-1/2 -translate-x-1/2
+      bg-gray-800 text-white text-xs font-medium px-2.5 py-1.5 rounded
+      whitespace-nowrap pointer-events-none
+      opacity-0 group-hover:opacity-100
+      transition-opacity duration-200 z-50
+      after:content-[''] after:absolute after:top-full after:left-1/2
+      after:-translate-x-1/2 after:border-4
+      after:border-transparent after:border-t-gray-800
+    ">
+      {text}
+    </span>
+  )
+}
+
 export default function WeatherToolLink() {
-  const [country, setCountry] = useState('uae'); // default fallback
- 
+  const [country, setCountry] = useState('uae');
 
   useEffect(() => {
     async function load() {
-     const code = await detectUserCountry();
-setCountry(mapToGulfCountry(code) || 'uae');
+      const code = await detectUserCountry();
+      setCountry(mapToGulfCountry(code) || 'uae');
     }
     load();
   }, []);
@@ -28,16 +46,14 @@ setCountry(mapToGulfCountry(code) || 'uae');
   return (
     <Link
       href={`/tools/weather/${country}`}
-     className="flex flex-col md:flex-row items-center justify-center gap-0.5 md:gap-2 py-1.5 md:py-1.5 text-black hover:bg-white/5 hover:text-[#c4132a] transition"
+      className="group relative flex flex-col md:flex-row items-center justify-center gap-0.5 md:gap-2 py-1.5 text-black hover:text-slate-800 transition"
     >
-      <span
-        className="[&>svg]:w-5 [&>svg]:h-5 md:[&>svg]:w-4 md:[&>svg]:h-4"
-        style={{ minWidth: '36px', minHeight: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-      >
+      <Tooltip text={`${countryCityNames[country]} का मौसम`} />
+      <span className="flex items-center justify-center">
         <HomeWeatherWidget asLink={false} />
       </span>
-<span className="sr-only md:hidden">{countryCityNames[country]}</span>
-<span className="hidden md:inline text-sm font-medium">{countryCityNames[country]}</span>
+      <span className="sr-only md:hidden">{countryCityNames[country]}</span>
+      <span className="hidden md:inline text-sm font-medium">{countryCityNames[country]}</span>
     </Link>
   );
 }

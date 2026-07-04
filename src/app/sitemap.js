@@ -50,6 +50,14 @@ const weatherPages = weatherCountries.map((country) => ({
   changeFrequency: "hourly",
   priority: 0.8,
 }));
+  const fuelCountries = ["uae", "saudi", "qatar", "oman", "bahrain", "kuwait"];
+
+  const fuelPages = fuelCountries.map((country) => ({
+    url: `${baseurl}/tools/fuel-rates/${country}`,
+    lastModified: new Date(),
+    changeFrequency: "hourly",
+    priority: 0.8,
+  }));
 
   return [
     {
@@ -157,6 +165,7 @@ const weatherPages = weatherCountries.map((country) => ({
     ...goldPages,
     ...exchangePages,
     ...weatherPages,
+    ...fuelPages,
     ...posts,
   ];
 }

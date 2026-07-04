@@ -43,18 +43,24 @@ export function getWeatherLabel(code) {
 }
 
 const countryOffsets = {
-  uae: '+04:00',
-  oman: '+04:00',
-  qatar: '+03:00',
-  saudi: '+03:00',
-  kuwait: '+03:00',
-  bahrain: '+03:00',
+  uae: 4,
+  oman: 4,
+  qatar: 3,
+  saudi: 3,
+  kuwait: 3,
+  bahrain: 3,
 }
-
 export function isDayTime(sunrise, sunset, country = 'uae') {
-  const offset = countryOffsets[country] || '+04:00'
-  const now = new Date()
-  const sunriseUTC = new Date(sunrise + offset)
-  const sunsetUTC = new Date(sunset + offset)
-  return now >= sunriseUTC && now < sunsetUTC
+  const offsetHours = countryOffsets[country] || 4
+
+  // Current time ko us country ki local time me convert karo
+  const nowUTC = new Date()
+  const nowLocal = new Date(nowUTC.getTime() + offsetHours * 60 * 60 * 1000)
+  const nowTime = nowLocal.toISOString().slice(11, 16) // "HH:MM"
+
+  // Open-Meteo timezone=auto → sunrise/sunset already local time "YYYY-MM-DDTHH:MM"
+  const sunriseTime = sunrise.slice(11, 16) // "HH:MM"
+  const sunsetTime = sunset.slice(11, 16)   // "HH:MM"
+
+  return nowTime >= sunriseTime && nowTime < sunsetTime
 }

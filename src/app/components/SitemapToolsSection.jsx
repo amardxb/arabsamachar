@@ -46,6 +46,14 @@ const toolCategories = [
       href: `${baseurl}/tools/weather/${c.slug}`,
     })),
   },
+  {
+    id: 'fuel-rates',
+    label: 'पेट्रोल और डीज़ल रेट',
+    links: countries.map((c) => ({
+      name: `${c.name} पेट्रोल और डीज़ल रेट`,
+      href: `${baseurl}/tools/fuel-rates/${c.slug}`,
+    })),
+  },
 ];
 
 export default function SitemapToolsSection() {

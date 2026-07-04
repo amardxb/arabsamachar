@@ -24,11 +24,15 @@ export async function GET(req) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const { searchParams } = new URL(req.url)
+    const slot = searchParams.get('slot')
+
+    if (slot !== 'morning' && slot !== 'evening') {
+      return Response.json({ error: 'Invalid or missing slot param — must be "morning" or "evening"' }, { status: 400 })
+    }
+
     const date = new Date()
       .toLocaleDateString('en-CA', { timeZone: 'Asia/Dubai' })
-
-    const hour = new Date().getUTCHours()
-    const slot = hour >= 9 ? 'evening' : 'morning'
 
     const results = []
 
@@ -62,7 +66,8 @@ export async function GET(req) {
 
       if (existing) {
         await client.patch(existing._id).set({
-          rates: exchangeData
+          rates: exchangeData,
+          fetchedAt: new Date().toISOString(),
         }).commit()
         results.push({ country, date, slot, action: 'updated' })
       } else {
@@ -72,12 +77,13 @@ export async function GET(req) {
           date,
           slot,
           rates: exchangeData,
+          fetchedAt: new Date().toISOString(),
         })
         results.push({ country, date, slot, action: 'created' })
       }
     }
 
-    return Response.json({ success: true, results })
+    return Response.json({ success: true, slot, date, results })
 
   } catch (err) {
     console.error('Exchange save error:', err)

@@ -38,7 +38,7 @@ setCountry(mapped);
   if (loading) {
     return (
       <div className="flex items-center gap-2">
-        <div style={{ width: '36px', height: '36px' }} className="rounded-full bg-gray-100 animate-pulse" />
+        <div className="w-[24px] h-[24px] md:w-[36px] md:h-[36px] rounded-full bg-gray-100 animate-pulse" />
         <div className="hidden md:inline w-8 h-3 bg-gray-100 rounded animate-pulse" />
       </div>
     );
@@ -57,10 +57,11 @@ setCountry(mapped);
         alt={label}
         width={36}
         height={36}
+        className="!w-[24px] !h-[24px] md:!w-[36px] md:!h-[36px]"
       />
-     <span className="hidden md:inline text-xs text-gray-700">
-  {Math.round(weather.temperature)}°c
-</span>
+      <span className="hidden md:inline text-xs text-gray-700">
+        {Math.round(weather.temperature)}°c
+      </span>
     </>
   );
 
@@ -69,7 +70,7 @@ setCountry(mapped);
     return (
       <span
         className="flex items-center gap-2"
-        title={`${countryNames[country]} - ${label}`}
+         
       >
         {content}
       </span>
@@ -80,7 +81,7 @@ setCountry(mapped);
     <Link
       href={`/tools/weather/${country}`}
       className="flex items-center gap-2 hover:opacity-80 transition"
-      title={`${countryNames[country]} - ${label}`}
+     
     >
       {content}
     </Link>

@@ -273,26 +273,19 @@ export default function Home() {
 />
           <HomeDate />
         </div>
-
         {/* <HeroCarosuel carousel={breakingNews} /> */}
 
-        {/* ── Featured Stories ─────────────────────────────────────── */}
-        <section className="w-[95%] m-auto">
-          <div className="flex flex-col-reverse md:flex-row md:items-center gap-2 mb-2">
-            <h2 className="text-lg md:text-xl font-bold border-l-4 border-red-600 pl-3 whitespace-nowrap md:w-1/4">
-              <span aria-hidden="true">🔥</span> Featured Stories
-            </h2>
-            <div className="w-full md:w-3/4">
-              <ToolsStrip />
-            </div>
-          </div>
-
-         
+        {/* ── tool strip ─────────────────────────────────────── */}
+        <section className="w-[95%] m-auto">          
+              <ToolsStrip />       
         </section>
 
         {/* ── News Sections ────────────────────────────────────────── */}
         <section className="w-[95%] m-auto">
           {/* section1 — Featured Stories ka extension, no separate heading needed */}
+          <h2 className="text-lg md:text-xl font-bold border-l-4 border-red-600 pl-3 whitespace-nowrap md:w-1/4 mt-2 mb-2">
+            <span aria-hidden="true">🔥</span> Featured Stories
+          </h2>
           <NewsSection items={section1} firstPriority />
 
           <h2 className="text-lg md:text-xl font-bold border-l-4 border-red-600 pl-3 whitespace-nowrap md:w-1/4  ">

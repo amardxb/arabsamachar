@@ -2,20 +2,27 @@ name: Save Exchange Rates
 
 on:
   schedule:
-    - cron: '0 2 * * *'   # UAE 6:00 AM
-    - cron: '0 6 * * *'   # UAE 10:00 AM
-    - cron: '0 10 * * *'  # UAE 2:00 PM
-    - cron: '0 14 * * *'  # UAE 6:00 PM
-    - cron: '0 18 * * *'  # UAE 10:00 PM
-    - cron: '0 22 * * *'  # UAE 2:00 AM
+    - cron: '0 2 * * *'   # UAE 6:00 AM — Morning slot
+    - cron: '0 12 * * *'  # UAE 4:00 PM — Evening slot
   workflow_dispatch:
 
 jobs:
-  save:
+  save-morning:
+    if: github.event.schedule == '0 2 * * *' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - name: Call API
+      - name: Call API (Morning)
         run: |
           curl --fail --silent --show-error \
-          "${{ secrets.SITE_URL }}/api/cron/exchange-save" \
+          "${{ secrets.SITE_URL }}/api/cron/exchange-save?slot=morning" \
+          -H "x-cron-secret: ${{ secrets.CRON_SECRET }}"
+
+  save-evening:
+    if: github.event.schedule == '0 12 * * *'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call API (Evening)
+        run: |
+          curl --fail --silent --show-error \
+          "${{ secrets.SITE_URL }}/api/cron/exchange-save?slot=evening" \
           -H "x-cron-secret: ${{ secrets.CRON_SECRET }}"

@@ -214,6 +214,11 @@ export default function Footer() {
                     Weather
                   </Link>
                 </li>
+                <li>
+                  <Link href="/tools/fuel-rates/uae" className="text-white transition hover:opacity-75 dark:text-gray-200">
+                    Fuel Rate
+                  </Link>
+                </li>
               </ul>
             </div>
             <div className="col-span-2 sm:col-span-1">
