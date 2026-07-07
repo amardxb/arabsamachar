@@ -340,12 +340,12 @@ const faqSchema = faqs.length
                     />
                   </div>
                 </div>
-                <div className="w-full md:w-2/3 flex flex-col justify-between pl-2">
+                <div className="w-full md:w-2/3 flex flex-col justify-between md:p-1">
                   <TitleCard
                     title={post?.heading ?? 'क्षमा करें, शीर्षक लाने में असमर्थ !!'}
-                    className="text-xl font-bold md:text-2xl text-wrap line-clamp-2 break-words overflow-hidden"
+                    className="text-md md:text-lg font-bold md:text-2xl text-wrap line-clamp-3 md:line-clamp-2 break-words overflow-hidden pt-1 md:pt-0 "
                   />
-                  <div className="p-2">
+                  <div className="">
                     <p className="line-clamp-2 text-gray-600">{post?.description ?? 'क्षमा करें, विवरण लाने में असमर्थ !!'}</p>
                   </div>
                   <div className="flex justify-between pr-2">

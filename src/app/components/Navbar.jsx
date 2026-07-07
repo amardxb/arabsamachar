@@ -17,8 +17,8 @@ const Navbar = () => {
           <Image
             src='/arabsamacharwidelogotp.png'
             alt="arab samachar wide logo"
-            width={510}
-            height={236}
+            width={255}
+            height={143}
             style={{ width: '80px', height: 'auto' }}
           />
         </Link>

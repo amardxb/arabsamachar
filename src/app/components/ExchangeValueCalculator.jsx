@@ -3,12 +3,12 @@
 import { useState, useEffect, useRef } from 'react'
 
 const sourceCurrencyMap = {
-  uae: { code: "AED", flag: "/flags/ae.svg" },
-  saudi: { code: "SAR", flag: "/flags/sa.svg" },
-  qatar: { code: "QAR", flag: "/flags/qa.svg" },
-  oman: { code: "OMR", flag: "/flags/om.svg" },
-  bahrain: { code: "BHD", flag: "/flags/bh.svg" },
-  kuwait: { code: "KWD", flag: "/flags/kw.svg" },
+  uae: { code: "AED", flag: "/flags/ae.svg", name: "UAE" },
+  saudi: { code: "SAR", flag: "/flags/sa.svg", name: "Saudi Arabia" },
+  qatar: { code: "QAR", flag: "/flags/qa.svg", name: "Qatar" },
+  oman: { code: "OMR", flag: "/flags/om.svg", name: "Oman" },
+  bahrain: { code: "BHD", flag: "/flags/bh.svg", name: "Bahrain" },
+  kuwait: { code: "KWD", flag: "/flags/kw.svg", name: "Kuwait" },
 }
 
 const currencyInfo = {
@@ -101,21 +101,23 @@ export default function ExchangeValueCalculator({ data, country }) {
         </h3>
 
         {/* SOURCE */}
-        <label className="text-[11px] uppercase text-[#7f7868]">You Send</label>
+        <label htmlFor="source-amount" className="text-[11px] uppercase text-[#7f7868]">You Send</label>
 
         <div className="mt-2 rounded-lg border bg-white p-4 flex gap-3">
           <div className="flex items-center gap-2 bg-[#0B1E3D] px-3 py-2 rounded">
             <div className="w-5 h-5 rounded-full overflow-hidden flex-shrink-0">
-              <img src={source.flag} alt={source.code} className="w-full h-full object-cover" />
+              <img src={source.flag} alt={`${source.name} flag`} className="w-full h-full object-cover" />               
             </div>
             <span className="text-white text-sm">{source.code}</span>
           </div>
 
           <input
+            id="source-amount"
             type="number"
             value={sourceAmount}
             onChange={(e) => updateSource(e.target.value)}
             className="flex-1 text-right text-2xl outline-none"
+            aria-label={`Amount in ${source.code} you send`}
           />
         </div>
 
@@ -132,7 +134,7 @@ export default function ExchangeValueCalculator({ data, country }) {
         </div>
 
         {/* TARGET */}
-        <label className="text-[11px] uppercase text-[#7f7868]">Receiver Gets</label>
+        <label htmlFor="target-amount" className="text-[11px] uppercase text-[#7f7868]">Receiver Gets</label>
 
         <div className="mt-2 rounded-lg border bg-white p-4 flex gap-3 relative" ref={dropdownRef}>
 
@@ -140,6 +142,9 @@ export default function ExchangeValueCalculator({ data, country }) {
             type="button"
             onClick={() => setDropdownOpen(!dropdownOpen)}
             className="flex items-center gap-2 rounded bg-[#ece6d7] px-3 py-2 font-semibold"
+            aria-expanded={dropdownOpen}
+            aria-haspopup="listbox"
+            aria-label={`Select target currency, currently ${target}`}
           >
             <div className="w-5 h-5 rounded-full overflow-hidden flex-shrink-0">
               <img src={currencyInfo[target].flag} alt={target} className="w-full h-full object-cover" />
@@ -150,32 +155,39 @@ export default function ExchangeValueCalculator({ data, country }) {
             </svg>
           </button>
 
-        {dropdownOpen && (
-  <div className="absolute bottom-full left-0 mb-1 bg-white border border-gray-200 rounded-lg shadow-xl z-50 w-48 max-h-60 overflow-y-auto">
-    {targetOptions.map((cur) => (
-      <button
-        key={cur}
-        type="button"
-        onClick={() => {
-          setTarget(cur)
-          setDropdownOpen(false)
-        }}
-        className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-50 text-left"
-      >
-        <div className="w-5 h-5 rounded-full overflow-hidden flex-shrink-0">
-          <img src={currencyInfo[cur].flag} alt={cur} className="w-full h-full object-cover" />
-        </div>
-        <span className="text-sm font-medium">{cur}</span>
-        <span className="text-xs text-gray-400">{currencyInfo[cur].name}</span>
-      </button>
-    ))}
-  </div>
-)}
+          {dropdownOpen && (
+            <div
+              role="listbox"
+              className="absolute bottom-full left-0 mb-1 bg-white border border-gray-200 rounded-lg shadow-xl z-50 w-48 max-h-60 overflow-y-auto"
+            >
+              {targetOptions.map((cur) => (
+                <button
+                  key={cur}
+                  type="button"
+                  role="option"
+                  aria-selected={target === cur}
+                  onClick={() => {
+                    setTarget(cur)
+                    setDropdownOpen(false)
+                  }}
+                  className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-50 text-left"
+                >
+                  <div className="w-5 h-5 rounded-full overflow-hidden flex-shrink-0">
+                    <img src={currencyInfo[cur].flag} alt="" className="w-full h-full object-cover" />
+                  </div>
+                  <span className="text-sm font-medium">{cur}</span>
+                  <span className="text-xs text-gray-400">{currencyInfo[cur].name}</span>
+                </button>
+              ))}
+            </div>
+          )}
           <input
+            id="target-amount"
             type="number"
             value={targetAmount}
             onChange={(e) => updateTarget(e.target.value)}
             className="flex-1 text-right text-2xl outline-none text-green-600"
+            aria-label={`Amount in ${target} receiver gets`}
           />
         </div>
 

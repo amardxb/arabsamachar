@@ -58,6 +58,15 @@ const weatherPages = weatherCountries.map((country) => ({
     changeFrequency: "hourly",
     priority: 0.8,
   }));
+  const prayerCountries = ["uae", "saudi", "qatar", "oman", "bahrain", "kuwait"];
+
+  const prayerPages = prayerCountries.map((country) => ({
+    url: `${baseurl}/tools/prayer-time/${country}`,
+    lastModified: new Date(),
+    changeFrequency: "hourly",
+    priority: 0.8,
+  }));
+
 
   return [
     {
@@ -166,6 +175,7 @@ const weatherPages = weatherCountries.map((country) => ({
     ...exchangePages,
     ...weatherPages,
     ...fuelPages,
+    ...prayerPages,
     ...posts,
   ];
 }

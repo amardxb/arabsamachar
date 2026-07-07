@@ -1,9 +1,11 @@
 import Link from "next/link"
 import Image from "next/image"
+import { notFound } from 'next/navigation'
 import PrayerCityTabs from "@/app/components/PrayerCityTabs"
 import { sanityFetch } from "../../../../../sanity/lib/client"
 import ArticleFAQ from "@/app/components/ArticleFAQ"
 import { prayerCountries } from "@/lib/prayerCities"
+import prayerTimeContentFAQ from "@/lib/prayerTimeContentFAQ"
 import {
     Breadcrumb, BreadcrumbItem, BreadcrumbLink,
     BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,
@@ -26,49 +28,35 @@ const LATEST_NEWS_QUERY = `
 }
 `
 
-// Placeholder FAQ  
-const faqData = [
-    {
-        question: "नमाज़ का समय कैसे तय होता है?",
-        answer: "नमाज़ का समय सूरज की स्थिति (सूर्योदय, दोपहर, सूर्यास्त) के आधार पर खगोलीय गणना से तय होता है, जो हर शहर के अक्षांश-देशांतर के अनुसार अलग-अलग होता है।"
-    },
-    {
-        question: "क्या अलग-अलग शहरों में नमाज़ का समय अलग होता है?",
-        answer: "हां, एक ही देश के अलग-अलग शहरों में भी सूर्योदय-सूर्यास्त के समय में थोड़ा अंतर होने की वजह से नमाज़ के समय में कुछ मिनट का फर्क हो सकता है।"
-    },
-    {
-        question: "इस्लामी (हिजरी) तारीख कैसे तय होती है?",
-        answer: "हिजरी कैलेंडर चांद के चक्र पर आधारित होता है, इसलिए हर महीना लगभग 29-30 दिन का होता है और ग्रेगोरियन कैलेंडर से हर साल लगभग 10-11 दिन पीछे खिसकता है।"
-    },
-]
-
 export async function generateMetadata({ params }) {
     const country = params.country?.toLowerCase()
-    const countryNames = {
-        uae: "UAE", saudi: "Saudi Arabia", qatar: "Qatar",
-        oman: "Oman", bahrain: "Bahrain", kuwait: "Kuwait"
-    }
-    const name = countryNames[country] || country
+    const currentCountry = countries.find(c => c.slug === country)
+    if (!currentCountry) return {}
 
-    const title = `${name} Namaz Time Today | Prayer Times - Fajr, Dhuhr, Asr, Maghrib, Isha`
-    const description = `Check today's accurate namaz/prayer timings in ${name} - Fajr, Sunrise, Dhuhr, Asr, Maghrib, Isha with monthly prayer time calendar.`
+    const content = prayerTimeContentFAQ[country]
     const url = `https://www.arabsamachar.com/tools/prayer-time/${country}`
-    const ogImage = `https://www.arabsamachar.com/gulf-prayer-time-live.webp`
+    const ogImage = content.ogImage
+        ? `https://www.arabsamachar.com${content.ogImage}`
+        : `https://www.arabsamachar.com/gulf-prayer-time-live.webp`
 
     return {
-        title,
-        description,
+        title: content.title,
+        description: content.description,
         alternates: { canonical: url },
         openGraph: {
-            title, description, url,
+            title: content.title,
+            description: content.description,
+            url,
             type: "website",
             siteName: "Arab Samachar",
-            images: [{ url: ogImage, width: 1200, height: 630, alt: `खाड़ी देशों का लाइव नमाज़ का समय - ${name}`, }],
+            images: [{ url: ogImage, width: 1200, height: 630, alt: `${currentCountry.name} Prayer Time` }],
             locale: "hi_IN",
         },
         twitter: {
             card: "summary_large_image",
-            title, description, images: [ogImage],
+            title: content.title,
+            description: content.description,
+            images: [ogImage],
         },
         robots: {
             index: true, follow: true,
@@ -78,38 +66,52 @@ export async function generateMetadata({ params }) {
 }
 
 export async function generateStaticParams() {
-    return [
-        { country: "uae" }, { country: "saudi" }, { country: "qatar" },
-        { country: "oman" }, { country: "bahrain" }, { country: "kuwait" },
-    ]
+    return countries.map(c => ({ country: c.slug }))
 }
 
 export default async function Page({ params }) {
     const country = params.country?.toLowerCase()
+    const currentCountry = countries.find(c => c.slug === country)
+
+    // Galat/invalid country slug ke liye clean 404
+    if (!currentCountry) return notFound()
+
+    const content = prayerTimeContentFAQ[country] || prayerTimeContentFAQ.uae
     const countryData = prayerCountries[country] || prayerCountries.uae
 
     const latestNews = await sanityFetch(LATEST_NEWS_QUERY)
 
-    const currentCountry = countries.find(c => c.slug === country)
+    const pageUrl = `https://www.arabsamachar.com/tools/prayer-time/${country}`
+
     const breadcrumbSchema = {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Hindi News", "item": "https://www.arabsamachar.com" },
-            { "@type": "ListItem", "position": 2, "name": `${currentCountry?.name} Prayer Time`, "item": `https://www.arabsamachar.com/tools/prayer-time/${country}` }
+            { "@type": "ListItem", "position": 2, "name": `${currentCountry.name} Prayer Time`, "item": pageUrl }
         ]
     }
 
     const webAppSchema = {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": `${currentCountry?.name} Namaz Time Calculator`,
-        "url": `https://www.arabsamachar.com/tools/prayer-time/${country}`,
+        "name": `${currentCountry.name} Namaz Time Calculator`,
+        "url": pageUrl,
         "applicationCategory": "LifestyleApplication",
         "operatingSystem": "Any",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-        "description": `Daily and monthly namaz/prayer time calculator for ${currentCountry?.name}.`,
+        "description": `Daily and monthly namaz/prayer time calculator for ${currentCountry.name}.`,
         "provider": { "@type": "Organization", "name": "Arab Samachar", "url": "https://www.arabsamachar.com" }
+    }
+
+    const faqSchema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": content.faqs.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
+        }))
     }
 
     return (
@@ -131,17 +133,26 @@ export default async function Page({ params }) {
                             </BreadcrumbItem>
                             <BreadcrumbSeparator className="text-[#C4132A]" />
                             <BreadcrumbItem>
+                                <span className="text-gray-500">Tools</span>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator className="text-[#C4132A]" />
+                            <BreadcrumbItem>
+                                <span className="text-gray-500">Prayer Time</span>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator className="text-[#C4132A]" />
+                            <BreadcrumbItem>
                                 <BreadcrumbPage className="md:visible invisible">
-                                    {currentCountry?.name} Prayer Time
+                                    {currentCountry.name}
                                 </BreadcrumbPage>
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
                     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
+                    {/* TITLE — content file se, generic nahi */}
                     <div className="border-b border-gray-800 pb-3 mb-3">
                         <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold leading-tight">
-                            {currentCountry?.name} में आज नमाज़ का समय
+                            {content.h1}
                         </h1>
                     </div>
 
@@ -152,8 +163,8 @@ export default async function Page({ params }) {
                                 key={item.slug}
                                 href={`/tools/prayer-time/${item.slug}`}
                                 className={`whitespace-nowrap text-sm pb-2 transition ${country === item.slug
-                                        ? "font-bold border-b-2 border-yellow-500"
-                                        : "text-gray-700 hover:text-black"
+                                    ? "font-bold border-b-2 border-yellow-500"
+                                    : "text-gray-700 hover:text-black"
                                     }`}
                             >
                                 {item.name.toUpperCase()}
@@ -164,26 +175,31 @@ export default async function Page({ params }) {
                     {/* CITY TABS + TODAY CARD + MONTHLY TABLE */}
                     <PrayerCityTabs country={country} cities={countryData.cities} />
 
-                    {/* SEO TEXT  */}
-                    {/* <div className="prose max-w-none my-6"> ... </div> */}
+                    {/* CARD-related SEO TEXT (unique per country) */}
+                    <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">
+                        {content.cardText.heading}
+                    </h2>
+                    {content.cardText.paragraphs.map((para, i) => (
+                        <p key={i} className="text-lg text-gray-800 leading-relaxed my-4">
+                            {para}
+                        </p>
+                    ))}
 
+                    {/* MONTHLY TABLE SEO TEXT (unique per country) */}
+                    <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">
+                        {content.monthlyText.heading}
+                    </h2>
+                    {content.monthlyText.paragraphs.map((para, i) => (
+                        <p key={i} className="text-lg text-gray-800 leading-relaxed my-4">
+                            {para}
+                        </p>
+                    ))}
+
+                    {/* FAQ — country-specific, no duplicate across pages */}
                     <div className="mt-6">
-                        <ArticleFAQ faqs={faqData} />
+                        <ArticleFAQ faqs={content.faqs} />
                     </div>
-                    <script
-                        type="application/ld+json"
-                        dangerouslySetInnerHTML={{
-                            __html: JSON.stringify({
-                                "@context": "https://schema.org",
-                                "@type": "FAQPage",
-                                "mainEntity": faqData.map(faq => ({
-                                    "@type": "Question",
-                                    "name": faq.question,
-                                    "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
-                                }))
-                            })
-                        }}
-                    />
+                    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
                     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
 
                     <div className="mt-8">
@@ -194,8 +210,8 @@ export default async function Page({ params }) {
                                     key={item.slug}
                                     href={`/tools/prayer-time/${item.slug}`}
                                     className={`flex items-center gap-2 px-3 py-1 rounded-full border text-sm transition ${country === item.slug
-                                            ? "border-yellow-500 font-semibold"
-                                            : "border-gray-300 hover:bg-gray-100"
+                                        ? "border-yellow-500 font-semibold"
+                                        : "border-gray-300 hover:bg-gray-100"
                                         }`}
                                 >
                                     <Image src={`/flags/${item.code}.svg`} alt={item.name} width={18} height={18} />

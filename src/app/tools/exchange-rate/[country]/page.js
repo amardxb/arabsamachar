@@ -1,6 +1,8 @@
-export const revalidate = 3600  
+export const revalidate = 3600
+
 import Link from "next/link"
 import Image from "next/image"
+import { notFound } from 'next/navigation'
 import ExchangeTable from "@/app/components/ExchangeTable"
 import ExchangeHistoryChart from "@/app/components/ExchangeHistoryChart"
 import ExchangeHistoryTable from "@/app/components/ExchangeHistoryTable"
@@ -11,7 +13,7 @@ import {
   Breadcrumb, BreadcrumbItem, BreadcrumbLink,
   BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import exchangeContent from "@/lib/exchangeContent"
+import exchangeRateContentFAQ from "@/lib/exchangeRateContentFAQ"
 import ExchangeValueCalculator from "@/app/components/ExchangeValueCalculator"
 
 /* ───── DIRECT SANITY CLIENT (build-safe, no self-fetch) ───── */
@@ -27,6 +29,15 @@ const exchangeCurrencyMap = {
   oman: 'OMR', kuwait: 'KWD', bahrain: 'BHD',
 }
 
+const countries = [
+  { name: "UAE", slug: "uae", code: "ae" },
+  { name: "Saudi", slug: "saudi", code: "sa" },
+  { name: "Qatar", slug: "qatar", code: "qa" },
+  { name: "Oman", slug: "oman", code: "om" },
+  { name: "Bahrain", slug: "bahrain", code: "bh" },
+  { name: "Kuwait", slug: "kuwait", code: "kw" },
+]
+
 async function getExchangeData(country) {
   try {
     const currency = exchangeCurrencyMap[country] || 'AED'
@@ -35,10 +46,10 @@ async function getExchangeData(country) {
     yesterdayObj.setDate(yesterdayObj.getDate() - 1)
     const yesterdayDate = yesterdayObj.toLocaleDateString('en-CA', { timeZone: 'Asia/Dubai' })
 
-const todayRecords = await exchangeClient.fetch(
+    const todayRecords = await exchangeClient.fetch(
       `*[_type == "exchangeRate" && country == $country && date == $today]`,
       { country, today },
-  { next: { revalidate: 3600 } }
+      { next: { revalidate: 3600 } }
     )
     const yesterdayRecords = await exchangeClient.fetch(
       `*[_type == "exchangeRate" && country == $country && date == $yesterdayDate] | order(slot desc)`,
@@ -115,116 +126,63 @@ const NATIONAL_FEATURED_QUERY = `
 }
 `
 
-const faqData = [
-  {
-    question: "मनी ट्रांसफर एक्सचेंज रेट कैसे तय होती है?",
-    answer: "मनी ट्रांसफर एक्सचेंज रेट अंतरराष्ट्रीय करेंसी मार्केट, बैंकों और एक्सचेंज हाउस की पॉलिसी के आधार पर तय होती है। यह रेट डॉलर की चाल, मांग-सप्लाई और लोकल करेंसी की स्थिति पर निर्भर करती है।"
-  },
-  {
-    question: "बैंक और एक्सचेंज हाउस की रेट में अंतर क्यों होता है?",
-    answer: "हर बैंक और एक्सचेंज हाउस अपना मार्जिन और सर्विस चार्ज जोड़ता है, इसलिए एक ही दिन में अलग-अलग जगह रेट थोड़ी अलग हो सकती है। पैसे भेजने से पहले रेट कंपेयर करना फायदेमंद रहता है।"
-  },
-  {
-    question: "सबसे अच्छी एक्सचेंज रेट कब मिलती है?",
-    answer: "एक्सचेंज रेट दिनभर में कई बार बदलती है। सामान्यतः वर्किंग डेज़ की शुरुआत में और इंटरनेशनल मार्केट के अपडेट के बाद रेट में बदलाव ज्यादा देखा जाता है।"
-  },
-  {
-    question: "क्या मनी ट्रांसफर रेट रोज़ाना अपडेट होती है?",
-    answer: "हां, एक्सचेंज रेट लगभग हर दिन और कई बार दिन में भी बदलती है। हमारी वेबसाइट पर रेट हर घंटे अपडेट होती है ताकि आपको सबसे सटीक जानकारी मिल सके।"
-  },
-  {
-    question: "पैसे भेजने से पहले किन बातों का ध्यान रखें?",
-    answer: "पैसे भेजने से पहले एक्सचेंज रेट, ट्रांसफर फीस और ट्रांसफर पहुंचने में लगने वाला समय जरूर चेक करें। अलग-अलग एक्सचेंज हाउस की रेट कंपेयर करके आप ज्यादा बचत कर सकते हैं।"
-  }
-]
-
-const countryNames = {
-  uae: "UAE", saudi: "Saudi Arabia", qatar: "Qatar",
-  oman: "Oman", bahrain: "Bahrain", kuwait: "Kuwait"
-}
-
+/* ───── METADATA (content file se, generic nahi) ───── */
 export async function generateMetadata({ params }) {
   const country = params.country?.toLowerCase()
-  const name = countryNames[country] || country
+  const currentCountry = countries.find(c => c.slug === country)
+  if (!currentCountry) return {}
 
-  const data = await getExchangeData(country)
-  const currency = data?.currency || ""
-
-  const title = `${name} Money Transfer Exchange Rate Today${currency ? ` (${currency})` : ""} | Live Rates & 30-Day History`
-  const description = `Check today's live money transfer exchange rates from ${name} to India, Pakistan, Philippines, Sri Lanka, Nepal and Bangladesh. Updated rates with 30-day historical trend.`
+  const content = exchangeRateContentFAQ[country]
   const url = `https://www.arabsamachar.com/tools/exchange-rate/${country}`
-  const ogImage = `https://www.arabsamachar.com/live-money-exchange-rate-hindi.webp`
+  const ogImage = content.ogImage
+    ? `https://www.arabsamachar.com${content.ogImage}`
+    : `https://www.arabsamachar.com/live-money-exchange-rate-hindi.webp`
 
   return {
-    title,
-    description,
+    title: content.title,
+    description: content.description,
     keywords: [
-      `${name} money transfer rate`,
-      `${name} to India exchange rate`,
-      `${name} to Pakistan exchange rate`,
-      `${name} remittance rate today`,
-      `send money from ${name}`,
+      `${currentCountry.name} money transfer rate`,
+      `${currentCountry.name} to India exchange rate`,
+      `${currentCountry.name} to Pakistan exchange rate`,
+      `${currentCountry.name} remittance rate today`,
+      `send money from ${currentCountry.name}`,
     ],
-    alternates: {
-      canonical: url,
-    },
+    alternates: { canonical: url },
     openGraph: {
-      title,
-      description,
+      title: content.title,
+      description: content.description,
       url,
       type: "website",
       siteName: "Arab Samachar",
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: `${name} Money Transfer Exchange Rate`,
-        },
-      ],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${currentCountry.name} Money Transfer Exchange Rate` }],
       locale: "hi_IN",
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
+      title: content.title,
+      description: content.description,
       images: [ogImage],
     },
     robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-snippet": -1,
-        "max-image-preview": "large",
-      },
+      index: true, follow: true,
+      googleBot: { index: true, follow: true, "max-snippet": -1, "max-image-preview": "large" },
     },
   }
 }
 
 export async function generateStaticParams() {
-  return [
-    { country: "uae" },
-    { country: "saudi" },
-    { country: "qatar" },
-    { country: "oman" },
-    { country: "bahrain" },
-    { country: "kuwait" },
-  ]
+  return countries.map(c => ({ country: c.slug }))
 }
 
 export default async function Page({ params }) {
   const country = params.country?.toLowerCase()
+  const currentCountry = countries.find(c => c.slug === country)
 
-  const countries = [
-    { name: "UAE", slug: "uae", code: "ae" },
-    { name: "Saudi", slug: "saudi", code: "sa" },
-    { name: "Qatar", slug: "qatar", code: "qa" },
-    { name: "Oman", slug: "oman", code: "om" },
-    { name: "Bahrain", slug: "bahrain", code: "bh" },
-    { name: "Kuwait", slug: "kuwait", code: "kw" },
-  ]
+  // Galat/invalid country slug ke liye clean 404
+  if (!currentCountry) return notFound()
+
+  const content = exchangeRateContentFAQ[country] || exchangeRateContentFAQ.uae
 
   /* ───── EXCHANGE DATA (direct Sanity, build-safe) ───── */
   const data = await getExchangeData(country)
@@ -250,37 +208,46 @@ export default async function Page({ params }) {
 
   const featuredArticle = featuredArticleRaw || nationalFeatured
 
-  const currentCountry = countries.find(c => c.slug === country)
-  const content = exchangeContent[country] || {}
+  const pageUrl = `https://www.arabsamachar.com/tools/exchange-rate/${country}`
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Hindi News", "item": "https://www.arabsamachar.com" },
-      { "@type": "ListItem", "position": 2, "name": `${currentCountry?.name} Money Transfer Exchange Rate`, "item": `https://www.arabsamachar.com/tools/exchange-rate/${country}` }
+      { "@type": "ListItem", "position": 2, "name": `${currentCountry.name} Money Transfer Exchange Rate`, "item": pageUrl }
     ]
   }
 
   const webAppSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": `${currentCountry?.name} Money Transfer Exchange Rate Calculator`,
-  "url": `https://www.arabsamachar.com/tools/exchange-rate/${country}`,
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Any",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "description": `Live money transfer exchange rate calculator for ${currentCountry?.name} with daily rates and 30-day historical trend chart.`,
-  "provider": {
-    "@type": "Organization",
-    "name": "Arab Samachar",
-    "url": "https://www.arabsamachar.com"
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": `${currentCountry.name} Money Transfer Exchange Rate Calculator`,
+    "url": pageUrl,
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": data?.currency || "USD"
+    },
+    "description": `Live money transfer exchange rate calculator for ${currentCountry.name} with daily rates and 30-day historical trend chart.`,
+    "provider": {
+      "@type": "Organization",
+      "name": "Arab Samachar",
+      "url": "https://www.arabsamachar.com"
+    }
   }
-}
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": content.faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
+    }))
+  }
 
   return (
     <>
@@ -305,8 +272,16 @@ export default async function Page({ params }) {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="text-[#C4132A]" />
               <BreadcrumbItem>
+                <span className="text-gray-500">Tools</span>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="text-[#C4132A]" />
+              <BreadcrumbItem>
+                <span className="text-gray-500">Exchange Rate</span>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="text-[#C4132A]" />
+              <BreadcrumbItem>
                 <BreadcrumbPage className="md:visible invisible">
-                  {currentCountry?.name} Money Transfer Exchange Rate
+                  {currentCountry.name}
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
@@ -316,10 +291,10 @@ export default async function Page({ params }) {
             dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
           />
 
-          {/* TITLE */}
+          {/* TITLE — content file se, SEO-rich H1 */}
           <div className="border-b border-gray-800 pb-3 mb-3">
-            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold uppercase leading-tight">
-              {currentCountry?.name?.toUpperCase()} MONEY TRANSFER EXCHANGE RATES
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold leading-tight">
+              {content.h1}
             </h1>
           </div>
 
@@ -329,11 +304,10 @@ export default async function Page({ params }) {
               <Link
                 key={item.slug}
                 href={`/tools/exchange-rate/${item.slug}`}
-                className={`whitespace-nowrap text-sm pb-2 transition ${
-                  country === item.slug
+                className={`whitespace-nowrap text-sm pb-2 transition ${country === item.slug
                     ? "font-bold border-b-2 border-yellow-500"
                     : "text-gray-700 hover:text-black"
-                }`}
+                  }`}
               >
                 {item.name.toUpperCase()}
               </Link>
@@ -346,18 +320,25 @@ export default async function Page({ params }) {
             country={country}
             currency={data?.currency}
           />
-          {/* TABLE TEXT */}
-          {content.table?.map((para, i) => (
+
+          {/* TABLE TEXT (unique per country) */}
+          <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">
+            {content.tableText.heading}
+          </h2>
+          {content.tableText.paragraphs.map((para, i) => (
             <p key={i} className="text-lg text-gray-800 leading-relaxed my-4">
               {para}
             </p>
           ))}
+
+          {/* CALCULATOR */}
           <ExchangeValueCalculator data={data} country={country} />
 
-
-
-          {/* CALCULATOR TEXT */}
-          {content.calculator?.map((para, i) => (
+          {/* CALCULATOR TEXT (unique per country) */}
+          <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">
+            {content.calculatorText.heading}
+          </h2>
+          {content.calculatorText.paragraphs.map((para, i) => (
             <p key={i} className="text-lg text-gray-800 leading-relaxed my-4">
               {para}
             </p>
@@ -394,8 +375,12 @@ export default async function Page({ params }) {
           {/* CHART */}
           <div className="mt-6">
             <ExchangeHistoryChart country={country} currency={data?.currency} />
-            {/* CHART TEXT */}
-            {content.chart?.map((para, i) => (
+
+            {/* CHART TEXT (unique per country) */}
+            <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">
+              {content.chartText.heading}
+            </h2>
+            {content.chartText.paragraphs.map((para, i) => (
               <p key={i} className="text-lg text-gray-800 leading-relaxed my-4">
                 {para}
               </p>
@@ -404,36 +389,28 @@ export default async function Page({ params }) {
 
           {/* HISTORY TABLE */}
           <ExchangeHistoryTable country={country} currency={data?.currency} />
-          {/* HISTORY TEXT */}
-          {content.history?.map((para, i) => (
+
+          {/* HISTORY TEXT (unique per country) */}
+          <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">
+            {content.historyText.heading}
+          </h2>
+          {content.historyText.paragraphs.map((para, i) => (
             <p key={i} className="text-lg text-gray-800 leading-relaxed my-4">
               {para}
             </p>
           ))}
 
-          <ArticleFAQ faqs={faqData} />
+          {/* FAQ — country-specific, no duplicate across pages */}
+          <ArticleFAQ faqs={content.faqs} />
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                "mainEntity": faqData.map(faq => ({
-                  "@type": "Question",
-                  "name": faq.question,
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": faq.answer
-                  }
-                }))
-              })
-            }}
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
           />
 
           <script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
-/>
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
+          />
 
           {/* COUNTRY QUICK LINKS */}
           <div className="mt-8">
@@ -446,11 +423,10 @@ export default async function Page({ params }) {
                 <Link
                   key={item.slug}
                   href={`/tools/exchange-rate/${item.slug}`}
-                  className={`flex items-center gap-2 px-3 py-1 rounded-full border text-sm transition ${
-                    country === item.slug
+                  className={`flex items-center gap-2 px-3 py-1 rounded-full border text-sm transition ${country === item.slug
                       ? "border-yellow-500 font-semibold"
                       : "border-gray-300 hover:bg-gray-100"
-                  }`}
+                    }`}
                 >
                   <Image
                     src={`/flags/${item.code}.svg`}

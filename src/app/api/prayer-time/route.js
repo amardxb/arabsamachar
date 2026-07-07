@@ -11,9 +11,10 @@ export async function GET(req) {
     const cityKeys = Object.keys(countryData.cities)
     const selectedCityKey = countryData.cities[city] ? city : cityKeys[0]
     const cityData = countryData.cities[selectedCityKey]
+    const timezone = countryData.timezone || 'Asia/Dubai'
 
-    const today = new Date()
-    const dateStr = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth() + 1).padStart(2, '0')}-${today.getFullYear()}`
+    const todayInTz = new Date(new Date().toLocaleString('en-US', { timeZone: timezone }))
+    const dateStr = `${String(todayInTz.getDate()).padStart(2, '0')}-${String(todayInTz.getMonth() + 1).padStart(2, '0')}-${todayInTz.getFullYear()}`
 
     try {
         const url = `https://api.aladhan.com/v1/timings/${dateStr}?latitude=${cityData.lat}&longitude=${cityData.lon}&method=4`
@@ -30,6 +31,7 @@ export async function GET(req) {
             country,
             city: selectedCityKey,
             cityLabel: cityData.label,
+            timezone,
             timings: {
                 Fajr: timings.Fajr,
                 Sunrise: timings.Sunrise,

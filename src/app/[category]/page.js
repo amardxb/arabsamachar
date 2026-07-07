@@ -59,7 +59,7 @@ export default async function CategoryPage({ params }) {
   const [mainData, mustReadData, readAlsoData, autoData] = await Promise.all([
     // Section 1 — current category, 21 items
     sanityFetch(
-      `*[_type=='news' && category==$cat] | order(_createdAt desc)[0...20]${PROJ}`,
+      `*[_type=='news' && category==$cat] | order(_createdAt desc)[0...21]${PROJ}`,
       { cat: category },
       [`category-${category}`]
     ),
@@ -89,65 +89,63 @@ export default async function CategoryPage({ params }) {
   const autonews = autoData ?? []
 
   return (
-    <div className="min-h-screen w-full mt-10">
+    <main className="min-h-screen w-full mt-10">
       <h1 className="sr-only">{category} News Hindi | {category} हिंदी समाचार</h1>
 
       {/* ── SECTION 1 — Main category grid ───────────────────────── */}
-      <div className="mt-1 gap-2 gap-x-2 grid grid-cols-1 mb-10 w-[95%] m-auto
-                      sm:grid-cols-1 sm:w-[95%]
-                      md:grid-cols-2 md:w-[90%]
-                      lg:grid-cols-3 lg:pb-10 lg:w-[95%]
-                      xl:grid-cols-4 xl:pb-10 xl:w-[90%]">
+      <div className="gap-x-4 grid grid-cols-1 mb-10 w-[95%] m-auto gap-y-2.5
+                    sm:grid-cols-1 sm:w-[95%] sm:gap-y-2.5
+                    md:grid-cols-2 md:w-[90%] md:gap-y-2 
+                    lg:grid-cols-3 lg:w-[95%]
+                    xl:grid-cols-4 xl:w-[90%]">
         {filteredCategoryData.map((result, index) => (
           <div
             key={index}
             className={index === 0
-              ? 'row-span-2 items-center justify-center col-span-1 flex font-bold relative xl:text-4xl xl:col-span-2 xl:row-span-4 sm:row-span-1 sm:col-span-2 md:row-span-4 md:col-span-2'
-              : 'flex flex-row relative h-[105px] border-b'}
+              ? 'row-span-2 items-center justify-center col-span-1 flex font-bold relative xl:text-4xl xl:col-span-2 lg:row-span-4 sm:row-span-1 sm:col-span-2 md:row-span-3 md:col-span-2 mb-1'
+              : 'flex flex-row relative border-b text-sm mb-1'}
             title={result?.heading}
           >
             <Link
               href={`/${category}/${result.slug}`}
               className={index === 0
-                ? 'block w-full h-full hover:shadow-lg relative'
-                : 'flex flex-row w-full h-full items-center hover:shadow-lg'}
+                ? 'block w-full h-full hover:shadow-lg relative border-b'
+                : 'flex flex-row w-full items-start hover:shadow-lg'}
               prefetch={false}
             >
               <div className={index === 0
-                ? 'h-[250px] md:h-[450px] w-full relative xl:h-[450px] lg:h-[350px] flex items-start pt-2 border-b mt-3'
-                : 'flex items-center h-[80px] w-[40%] relative'}>
+                ? 'w-full relative aspect-video flex items-start border-b'
+                : 'w-[40%] relative aspect-video flex-shrink-0'}>
                 {result?.image && (
                   <BlurImage
                     src={imgUrl(result.image, index === 0 ? 960 : 320)}
                     alt={result?.alt}
-                    priority={index === 0}  // hero card is LCP
+                    priority={index === 0}
                     sizes={index === 0
                       ? '(max-width: 768px) 100vw, (max-width: 1280px) 66vw, 50vw'
                       : '120px'}
-                    className="absolute"
+                    className="absolute w-full h-full object-cover rounded-sm"
                   />
                 )}
               </div>
-              <div className={index === 0
-                ? 'absolute bottom-1/3 xl:text-3xl text-md lg:text-2xl bg-black bg-opacity-30 text-white text-left p-2 font-bold'
-                : 'absolute w-[60%] right-0 md:flex md:items-center'}>
-                <div className="p-1 block">
+
+              {index === 0 ? (
+                <div className="absolute bottom-1/3 text-md md:text-xl lg:text-2xl xl:text-3xl bg-black bg-opacity-30 text-white text-left p-2 font-bold">
                   <div className="w-full text-wrap line-clamp-3 break-words overflow-hidden">
-                    {index !== 0 && (
-                      <span className="text-[#c4132a] font-bold">
-                        {result?.tag ? `${result.tag}: ` : 'समाचार: '}
-                      </span>
-                    )}
                     {result?.heading ?? 'क्षमा करें, डेटा लाने में असमर्थ'}
                   </div>
                 </div>
-              </div>
-              <DateTimeCard
-                className={index === 0
-                  ? 'absolute text-[10px] bottom-0 right-1 text-transparent'
-                  : 'absolute text-[10px] bottom-0 right-1 text-gray-500'}
-                postTime={result?.date}
-              />
+              ) : (
+                <div className="w-[60%]  pl-1 flex flex-col justify-between md:text-lg lg:text-sm">
+                  <div className="w-full text-wrap line-clamp-3 break-words overflow-hidden">
+                    <span className="text-[#c4132a] font-semibold">
+                      {result?.tag ? `${result.tag}: ` : 'समाचार: '}
+                    </span>
+                    {result?.heading ?? 'क्षमा करें, डेटा लाने में असमर्थ'}
+                  </div>
+                  <DateTimeCard className="text-[9px] text-gray-500 self-end" postTime={result?.date} />
+                </div>
+              )}
             </Link>
           </div>
         ))}
@@ -162,42 +160,43 @@ export default async function CategoryPage({ params }) {
               className="w-[95%] m-auto flex flex-row border-l-4 h-10 pl-2 border-red-600 mb-4 lg:w-[95%] xl:w-[90%]"
             />
           </h2>
-          <div className="m-auto grid grid-cols-2 gap-x-4 w-[95%] pb-10 gap-y-4
-                          sm:grid-cols-3 sm:gap-4 sm:w-[90%] sm:pb-10
-                          md:grid-cols-2 md:gap-x-16 md:w-[90%] md:pb-10
-                          lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-3 w-[90%] m-auto pb-10 gap-y-4
+                        sm:grid-cols-3 sm:gap-4 sm:w-[90%] sm:pb-10
+                        md:grid-cols-2 md:gap-x-16 md:w-[90%] md:pb-10
+                        lg:grid-cols-5 lg:gap-6 lg:w-[90%]">
             {mustRead.map((result, index) => (
               <Link
                 key={index}
                 title={result?.heading}
                 href={`/${result.category}/${result.slug}`}
-                className="flex flex-col border hover:shadow-lg w-[150px] md:w-[300px] lg:w-[230px]"
+                className="flex flex-col border hover:shadow-lg w-full "
                 prefetch={false}
               >
-                <div className="w-full h-[100px] lg:h-[150px] relative overflow-hidden">
+                <div className="w-full aspect-video relative overflow-hidden ">
                   {result?.image && (
                     <BlurImage
                       src={imgUrl(result.image, 320)}
                       alt={result?.alt}
-                      sizes="(max-width: 768px) 150px, 300px"
+                      sizes="(max-width: 768px) 50vw, 300px"
                       className="absolute w-full h-full object-cover"
                     />
                   )}
                 </div>
-                <div className="block overflow-hidden relative p-1 pb-4 w-full h-[100px]">
-                  <div className="w-full text-wrap line-clamp-3 overflow-hidden break-words">
+                <div className="block overflow-hidden relative p-1 pb-1 pt-3 w-full h-[120px]">
+                  <div className="w-full text-wrap line-clamp-3 overflow-hidden break-words text-sm lg:text-md">
                     <span className="text-[#c4132a] font-bold">
                       {result?.tag ? `${result.tag}: ` : 'समाचार: '}
                     </span>
                     {result?.heading ?? 'क्षमा करें, डेटा लाने में असमर्थ'}
                   </div>
-                  <DateTimeCard className="absolute text-[10px] text-gray-500 bottom-0" postTime={result?.date} />
+                  <DateTimeCard className="absolute text-[10px] text-gray-500 bottom-0 right-1 pb-2" postTime={result?.date} />
                 </div>
               </Link>
             ))}
           </div>
         </div>
       )}
+
 
       {/* ── SECTION 3 — Read This Also ───────────────────────────── */}
       {readThisAlso.length > 0 && (
@@ -208,34 +207,38 @@ export default async function CategoryPage({ params }) {
               className="w-[95%] m-auto flex flex-row border-l-4 h-10 pl-2 border-red-600 mb-4 lg:w-[95%] xl:w-[90%]"
             />
           </h2>
-          <div className="m-auto grid grid-cols-1 gap-4 sm:grid-cols-2 sm:w-[90%] sm:pb-10
+          <div className="m-auto grid grid-cols-1 gap-5 sm:grid-cols-2 sm:w-[90%] sm:pb-10
                           md:grid-cols-2 md:w-[90%] md:pb-10 lg:grid-cols-3 w-[90%] pb-10">
             {readThisAlso.map((result, index) => (
               <Link
                 key={index}
                 title={result?.heading}
                 href={`/${result.category}/${result.slug}`}
-                className="flex flex-row relative border hover:shadow-lg"
+                className="flex flex-row items-start relative border hover:shadow-lg"
                 prefetch={false}
               >
-                <div className="h-[90px] w-[45%] lg:w-[35%] relative">
+                <div className="w-[50%] lg:w-[45%] relative aspect-[16/9] shrink-0 self-start">
                   {result?.image && (
                     <BlurImage
                       src={imgUrl(result.image, 320)}
                       alt={result?.alt}
                       sizes="150px"
-                      className="absolute p-1"
+                      className="absolute w-full h-full object-cover p-1"
                     />
                   )}
                 </div>
-                <div className="block overflow-hidden relative w-[55%] p-1">
-                  <div className="w-full text-wrap line-clamp-3 overflow-hidden break-words">
+                <div className="flex flex-col w-[50%] lg:w-[55%] p-1 justify-between">
+                  <div className="line-clamp-3 break-words text-md">
                     <span className="text-[#c4132a] font-bold">
-                      {result?.tag ? `${result.tag}: ` : 'समाचार: '}
+                      {result?.tag ? `${result.tag}: ` : "समाचार: "}
                     </span>
-                    {result?.heading ?? 'क्षमा करें, डेटा लाने में असमर्थ'}
+                    {result?.heading ?? "क्षमा करें, डेटा लाने में असमर्थ"}
                   </div>
-                  <DateTimeCard className="absolute text-[10px] bottom-0 right-1 text-gray-500" postTime={result?.date} />
+
+                  <DateTimeCard
+                    className="text-[9px] text-gray-500 self-end"
+                    postTime={result?.date}
+                  />
                 </div>
               </Link>
             ))}
@@ -255,11 +258,11 @@ export default async function CategoryPage({ params }) {
           <ImageSlider
             news2={autonews}
             className="w-[90%] m-auto mt-4 h-70 mb-10 bg-red-50 rounded justify-center items-center border border-b-2 border-red-200"
-            image_className="h-[100px] relative"
-            dynamicBasis="h-[200px] m-auto items-center p-2 border basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6"
+            image_className="aspect-video relative"
+            dynamicBasis="md:h-[220px]  p-2 border basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6"
           />
         </div>
       )}
-    </div>
+    </main>
   )
 }
