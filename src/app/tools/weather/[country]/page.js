@@ -304,7 +304,7 @@ export default async function Page({ params }) {
                       : "border-gray-300 hover:bg-gray-100"
                     }`}
                 >
-                  <Image src={`/flags/${item.code}.svg`} alt={item.name} width={18} height={auto} className="w-[18px] h-[18px]" />
+                  <Image src={`/flags/${item.code}.svg`} alt={item.name} width={18} height={18} className="w-[18px] h-[18px]" />
                   {item.name}
                 </Link>
               ))}
