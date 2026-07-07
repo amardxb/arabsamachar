@@ -160,8 +160,8 @@ export default async function CategoryPage({ params }) {
               className="w-[95%] m-auto flex flex-row border-l-4 h-10 pl-2 border-red-600 mb-4 lg:w-[95%] xl:w-[90%]"
             />
           </h2>
-          <div className="grid grid-cols-2 gap-3 w-[90%] m-auto pb-10 gap-y-4
-                        sm:grid-cols-3 sm:gap-4 sm:w-[90%] sm:pb-10
+          <div className="grid grid-cols-2 gap-3 w-[95%] m-auto pb-10 gap-y-4
+                        sm:grid-cols-3 sm:gap-4 sm:w-[95%] sm:pb-10
                         md:grid-cols-2 md:gap-x-16 md:w-[90%] md:pb-10
                         lg:grid-cols-5 lg:gap-6 lg:w-[90%]">
             {mustRead.map((result, index) => (
@@ -207,7 +207,7 @@ export default async function CategoryPage({ params }) {
               className="w-[95%] m-auto flex flex-row border-l-4 h-10 pl-2 border-red-600 mb-4 lg:w-[95%] xl:w-[90%]"
             />
           </h2>
-          <div className="m-auto grid grid-cols-1 gap-5 sm:grid-cols-2 sm:w-[90%] sm:pb-10
+          <div className="m-auto grid grid-cols-1 gap-5 sm:grid-cols-2 sm:w-[95%] sm:pb-10
                           md:grid-cols-2 md:w-[90%] md:pb-10 lg:grid-cols-3 w-[90%] pb-10">
             {readThisAlso.map((result, index) => (
               <Link
