@@ -108,7 +108,7 @@ const SmallCard = memo(function SmallCard({ data }) {
             object-cover
             transition-transform
             duration-500
-            hover:scale-110
+            hover:scale-105
           "
         />
       </div>
@@ -141,7 +141,7 @@ const SmallCardSpecial = memo(function SmallCardSpecial({ data }) {
           src={imgUrl(data?.image, 320)}
           alt={data?.alt}
           sizes="150px"
-          className="absolute inset-0 w-full h-full object-cover duration-500 ease rounded transform-gpu hover:scale-110 transition hover:duration-700"
+          className="absolute inset-0 w-full h-full object-cover duration-500 ease rounded transform-gpu hover:scale-105 transition hover:duration-700"
         />
       </div>
       <div className="w-[53%] text-wrap line-clamp-4 break-words overflow-hidden pl-1 text-sm">
@@ -188,7 +188,7 @@ const HeroCard = memo(function HeroCard({ data, priority = false }) {
             object-cover
             transition-transform
             duration-500
-            hover:scale-110            
+            hover:scale-105            
           "
         />
       </div>
@@ -221,7 +221,7 @@ const HeroCardSpecial = memo(function HeroCardSpecial({ data }) {
           src={imgUrl(data?.image, 960)}
           alt={data?.alt}
           sizes="(max-width: 768px) 100vw, 66vw"
-          className="absolute inset-0 w-full h-full object-cover duration-500 ease transform-gpu group-hover:scale-110 transition group-hover:duration-700"
+          className="absolute inset-0 w-full h-full object-cover duration-500 ease transform-gpu group-hover:scale-105 transition group-hover:duration-700"
         />
       </div>
       <div className="w-full text-wrap line-clamp-4 break-words overflow-hidden p-2">

@@ -92,10 +92,12 @@ export default function Footer() {
           <div className="mt-8 grid grid-cols-2 gap-8 lg:mt-0 lg:grid-cols-5 lg:gap-y-16">
             <div className="col-span-2">
               <div>
-                <Image src='/arabsamacharwidelogotp.png' alt="arab samachar wide logo" width={100}
+                <Image src='/arabsamacharwidelogotp.png' alt="arab samachar wide logo"
+                  width={100}
                   height={56}
-                  style={{ width: 'auto', height: '40px' }} className='inline-block pr-2' />
-                <p className="text-2xl font-bold text-white dark:text-white inline-block">दुनिया भर की सच्ची ख़बरें </p>
+                  style={{ width: 'auto', height: '40px' }}
+                  className='inline-block pr-2' />
+                <p className="text-2xl font-bold text-white dark:text-white inline-block">दुनिया भर की सच्ची ख़बरें</p>
                 <p className="mt-4 text-white dark:text-gray-400">
                   जुड़े 'अरब समाचार' से जो  देता है ख़बरें, सच्चाई की हर हद तक ! बिना डरे, बिना रुके।
                 </p>
@@ -132,7 +134,7 @@ export default function Footer() {
               </form>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <p className="font-medium text-white dark:text-white">Navigation</p>
+              <p className="font-bold text-white dark:text-white">Navigation</p>
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <Link href="/" className="text-white transition hover:opacity-75 dark:text-gray-200">
@@ -162,7 +164,7 @@ export default function Footer() {
               </ul>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <p className="font-medium text-white dark:text-white">Navigation</p>
+              <p className="font-bold text-white dark:text-white">Navigation</p>
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <Link href="/technology" className="text-white transition hover:opacity-75 dark:text-gray-200">
@@ -192,7 +194,7 @@ export default function Footer() {
               </ul>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <p className="font-medium text-white dark:text-white">Navigation</p>
+              <p className="font-medium text-white dark:text-white">Tools</p>
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
@@ -224,7 +226,7 @@ export default function Footer() {
               </ul>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <p className="font-medium text-white dark:text-white">Legal</p>
+              <p className="font-bold text-white dark:text-white">Legal</p>
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
@@ -250,7 +252,7 @@ export default function Footer() {
               </ul>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <p className="font-medium text-white dark:text-white">Helpful Links</p>
+              <p className="font-bold text-white dark:text-white">Helpful Links</p>
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <Link href="/about-us" className="text-white transition hover:opacity-75 dark:text-gray-200">
