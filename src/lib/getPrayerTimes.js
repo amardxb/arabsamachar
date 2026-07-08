@@ -1,8 +1,6 @@
 import { prayerCountries } from '@/lib/prayerCities'
 
-// Gulf cities ka Vercel city name se mapping
 const cityNameMap = {
-    // UAE
     'dubai': 'dubai',
     'abu dhabi': 'abu-dhabi',
     'sharjah': 'sharjah',
@@ -12,23 +10,17 @@ const cityNameMap = {
     'ras al khaimah': 'rak',
     'umm al-quwain': 'umm-al-quwain',
     'umm al quwain': 'umm-al-quwain',
-    // Saudi
     'riyadh': 'riyadh',
     'mecca': 'makkah',
     'makkah': 'makkah',
     'dammam': 'dammam',
-    // Qatar
     'doha': 'doha',
-    // Oman
     'muscat': 'muscat',
-    // Kuwait
     'kuwait city': 'kuwait-city',
     'kuwait': 'kuwait-city',
-    // Bahrain
     'manama': 'manama',
 }
 
-// Country ka default city
 const countryDefaultCity = {
     uae: 'dubai',
     saudi: 'riyadh',
@@ -38,15 +30,37 @@ const countryDefaultCity = {
     bahrain: 'manama',
 }
 
+const countryUtcOffset = {
+    uae: 4,
+    saudi: 3,
+    qatar: 3,
+    oman: 4,
+    kuwait: 3,
+    bahrain: 3,
+}
+
+function buildPrayerDateUTC(timeStr, offsetHours, dayOffset = 0) {
+    const [h, m] = timeStr.split(':').map(Number)
+    const now = new Date()
+    return new Date(Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate() + dayOffset,
+        h - offsetHours,
+        m,
+        0,
+        0
+    ))
+}
+
 export async function getPrayerTimes(country = 'uae', vercelCity = null) {
     try {
         const countryData = prayerCountries[country] || prayerCountries.uae
+        const offset = countryUtcOffset[country] ?? 4
 
-        // Vercel city se match karo, nahi to default city use karo
         const normalizedCity = vercelCity?.toLowerCase().trim()
         const matchedCityKey = cityNameMap[normalizedCity] || countryDefaultCity[country] || 'dubai'
 
-        // Confirm karo city us country ki list me hai
         const cityKey = countryData.cities[matchedCityKey]
             ? matchedCityKey
             : Object.keys(countryData.cities)[0]
@@ -62,7 +76,7 @@ export async function getPrayerTimes(country = 'uae', vercelCity = null) {
 
         if (data.code !== 200) return null
 
-        const { timings, date } = data.data
+        const { timings } = data.data
 
         const prayerOrder = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha']
         const hindiNames = {
@@ -71,13 +85,11 @@ export async function getPrayerTimes(country = 'uae', vercelCity = null) {
             Maghrib: 'मग़रिब', Isha: 'इशा',
         }
 
-        // Next upcoming prayer find karo
         const nowMs = Date.now()
         let nextPrayer = null
 
         for (const name of prayerOrder) {
-            const [h, m] = timings[name].split(':').map(Number)
-            const prayerMs = new Date().setHours(h, m, 0, 0)
+            const prayerMs = buildPrayerDateUTC(timings[name], offset).getTime()
             if (prayerMs > nowMs) {
                 const diffMs = prayerMs - nowMs
                 const hours = Math.floor(diffMs / (1000 * 60 * 60))
@@ -96,22 +108,19 @@ export async function getPrayerTimes(country = 'uae', vercelCity = null) {
             }
         }
 
-        // Agar sab prayers guzar gayi to kal ka Fajr (approximate)
         if (!nextPrayer) {
-            const [h, m] = timings['Fajr'].split(':').map(Number)
-            const tomorrowFajr = new Date()
-            tomorrowFajr.setDate(tomorrowFajr.getDate() + 1)
-            tomorrowFajr.setHours(h, m, 0, 0)
-            const diffMs = tomorrowFajr - new Date()
+            const tomorrowFajrMs = buildPrayerDateUTC(timings['Fajr'], offset, 1).getTime()
+            const diffMs = tomorrowFajrMs - nowMs
             const hours = Math.floor(diffMs / (1000 * 60 * 60))
             const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60))
+            const seconds = Math.floor((diffMs % (1000 * 60)) / 1000)
             nextPrayer = {
                 name: 'Fajr',
                 nameHindi: 'फज्र',
                 time: timings['Fajr'],
                 hoursLeft: hours,
                 minutesLeft: minutes,
-                secondsLeft: 0,
+                secondsLeft: seconds,
                 totalSecondsLeft: Math.floor(diffMs / 1000),
             }
         }

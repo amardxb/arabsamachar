@@ -17,9 +17,9 @@ const Navbar = () => {
           <Image
             src='/arabsamacharwidelogotp.png'
             alt="arab samachar wide logo"
-            width={255}
-            height={143}
-            style={{ width: '80px', height: 'auto' }}
+            width={100}
+            height={56}
+            style={{ width: '64px', height: '36px' }}
           />
         </Link>
         <ul className="hidden sm:flex w-5/6 justify-between pr-8">

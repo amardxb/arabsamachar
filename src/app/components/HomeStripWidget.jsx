@@ -1,4 +1,6 @@
+ 
 'use client'
+import { useState, useEffect } from 'react'
 
 function TrendArrow({ trend, invert = false }) {
     // invert=true ka matlab: "up" ke liye red, "down" ke liye green
@@ -44,11 +46,27 @@ export function ExchangeWidget({ exchange, fallback }) {
     )
 }
 
-export function PrayerWidget({ prayer, fallback, countdown }) {
+export function PrayerWidget({ prayer, fallback }) {
+    const [secondsLeft, setSecondsLeft] = useState(
+        prayer?.nextPrayer?.totalSecondsLeft ?? 0
+    )
+
+    useEffect(() => {
+        setSecondsLeft(prayer?.nextPrayer?.totalSecondsLeft ?? 0)
+    }, [prayer?.nextPrayer?.totalSecondsLeft])
+
+    useEffect(() => {
+        if (!prayer?.nextPrayer) return
+        const timer = setInterval(() => {
+            setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0))
+        }, 1000)
+        return () => clearInterval(timer)
+    }, [prayer?.nextPrayer])
+
     return (
         <span className="hidden md:inline text-sm font-medium">
             {prayer?.nextPrayer
-                ? `${prayer.nextPrayer.nameHindi} ${formatCountdown(countdown)}`
+                ? `${prayer.nextPrayer.nameHindi} ${formatCountdown(secondsLeft)}`
                 : fallback
             }
         </span>

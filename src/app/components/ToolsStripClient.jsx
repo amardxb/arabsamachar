@@ -155,7 +155,7 @@ export default function ToolsStripClient() {
                 <PrayerWidget
                     prayer={data?.prayer}
                     fallback="नमाज़"
-                    countdown={countdown}
+                   
                 />
             </Link>
 

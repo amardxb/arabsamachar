@@ -2,13 +2,13 @@ import { getPrayerTimes } from '@/lib/getPrayerTimes'
 import { getGoldRate } from '@/lib/getGoldRate'
 import { getExchangeRate } from '@/lib/getExchangeRate'
 import { mapToGulfCountry } from '@/lib/detectCountry'
-import { getFuelRate } from '@/lib/getFuelRate'  
+import { getFuelRate } from '@/lib/getFuelRate'
 
 export const revalidate = 300 // 5 min cache
 
 export async function GET(req) {
     try {
-        const { searchParams } = new URL(req.url)
+        const searchParams = req.nextUrl.searchParams
         const rawCountry = searchParams.get('country')
         const vercelCity = searchParams.get('city')
 
@@ -20,7 +20,7 @@ export async function GET(req) {
             getGoldRate(country),
             getExchangeRate(country),
             getPrayerTimes(country, vercelCity),
-            getFuelRate(country),   
+            getFuelRate(country),
         ])
 
         return Response.json({
@@ -37,7 +37,7 @@ export async function GET(req) {
             gold: null,
             exchange: null,
             prayer: null,
-            fuel: null, 
+            fuel: null,
         }, { status: 500 })
     }
 }

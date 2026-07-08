@@ -5,11 +5,28 @@ import { formatPrayerTime } from '@/lib/formatPrayerTime';
 
 const prayerOrder = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
-function parseTimeToday(timeStr) {
+const timezoneOffsetMap = {
+    'Asia/Dubai': 4,
+    'Asia/Riyadh': 3,
+    'Asia/Qatar': 3,
+    'Asia/Muscat': 4,
+    'Asia/Kuwait': 3,
+    'Asia/Bahrain': 3,
+};
+
+function parseTimeToday(timeStr, timezone) {
+    const offset = timezoneOffsetMap[timezone] ?? 4;
     const [h, m] = timeStr.split(':').map(Number);
-    const d = new Date();
-    d.setHours(h, m, 0, 0);
-    return d;
+    const now = new Date();
+    return new Date(Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate(),
+        h - offset,
+        m,
+        0,
+        0
+    ));
 }
 
 export default function PrayerCard({ data }) {
@@ -40,7 +57,7 @@ export default function PrayerCard({ data }) {
     let nextPrayerName = null;
     let nextPrayerTime = null;
     for (const name of prayerOrder) {
-        const t = parseTimeToday(timings[name]);
+        const t = parseTimeToday(timings[name], timezone);
         if (t > now) {
             nextPrayerName = name;
             nextPrayerTime = t;

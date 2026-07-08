@@ -100,13 +100,14 @@ export default function ExchangeValueCalculator({ data, country }) {
           Send Money Calculator
         </h3>
 
+        
         {/* SOURCE */}
         <label htmlFor="source-amount" className="text-[11px] uppercase text-[#7f7868]">You Send</label>
 
-        <div className="mt-2 rounded-lg border bg-white p-4 flex gap-3">
-          <div className="flex items-center gap-2 bg-[#0B1E3D] px-3 py-2 rounded">
+        <div className="mt-2 rounded-lg border bg-white p-3 sm:p-4 flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="flex items-center gap-2 bg-[#0B1E3D] px-2 sm:px-3 py-2 rounded flex-shrink-0">
             <div className="w-5 h-5 rounded-full overflow-hidden flex-shrink-0">
-              <img src={source.flag} alt={`${source.name} flag`} className="w-full h-full object-cover" />               
+              <img src={source.flag} alt={`${source.name} flag`} className="w-full h-full object-cover" />
             </div>
             <span className="text-white text-sm">{source.code}</span>
           </div>
@@ -114,9 +115,10 @@ export default function ExchangeValueCalculator({ data, country }) {
           <input
             id="source-amount"
             type="number"
+            inputMode="decimal"
             value={sourceAmount}
             onChange={(e) => updateSource(e.target.value)}
-            className="flex-1 text-right text-2xl outline-none"
+            className="flex-1 min-w-0 w-full text-right text-lg sm:text-2xl outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             aria-label={`Amount in ${source.code} you send`}
           />
         </div>
@@ -134,14 +136,15 @@ export default function ExchangeValueCalculator({ data, country }) {
         </div>
 
         {/* TARGET */}
+        {/* TARGET */}
         <label htmlFor="target-amount" className="text-[11px] uppercase text-[#7f7868]">Receiver Gets</label>
 
-        <div className="mt-2 rounded-lg border bg-white p-4 flex gap-3 relative" ref={dropdownRef}>
+        <div className="mt-2 rounded-lg border bg-white p-3 sm:p-4 flex items-center gap-2 sm:gap-3 relative min-w-0" ref={dropdownRef}>
 
           <button
             type="button"
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex items-center gap-2 rounded bg-[#ece6d7] px-3 py-2 font-semibold"
+            className="flex items-center gap-2 rounded bg-[#ece6d7] px-2 sm:px-3 py-2 font-semibold flex-shrink-0"
             aria-expanded={dropdownOpen}
             aria-haspopup="listbox"
             aria-label={`Select target currency, currently ${target}`}
@@ -149,8 +152,8 @@ export default function ExchangeValueCalculator({ data, country }) {
             <div className="w-5 h-5 rounded-full overflow-hidden flex-shrink-0">
               <img src={currencyInfo[target].flag} alt={target} className="w-full h-full object-cover" />
             </div>
-            <span>{target}</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <span className="text-sm sm:text-base">{target}</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="flex-shrink-0">
               <path d="M6 9l6 6 6-6" />
             </svg>
           </button>
@@ -184,9 +187,10 @@ export default function ExchangeValueCalculator({ data, country }) {
           <input
             id="target-amount"
             type="number"
+            inputMode="decimal"
             value={targetAmount}
             onChange={(e) => updateTarget(e.target.value)}
-            className="flex-1 text-right text-2xl outline-none text-green-600"
+            className="flex-1 min-w-0 w-full text-right text-lg sm:text-2xl outline-none text-green-600 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             aria-label={`Amount in ${target} receiver gets`}
           />
         </div>

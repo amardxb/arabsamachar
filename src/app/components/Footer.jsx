@@ -92,8 +92,8 @@ export default function Footer() {
           <div className="mt-8 grid grid-cols-2 gap-8 lg:mt-0 lg:grid-cols-5 lg:gap-y-16">
             <div className="col-span-2">
               <div>
-                <Image src='/arabsamacharwidelogotp.png' alt="arab samachar wide logo" width={255}
-                  height={143}
+                <Image src='/arabsamacharwidelogotp.png' alt="arab samachar wide logo" width={100}
+                  height={56}
                   style={{ width: 'auto', height: '40px' }} className='inline-block pr-2' />
                 <p className="text-2xl font-bold text-white dark:text-white inline-block">दुनिया भर की सच्ची ख़बरें </p>
                 <p className="mt-4 text-white dark:text-gray-400">
