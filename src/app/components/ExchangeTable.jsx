@@ -33,6 +33,19 @@ export default function ExchangeTable({ data, country, currency }) {
     return `${day}${suffix} ${month} ${d.getFullYear()}`
   }
 
+  const formatUpdatedAgo = (dateStr) => {
+    const totalMinutes = Math.floor((Date.now() - new Date(dateStr).getTime()) / 60000)
+
+    if (totalMinutes < 1) return 'Updated just now'
+    if (totalMinutes < 60) return `Updated ${totalMinutes} minutes ago`
+
+    const hours = Math.floor(totalMinutes / 60)
+    const minutes = totalMinutes % 60
+
+    if (minutes === 0) return `Updated ${hours} hours ago`
+    return `Updated ${hours} hours ${minutes} minutes ago`
+  }
+
   return (
     <div className="mt-8 rounded-lg overflow-hidden border border-gray-200 bg-white">
 
@@ -48,7 +61,7 @@ export default function ExchangeTable({ data, country, currency }) {
           </span>
         </div>
         <div className="text-xs text-gray-400 mt-1">
-          Updated {Math.floor((Date.now() - new Date(data.updated)) / 60000)} minutes ago
+          {formatUpdatedAgo(data.updated)}
         </div>
       </div>
 
@@ -95,7 +108,7 @@ export default function ExchangeTable({ data, country, currency }) {
                     <div className="font-semibold text-gray-900">{rates.morning?.toFixed(2) ?? "-"}</div>
                     {rates.morning != null && (
                       <div className="text-[11px] text-gray-500">
-                        {currency} {per1000(rates.morning)}<br/>/ 1000 {cur}
+                        {currency} {per1000(rates.morning)}<br />/ 1000 {cur}
                       </div>
                     )}
                   </td>
@@ -104,7 +117,7 @@ export default function ExchangeTable({ data, country, currency }) {
                     <div className="font-semibold text-gray-900">{rates.evening?.toFixed(2) ?? "-"}</div>
                     {rates.evening != null && (
                       <div className="text-[11px] text-gray-500">
-                        {currency} {per1000(rates.evening)}<br/>/ 1000 {cur}
+                        {currency} {per1000(rates.evening)}<br />/ 1000 {cur}
                       </div>
                     )}
                   </td>
@@ -113,7 +126,7 @@ export default function ExchangeTable({ data, country, currency }) {
                     <div className="font-semibold text-gray-900">{rates.yesterday?.toFixed(2) ?? "-"}</div>
                     {rates.yesterday != null && (
                       <div className="text-[11px] text-gray-500">
-                        {currency} {per1000(rates.yesterday)}<br/>/ 1000 {cur}
+                        {currency} {per1000(rates.yesterday)}<br />/ 1000 {cur}
                       </div>
                     )}
                   </td>

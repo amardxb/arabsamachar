@@ -1,5 +1,7 @@
 import { createClient } from '@sanity/client'
 
+export const dynamic = 'force-dynamic'
+
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,

@@ -4,7 +4,7 @@ import { getExchangeRate } from '@/lib/getExchangeRate'
 import { mapToGulfCountry } from '@/lib/detectCountry'
 import { getFuelRate } from '@/lib/getFuelRate'
 
-export const revalidate = 300 // 5 min cache
+export const dynamic = 'force-dynamic'
 
 export async function GET(req) {
     try {
