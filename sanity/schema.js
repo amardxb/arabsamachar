@@ -9,5 +9,5 @@ import subscriber from "./subscriber.js";
  
 
 export const schema = {
-  types: [news, goldPrice, exchangeRate, weatherData, fuelRate, subscriber.js, webstories],
+  types: [news, goldPrice, exchangeRate, weatherData, fuelRate, subscriber, webstories],
 }
