@@ -1,17 +1,4 @@
-// app/api/webhooks/new-post/route.js
-//
-// Sanity Studio mein tumhara "newsletter" webhook already ban chuka hai.
-// Uski settings check/update kar lo:
-//   URL: https://arabsamachar.com/api/webhooks/new-post
-//   Dataset: production
-//   Trigger on: Create (only)
-//   Filter: _type == "news" && !(_id in path("drafts.**"))
-//   Projection: { "title": title, "slug": slug.current, "excerpt": description,
-//                 "image": image.asset->url, "category": category }
-//   Secret: ek random string — isko SANITY_WEBHOOK_SECRET env var mein daalo
-//
-// IMPORTANT: Sanity client import path apne existing routes se match karo
-// (jaisa route.js /api/subscribe mein use kiya tha).
+ 
 
 import { createClient } from 'next-sanity';
 import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';

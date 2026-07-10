@@ -8,8 +8,6 @@ import HomeDate from './components/HomeDate'
 import ToolsStrip from './components/ToolsStrip'
 import ImageSlider from './components/ImageSlider'
 
-
-
 export const revalidate = false // cache forever, revalidated on-demand via webhook
 
 export const metadata = {
@@ -258,20 +256,22 @@ const NewsSection = memo(function NewsSection({ items, special = false, firstPri
 export default function Home() {
   return (
     <>
-      <main className="w-full flex min-h-screen flex-col items-center justify-between md:w-[95%] m-auto ">
+      <main className="w-full flex min-h-screen flex-col items-center justify-between md:w-[95%] m-auto">
         <h1 className="sr-only">
           अरब समाचार – खाड़ी देशों की ताज़ा खबरें हिंदी में
         </h1>
-        <div className="hidden lg:flex flex-col items-center md:mt-2">
+        <div className="hidden lg:flex flex-col items-center md:mt-2 relative w-[95%] m-auto">
           <Image
-  src="/arab-samachar-heading.png"
-  alt="अरब समाचार – खाड़ी देशों की ताज़ा खबरें हिंदी में"
-  width={767}
-  height={149}
-  priority
-  className="mx-auto w-[320px] h-auto"
-/>
+            src="/arab-samachar-heading.png"
+            alt="अरब समाचार – खाड़ी देशों की ताज़ा खबरें हिंदी में"
+            width={767}
+            height={149}
+            priority
+            className="mx-auto w-[320px] h-auto"
+          />
           <HomeDate />
+
+         
         </div>
         {/* <HeroCarosuel carousel={breakingNews} /> */}
 

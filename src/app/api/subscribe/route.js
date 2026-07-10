@@ -16,17 +16,30 @@ const client = createClient({
 });
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ALL_CATEGORIES = [
+    'breaking',
+    'national',
+    'world',
+    'entertainment',
+    'lifestyle',
+    'technology',
+    'finance',
+    'sports',
+];
 
 export async function POST(req) {
     try {
         const body = await req.json();
-        const { email, categories, source } = body || {};
+        const { email, source } = body || {};
+        let { categories } = body || {};
 
         if (!email || !EMAIL_REGEX.test(email)) {
             return Response.json({ error: 'Invalid email' }, { status: 400 });
         }
+        // Footer / homepage-icon / mobile-modal jaise quick-subscribe forms se
+        // categories nahi aatin — un cases mein saari categories default kar do
         if (!Array.isArray(categories) || categories.length === 0) {
-            return Response.json({ error: 'Select at least one category' }, { status: 400 });
+            categories = ALL_CATEGORIES;
         }
 
         const normalizedEmail = email.trim().toLowerCase();

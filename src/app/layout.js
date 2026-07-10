@@ -8,6 +8,7 @@ import { sanityFetch } from '../../sanity/lib/client'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Toaster } from 'react-hot-toast'
 import Link from 'next/link'
+import NewsletterMobileModal from './components/NewsletterMobileModal'
 
 /* ─── FONT ────────────────────────────────────────────────────────────────
    display:'swap' is already set — browser shows fallback font immediately
@@ -99,9 +100,10 @@ export default async function RootLayout({ children }) {
         <Navbar />
 
         {breakingText?.slug ? (
-          <Link href={`/${breakingText.category}/${breakingText.slug}`}>
-            <BreakingNews text={breakingText.heading || 'ताज़ा समाचार'} />
-          </Link>
+          <BreakingNews
+            text={breakingText.heading || 'ताज़ा समाचार'}
+            href={`/${breakingText.category}/${breakingText.slug}`}
+          />
         ) : (
           <BreakingNews text="ताज़ा समाचार" />
         )}
@@ -114,6 +116,8 @@ export default async function RootLayout({ children }) {
         <GoogleAnalytics gaId="G-BK1NC8WCM9" />
         <SpeedInsights />
         <Footer />
+        newslettermodal
+        <NewsletterMobileModal />
         <Toaster position="top-center" />
       </body>
     </html>

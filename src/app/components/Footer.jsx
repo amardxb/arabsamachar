@@ -1,16 +1,16 @@
 'use client'
-import React, { useRef, useState } from 'react';
-import emailjs from '@emailjs/browser';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
 import Image from "next/image";
 
 export default function Footer() {
-  const form = useRef(null);
   const [formData, setFormData] = useState({
     user_email: '',
   });
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
   const validateForm = (formData) => {
     const validationErrors = {};
     if (!formData.user_email.trim()) {
@@ -22,62 +22,63 @@ export default function Footer() {
     return Object.keys(validationErrors).length === 0; // Return true if no errors
   };
 
-
-  const sendEmail = (e) => {
+  const sendEmail = async (e) => {
     e.preventDefault();
     if (!validateForm(formData)) {
       return; // Prevent submission if validation fails
     }
-    emailjs
-      .sendForm('service_blvkq7g', 'template_327auqn', form.current, {
-        publicKey: "u7NC5hEThO2DX6MaI",
-        ...formData, // Include form data in the email payload
-      })
-      .then(
-        () => {
-          toast.custom((t) => (
-            <div
-              className={`${t.visible ? 'animate-enter' : 'animate-leave'
-                } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-            >
-              <div className="flex-1 w-0 p-4">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 pt-0.5">
-                    <Image
-                      className="h-12 w-12 rounded-full"
-                      src="/favicon-32x32.png"
-                      alt="arab samachar icon"
-                      width={20}
-                      height={20}
-                    />
-                  </div>
-                  <div className="ml-3 flex-1">
-                    <p className="text-sm font-medium text-gray-900">
-                      Thank you for Subscribing Us!
-                    </p>
-                    <p className="mt-1 text-sm text-gray-500">
-                      You will get all Latest News Messages.
-                    </p>
-                  </div>
-                </div>
+    setLoading(true);
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.user_email, source: 'footer' }),
+      });
+      if (!res.ok) throw new Error('failed');
+
+      toast.custom((t) => (
+        <div
+          className={`${t.visible ? 'animate-enter' : 'animate-leave'
+            } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="flex-shrink-0 pt-0.5">
+                <Image
+                  className="h-12 w-12 rounded-full"
+                  src="/favicon-32x32.png"
+                  alt="arab samachar icon"
+                  width={20}
+                  height={20}
+                />
               </div>
-              <div className="flex border-l border-gray-200">
-                <button
-                  onClick={() => toast.dismiss(t.id)}
-                  className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-[#c4132a] hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  Close
-                </button>
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-medium text-gray-900">
+                  Thank you for Subscribing Us!
+                </p>
+                <p className="mt-1 text-sm text-gray-500">
+                  You will get all Latest News Messages.
+                </p>
               </div>
             </div>
-          ))
-          setFormData({ user_email: '' });
-          setErrors({}); // Clear errors on successful submission
-        },
-        (error) => {
-          toast.error('Something went wrong. Please try again.');
-        }
-      );
+          </div>
+          <div className="flex border-l border-gray-200">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-[#c4132a] hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ))
+      setFormData({ user_email: '' });
+      setErrors({}); // Clear errors on successful submission
+    } catch (error) {
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   }
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -97,14 +98,14 @@ export default function Footer() {
                   height={56}
                   style={{ width: 'auto', height: '40px' }}
                   className='inline-block pr-2' />
-                <p className="text-2xl font-bold text-white dark:text-white inline-block">दुनिया भर की सच्ची ख़बरें</p>
+                <p className="text-2xl font-bold text-white dark:text-white inline-block">दुनिया भर की सच्ची ख़बरें</p>
                 <p className="mt-4 text-white dark:text-gray-400">
-                  जुड़े 'अरब समाचार' से जो  देता है ख़बरें, सच्चाई की हर हद तक ! बिना डरे, बिना रुके।
+                  जुड़े 'अरब समाचार' से जो  देता है ख़बरें, सच्चाई की हर हद तक ! बिना डरे, बिना रुके।
                 </p>
               </div>
             </div>
             <div className="col-span-2 lg:col-span-3 lg:flex lg:items-end">
-              <form className="w-full" ref={form} onSubmit={sendEmail}>
+              <form className="w-full" onSubmit={sendEmail}>
                 <label className="sr-only"> Email </label>
                 <div
                   className="border border-gray-100 p-2 focus-within:ring sm:flex sm:items-center sm:gap-4 dark:border-gray-800"
@@ -123,9 +124,10 @@ export default function Footer() {
                   <button
                     type="submit"
                     value="Send"
-                    className="mt-1 w-full bg-[#da251d] px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-none hover:bg-teal-600 sm:mt-0 sm:w-auto sm:shrink-0"
+                    disabled={loading}
+                    className="mt-1 w-full bg-[#da251d] px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-none hover:bg-teal-600 sm:mt-0 sm:w-auto sm:shrink-0 disabled:opacity-60"
                   >
-                    Sign Up
+                    {loading ? '...' : 'Sign Up'}
                   </button>
                 </div>
                 {errors.user_email && (
