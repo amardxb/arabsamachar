@@ -46,6 +46,7 @@ export default defineType({
                     { title: 'Footer', value: 'footer' },
                     { title: 'Homepage Icon', value: 'homepage-icon' },
                     { title: 'Newsletter Page', value: 'newsletter-page' },
+                    { title: 'Article Page', value: 'article_page' },
                 ],
             },
         }),

@@ -19,6 +19,7 @@ import {
 import { getReadTime } from '@/lib/readTime'
 import ReadTimeBadge from '@/app/components/ReadTimeBadge'
 import ArticleFAQ from '@/app/components/ArticleFAQ'
+import ArticleNewsletterBox from '@/app/components/ArticleNewsletterBox'
 
 export const revalidate = false
 export const dynamicParams = true
@@ -307,9 +308,10 @@ const faqSchema = faqs.length
           </article>
 
           <hr className="mt-6" />
-          <div className="w-full flex justify-end mt-6">
+          <div className="w-full flex justify-end mt-1  ">
             <Share url={`https://www.arabsamachar.com/${category}/${slug}`} />
           </div>
+          <ArticleNewsletterBox defaultCategory={category} />
 
         {carosuelNews.length > 0 && (
             <ImageSlider
