@@ -217,7 +217,7 @@ export default function NewsletterPage() {
                             गोपनीयता नीति
                         </a>{' '}
                         और{' '}
-                        <a href="/terms-conditions" className="underline hover:text-stone-600">
+                        <a href="/terms-and-conditions" className="underline hover:text-stone-600">
                             नियम व शर्तें
                         </a>{' '}
                         से सहमत होते हैं।

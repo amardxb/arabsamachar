@@ -82,18 +82,18 @@ export default function NewsletterMobileModal() {
           गल्फ की ताज़ा खबरें सीधे आपके इनबॉक्स में — मुफ़्त में।
         </p>
 
-        <form onSubmit={handleSubmit} className="flex gap-2">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="आपका ईमेल एड्रेस"
-            className="flex-1 min-w-0 border border-stone-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C4132A]/30 focus:border-[#C4132A]"
+            className="w-full border border-stone-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C4132A]/30 focus:border-[#C4132A]"
           />
           <button
             type="submit"
             disabled={loading}
-            className="bg-[#C4132A] text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-[#a8101f] transition disabled:opacity-60 whitespace-nowrap"
+            className="w-full bg-[#C4132A] text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-[#a8101f] transition disabled:opacity-60"
           >
             {loading ? '...' : 'Subscribe'}
           </button>
