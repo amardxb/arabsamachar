@@ -96,7 +96,7 @@ export default function ArticleNewsletterBox() {
     if (status === 'success') {
         return (
             <div className="rounded-xl bg-red-50 border border-red-200 p-6 my-8 text-center min-h-[220px] flex items-center justify-center  ">
-                <p className="font-semibold text-red-900">Subscribe ho gaye! Email check karein.</p>
+                <p className="font-semibold text-red-900">सबस्क्राइब हो गए! धन्यवाद</p>
             </div>
         );
     }
