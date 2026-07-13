@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { PortableText } from '@portabletext/react'
 import { getDailyDigest } from '@/lib/getDailyDigest'
 import { getDailyDigestByISODate } from '@/lib/getDailyDigest'
+import Image from 'next/image'
 
 export async function generateMetadata({ params }) {
     const { date } = await params
@@ -175,11 +176,13 @@ if (sidebarItems.length < 10) {
                                 </h2>
 
                                 {item.image?.asset?.url && (
-                                    <figure className="mb-3">
-                                        <img
+                                    <figure className="mb-3 relative w-full aspect-video rounded-md overflow-hidden">
+                                        <Image
                                             src={item.image.asset.url}
                                             alt={item.image.alt || item.headline}
-                                            className="w-full rounded-md object-cover aspect-video"
+                                            fill
+                                            className="object-cover"
+                                            sizes="(max-width: 768px) 100vw, 700px"
                                         />
                                         {item.image.caption && (
                                             <figcaption className="text-xs text-gray-500 mt-1">
@@ -188,7 +191,6 @@ if (sidebarItems.length < 10) {
                                         )}
                                     </figure>
                                 )}
-
                                 <div className="text-sm text-gray-700 space-y-4">
                                     <PortableText value={item.body} />
                                 </div>
