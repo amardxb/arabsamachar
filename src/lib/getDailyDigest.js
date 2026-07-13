@@ -48,3 +48,31 @@ export async function getDailyDigest(slug) {
         return null
     }
 }
+
+export async function getDailyDigestByISODate(isoDate) {
+    try {
+        const digest = await client.fetch(
+            `*[_type == "dailyDigest" && date == $isoDate][0]{
+                _id,
+                date,
+                "slug": slug.current,
+                title,
+                "items": items | order(publishedAt desc) {
+                    headline,
+                    publishedAt,
+                    image {
+                        asset->{ _id, url },
+                        alt,
+                        caption
+                    }
+                }
+            }`,
+            { isoDate },
+            { next: { revalidate: 300 } }
+        )
+        return digest || null
+    } catch (err) {
+        console.error('getDailyDigestByISODate error:', err)
+        return null
+    }
+}

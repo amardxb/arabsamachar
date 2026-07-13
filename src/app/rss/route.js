@@ -24,6 +24,24 @@ export async function GET() {
     const data = await res.json();
     const posts = data?.result || [];
 
+    // ---- Daily Digest Query ----
+    const digestQuery = `*[_type=="dailyDigest" && count(items) > 0] | order(date desc)[0...10]{
+      title,
+      intro,
+      "slug": slug.current,
+      "latestPublishedAt": items[0].publishedAt,
+      "firstImage": items[0].image
+    }`;
+
+    const digestRes = await fetch(
+      `https://c3a7mc67.api.sanity.io/v2024-04-17/data/query/production?query=${encodeURIComponent(
+        digestQuery
+      )}`
+    );
+
+    const digestData = await digestRes.json();
+    const digests = digestData?.result || [];
+
     const items = (posts || [])
       .map((post) => {
         if (!post?.slug?.current) return "";
@@ -63,11 +81,56 @@ export async function GET() {
             <pubDate>${safeDate}</pubDate>
 
             ${imageUrl
-  ? `<enclosure url="${imageUrl}" type="${mimeType}" length="0" />`
-  : ""}
+            ? `<enclosure url="${imageUrl}" type="${mimeType}" length="0" />`
+            : ""}
 
             <description><![CDATA[
               ${post.description || ""}
+            ]]></description>
+          </item>
+        `;
+      })
+      .join("");
+
+    // ---- Daily Digest Items ----
+    const digestItems = (digests || [])
+      .map((digest) => {
+        if (!digest?.slug) return "";
+
+        const url = `${baseUrl}/daily-digest/${digest.slug}`;
+
+        let imageUrl = "";
+        let mimeType = "image/jpeg";
+
+        if (digest?.firstImage?.asset?._ref) {
+          const ref = digest.firstImage.asset._ref;
+          const parts = ref.replace("image-", "").split("-");
+          const id = parts[0];
+          const size = parts[1];
+          const format = ref.split("-").pop();
+
+          imageUrl = `https://cdn.sanity.io/images/c3a7mc67/production/${id}-${size}.${format}`;
+
+          if (format === "webp") mimeType = "image/webp";
+          else if (format === "png") mimeType = "image/png";
+          else mimeType = "image/jpeg";
+        }
+
+        const safeDate = new Date(digest.latestPublishedAt || Date.now()).toUTCString();
+
+        return `
+          <item>
+            <title><![CDATA[${digest.title || ""}]]></title>
+            <link>${url}</link>
+            <guid>${url}</guid>
+            <pubDate>${safeDate}</pubDate>
+
+            ${imageUrl
+            ? `<enclosure url="${imageUrl}" type="${mimeType}" length="0" />`
+            : ""}
+
+            <description><![CDATA[
+              ${digest.intro || ""}
             ]]></description>
           </item>
         `;
@@ -85,6 +148,7 @@ export async function GET() {
     <language>hi-IN</language>
 
     ${items}
+    ${digestItems}
 
   </channel>
 </rss>`;

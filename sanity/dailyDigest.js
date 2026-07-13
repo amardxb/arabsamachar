@@ -16,10 +16,17 @@ export default {
             name: 'slug',
             title: 'URL Slug',
             type: 'slug',
-            description: 'e.g. 11-july-2026 — used in the URL',
+            description: 'Auto-generated from date, e.g. 11-july-2026',
             options: {
                 source: 'date',
                 maxLength: 50,
+                slugify: (input) => {
+                    const date = new Date(input)
+                    const day = String(date.getUTCDate()).padStart(2, '0')
+                    const month = date.toLocaleString('en-US', { month: 'long', timeZone: 'UTC' }).toLowerCase()
+                    const year = date.getUTCFullYear()
+                    return `${day}-${month}-${year}`
+                },
             },
             validation: (Rule) => Rule.required(),
         },

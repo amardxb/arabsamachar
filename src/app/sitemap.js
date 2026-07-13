@@ -10,6 +10,23 @@ export default async function sitemap() {
     "slug": slug.current,
     _updatedAt      
   }`;
+  
+  const dailyDigestQuery = `*[_type=='dailyDigest'] | order(date desc){
+    "slug": slug.current,
+    date,
+    "itemCount": count(items)
+}`;
+
+  const dailyDigestData = await client.fetch(dailyDigestQuery);
+
+  const dailyDigestPages = dailyDigestData
+    .filter((item) => item.itemCount > 0)
+    .map((item) => ({
+      url: `${baseurl}/daily-digest/${item.slug}`,
+      lastModified: new Date(item.date),
+      changeFrequency: "hourly",
+      priority: 0.8,
+    }));
 
   const sitemapData = await client.fetch(sitemapQuery);
 
@@ -176,6 +193,7 @@ const weatherPages = weatherCountries.map((country) => ({
     ...weatherPages,
     ...fuelPages,
     ...prayerPages,
+    ...dailyDigestPages,  
     ...posts,
   ];
 }
