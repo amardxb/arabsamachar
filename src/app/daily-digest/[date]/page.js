@@ -5,6 +5,7 @@ import { PortableText } from '@portabletext/react'
 import { getDailyDigest } from '@/lib/getDailyDigest'
 import { getDailyDigestByISODate } from '@/lib/getDailyDigest'
 import Image from 'next/image'
+import CopyLinkButton from '@/app/components/CopyLinkButton'
 
 export async function generateMetadata({ params }) {
     const { date } = await params
@@ -77,6 +78,7 @@ if (sidebarItems.length < 10) {
         usingYesterday = true
     }
     }
+    
     const jsonLd = {
         '@context': 'https://schema.org',
         '@graph': [
@@ -166,7 +168,7 @@ if (sidebarItems.length < 10) {
                                 className={`relative border-t-2 pt-4 p-4 mb-10 mt-4 mt-8 rounded-b-md scroll-mt-24 ${index === 0 ? 'border-red-700 bg-red-50' : 'border-gray-700 bg-[#F9F9F9]'
                                     }`}
                             >
-                                <span className={`absolute left-0 top-0 -translate-y-full text-white text-sm px-3 py-1.5 rounded-t-md rounded-b-none ${index === 0 ? 'bg-red-700' : 'bg-gray-700'
+                                <span className={`absolute left-0 top-0 -translate-y-full text-white text-sm px-3 py-1.5 rounded-t-md rounded-b-none ${index === 0 ? 'bg-red-700' : 'bg-gray-800'
                                     }`}>
                                     {formattedDateTime}
                                 </span>
@@ -191,6 +193,7 @@ if (sidebarItems.length < 10) {
                                         )}
                                     </figure>
                                 )}
+
                                 <div className="text-sm text-gray-700 space-y-4">
                                     <PortableText value={item.body} />
                                 </div>
@@ -203,14 +206,20 @@ if (sidebarItems.length < 10) {
 
                                 {item.relatedLink?.href && (
 
-                                 <a href = { item.relatedLink.href } 
-                                        className="text-sm text-red-800 mt-2 inline-block"
-                                    >
+                                <a    href = { item.relatedLink.href }
+            className="text-sm text-red-800 mt-2 inline-block"
+        >
                                 {item.relatedLink.heading || 'Poori khabar padhein'} →
                             </a>
                         )
                     }
-                            </article>
+
+    <div className="flex justify-end mt-2">
+                            <CopyLinkButton
+                                url={`https://www.arabsamachar.com/daily-digest/${digest.slug}#item-${index}`}
+                            />
+                        </div>
+</article>
                 )
                     })}
         </div>
@@ -228,7 +237,7 @@ if (sidebarItems.length < 10) {
                     <nav aria-label="Digest navigation" className="border border-gray-200 p-4">
                         <div className="w-full flex flex-row items-center border-l-4 border-[#c4132a] p-2 mb-4 ">
                             <h3 className="text- font-bold uppercase tracking-wide text-gray-800 whitespace-nowrap">
-                                कल की खबरें 
+                                मुख्य खबरें 
                             </h3>
                             <div className="flex-1 h-[2px] bg-[#c4132a] ml-3"></div>
                         </div>
