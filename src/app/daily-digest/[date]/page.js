@@ -86,6 +86,10 @@ if (sidebarItems.length < 10) {
                 '@type': 'NewsArticle',
                 headline: digest.title,
                 description: digest.intro || digest.title,
+                author: {
+                    '@type': 'Person',
+                    name: digest.author || 'Arab Samachar Team',
+                },
                 datePublished: digest.items?.[digest.items.length - 1]?.publishedAt,
                 dateModified: digest.items?.[0]?.publishedAt,
                 url: `https://www.arabsamachar.com/daily-digest/${digest.slug}`,
@@ -133,7 +137,12 @@ if (sidebarItems.length < 10) {
             <main>
                 <h1 className="text-2xl md:text-3xl font-semibold text-center mb-4">
                     {digest.title}
-                </h1>
+                    </h1>
+                    {digest.author && (
+                        <p className="text-center text-sm text-gray-500 mb-6">
+                            संकलन एवं संपादन: <span className="font-medium text-gray-700">{digest.author}</span>
+                        </p>
+                    )}
 
                 {digest.intro && (
                     <p className="text-gray-600 mb-8">
@@ -176,6 +185,11 @@ if (sidebarItems.length < 10) {
                                 <h2 className="text-xl md:text-2xl font-semibold mb-4 mt-2">
                                     {item.headline}
                                 </h2>
+                                {item.context && (
+                                    <p className="text-sm text-gray-600 italic border-l-2 border-red-300 pl-3 mb-3">
+                                        {item.context}
+                                    </p>
+                                )}
 
                                 {item.image?.asset?.url && (
                                     <figure className="mb-3 relative w-full aspect-video rounded-md overflow-hidden">

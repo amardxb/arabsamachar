@@ -1,5 +1,3 @@
-// src/lib/getDailyDigest.js
-
 import { createClient } from '@sanity/client'
 
 const client = createClient({
@@ -18,8 +16,10 @@ export async function getDailyDigest(slug) {
                 "slug": slug.current,
                 title,
                 intro,
+                author,
                 "items": items | order(publishedAt desc) {
                     headline,
+                    context,
                     publishedAt,
                     body,
                     image {
@@ -33,9 +33,9 @@ export async function getDailyDigest(slug) {
                     },
                     sourceNote,
                     relatedLink {
-    heading,
-    href
-}
+                        heading,
+                        href
+                    }
                 }
             }`,
             { slug },

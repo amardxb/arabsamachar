@@ -21,6 +21,7 @@ import ReadTimeBadge from '@/app/components/ReadTimeBadge'
 import ArticleFAQ from '@/app/components/ArticleFAQ'
 import ArticleNewsletterBox from '@/app/components/ArticleNewsletterBox'
 
+
 export const revalidate = false
 export const dynamicParams = true
 

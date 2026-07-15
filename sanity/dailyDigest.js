@@ -44,6 +44,12 @@ export default {
             rows: 3,
         },
         {
+            name: 'author',
+            title: 'संकलनकर्ता (Author)',
+            type: 'string',
+            initialValue: 'अमर दीप द्विवेदी',
+        },
+        {
             name: 'items',
             title: 'News Items',
             type: 'array',
@@ -58,6 +64,13 @@ export default {
                             title: 'Headline (H2)',
                             type: 'string',
                             validation: (Rule) => Rule.required(),
+                        },
+                        {
+                            name: 'context',
+                            title: 'संदर्भ (क्यों जरूरी है)',
+                            type: 'text',
+                            rows: 2,
+                            description: 'Ek chhoti line - yeh khabar Gulf reader ke liye kyun important hai',
                         },
                         {
                             name: 'publishedAt',
@@ -107,7 +120,6 @@ export default {
                             type: 'string',
                             description: 'e.g. Source: Reuters',
                         },
-                        
                         {
                             name: 'relatedLink',
                             title: 'Poori Khabar Link (optional)',

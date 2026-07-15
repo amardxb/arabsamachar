@@ -9,6 +9,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Toaster } from 'react-hot-toast'
 import Link from 'next/link'
 import NewsletterMobileModal from './components/NewsletterMobileModal'
+import Script from 'next/script'
 
 /* ─── FONT ────────────────────────────────────────────────────────────────
    display:'swap' is already set — browser shows fallback font immediately
@@ -109,6 +110,10 @@ export default async function RootLayout({ children }) {
         )}
 
         {children}
+        <Script
+          src="https://www.instagram.com/embed.js"
+          strategy="lazyOnload"
+        />
 
         {/* GoogleAnalytics with strategy="lazyOnload" (default in @next/third-parties)
             fires AFTER the page is interactive — does NOT block FCP/LCP/TBT.

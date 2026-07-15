@@ -196,7 +196,7 @@ export default function Footer() {
               </ul>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <p className="font-medium text-white dark:text-white">Tools</p>
+              <p className="font-bold text-white dark:text-white">Tools</p>
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
@@ -251,6 +251,7 @@ export default function Footer() {
                     Terms & Conditions
                   </Link>
                 </li>
+               
               </ul>
             </div>
             <div className="col-span-2 sm:col-span-1">
@@ -274,6 +275,11 @@ export default function Footer() {
                 <li>
                   <Link href="/sitemap" className="text-white transition hover:opacity-75 dark:text-gray-200">
                     Sitemap
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/newsletter" className="text-white transition hover:opacity-75 dark:text-gray-200">
+                    Newsletters
                   </Link>
                 </li>
               </ul>

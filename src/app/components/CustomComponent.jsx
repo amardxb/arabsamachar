@@ -1,6 +1,7 @@
 import { IoIosArrowDroprightCircle } from 'react-icons/io'
 import BlurImage from './BlurImage'
 import { imgUrl } from '../../../sanity/lib/image'
+import InstagramEmbed from '@/app/components/InstagramEmbed'
 
 export const components = {
   types: {
@@ -77,7 +78,14 @@ export const components = {
         </a>
       )
     },
+ 
+
+  instagramEmbed: ({ value }) => {
+    if (!value?.url) return null
+    return <InstagramEmbed value={value} />
+    },
   },
+ 
 
   block: {
     h1: ({ children }) => <h1 className="mt-4 mb-8 text-3xl font-bold text-gray-800">{children}</h1>,

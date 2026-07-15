@@ -185,6 +185,31 @@ export const news = {
             },
           },
         },
+        {
+          type: "object",
+          name: "instagramEmbed",
+          title: "Instagram Embed",
+          fields: [
+            {
+              name: "url",
+              type: "url",
+              title: "Instagram Post URL",
+              description: "e.g. https://www.instagram.com/p/ABC123xyz/",
+              validation: (Rule) => Rule.required(),
+            },
+          ],
+          preview: {
+            select: {
+              title: "url",
+            },
+            prepare({ title }) {
+              return {
+                title: "📸 Instagram Embed",
+                subtitle: title,
+              }
+            },
+          },
+        },
 
         // 🖼 image
         {
