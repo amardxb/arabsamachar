@@ -85,6 +85,14 @@ export const news = {
       title: "Author",
       validation: (Rule) => Rule.required(),
     },
+    // post/article schema mein, kahin bhi
+    {
+      name: 'authorRef',
+      title: 'Author (Linked Profile)',
+      type: 'reference',
+      to: [{ type: 'author' }],
+      description: 'Optional - link author profile ke liye. Agar khali chhodo to plain author name text dikhega.',
+    },
 
     {
       name: "intro",
@@ -210,6 +218,32 @@ export const news = {
             },
           },
         },
+        {
+          type: "object",
+          name: "xEmbed",
+          title: "X (Twitter) Embed",
+          fields: [
+            {
+              name: "url",
+              type: "url",
+              title: "X Post URL",
+              description: "e.g. https://x.com/username/status/1234567890",
+              validation: (Rule) => Rule.required(),
+            },
+          ],
+          preview: {
+            select: {
+              title: "url",
+            },
+            prepare({ title }) {
+              return {
+                title: " X Embed",
+                subtitle: title,
+              }
+            },
+          },
+        },
+      
 
         // 🖼 image
         {

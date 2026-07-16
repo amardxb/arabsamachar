@@ -2,6 +2,7 @@ import { IoIosArrowDroprightCircle } from 'react-icons/io'
 import BlurImage from './BlurImage'
 import { imgUrl } from '../../../sanity/lib/image'
 import InstagramEmbed from '@/app/components/InstagramEmbed'
+import XEmbed from '@/app/components/XEmbed'
 
 export const components = {
   types: {
@@ -83,6 +84,11 @@ export const components = {
   instagramEmbed: ({ value }) => {
     if (!value?.url) return null
     return <InstagramEmbed value={value} />
+    },
+  
+    xEmbed: ({ value }) => {
+      if (!value?.url) return null
+      return <XEmbed value={value} />
     },
   },
  

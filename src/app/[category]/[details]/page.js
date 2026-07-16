@@ -85,7 +85,14 @@ export default async function ArticlePage({ params }) {
       `*[_type=='news' && slug.current==$slug][0]{
         image, intro, "caption":image.caption, "alt":image.alt,
         content, tag, _updatedAt, title, description,
-       heading, "highlight":highlight[], author, date, "faq":faq[]{ question, answer }
+        heading, "highlight":highlight[], author,
+        authorRef->{
+        name,
+       "slug": slug.current,
+        image,
+        role
+        },
+       date, "faq":faq[]{ question, answer }
         }`,
       { slug },
       [`article-${slug}`]
@@ -238,11 +245,18 @@ const faqSchema = faqs.length
               <div>
                <div className="flex items-center gap-2 flex-wrap text-[12px] md:text-sm leading-none">
   
-  <span>Published by:</span>
-
-  <span className="text-[#c4132a] font-bold">
-    {news_content?.author ?? 'Arab Samachar'}
-  </span>
+                  {news_content?.authorRef?.slug ? (
+                    <Link
+                      href={`/author/${news_content.authorRef.slug}`}
+                      className="text-[#c4132a] font-bold hover:underline"
+                    >
+                      {news_content.authorRef.name}
+                    </Link>
+                  ) : (
+                    <span className="text-[#c4132a] font-bold">
+                      {news_content?.author ?? 'अरब समाचार'}
+                    </span>
+                  )}
 
   <span className="text-gray-400">•</span>
 
