@@ -50,6 +50,13 @@ export default {
             initialValue: 'अमर दीप द्विवेदी',
         },
         {
+            name: 'authorRef',
+            title: 'Author (Linked Profile)',
+            type: 'reference',
+            to: [{ type: 'author' }],
+            description: 'Optional ',
+        },
+        {
             name: 'items',
             title: 'News Items',
             type: 'array',

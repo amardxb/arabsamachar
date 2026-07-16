@@ -6,6 +6,7 @@ import { getDailyDigest } from '@/lib/getDailyDigest'
 import { getDailyDigestByISODate } from '@/lib/getDailyDigest'
 import Image from 'next/image'
 import CopyLinkButton from '@/app/components/CopyLinkButton'
+import Link from 'next/link'
 
 export async function generateMetadata({ params }) {
     const { date } = await params
@@ -140,7 +141,13 @@ if (sidebarItems.length < 10) {
                     </h1>
                     {digest.author && (
                         <p className="text-center text-sm text-gray-500 mb-6">
-                            संकलन एवं संपादन: <span className="font-medium text-gray-700">{digest.author}</span>
+                            संकलन एवं संपादन:{' '}
+                            <Link
+                                href="/author/amar-deep-dwivedi"
+                                className="font-medium text-gray-700 hover:text-red-700 hover:underline"
+                            >
+                                {digest.author}
+                            </Link>
                         </p>
                     )}
 
