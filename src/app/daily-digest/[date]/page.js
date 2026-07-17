@@ -6,7 +6,9 @@ import { getDailyDigest } from '@/lib/getDailyDigest'
 import { getDailyDigestByISODate } from '@/lib/getDailyDigest'
 import Image from 'next/image'
 import CopyLinkButton from '@/app/components/CopyLinkButton'
+import ArticleNewsletterBox from '@/app/components/ArticleNewsletterBox'
 import Link from 'next/link'
+
 
 export async function generateMetadata({ params }) {
     const { date } = await params
@@ -247,8 +249,8 @@ if (sidebarItems.length < 10) {
             </main >
 
         {/* SIDEBAR (Desktop Only) */ }
-        < aside className = " block" >
-                    <div className="lg:sticky lg:top-6 flex flex-col gap-6">
+        < aside className = "block" >
+                    <div className="  flex flex-col gap-6">
 
                 {/* Ad Slot 1 */}
                 <div className="border border-dashed border-gray-300 p-6 text-center text-xs text-gray-400">
@@ -289,12 +291,14 @@ if (sidebarItems.length < 10) {
                         )
         })}
                     </ul>
-                </nav>
+                        </nav>
+                        <ArticleNewsletterBox />
     <div className="border border-dashed border-gray-300 rounded-md p-6 text-center text-xs text-gray-400">
      Ads
     </div>
 
-                </div >
+                    </div >
+                    
             </aside >
 
             </div >
