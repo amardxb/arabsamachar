@@ -6,7 +6,7 @@ import { getDailyDigest } from '@/lib/getDailyDigest'
 import { getDailyDigestByISODate } from '@/lib/getDailyDigest'
 import Image from 'next/image'
 import CopyLinkButton from '@/app/components/CopyLinkButton'
-import ArticleNewsletterBox from '@/app/components/ArticleNewsletterBox'
+import ArticleNewsletterBoxSmall from '@/app/components/ArticleNewsletterBoxSmall'
 import Link from 'next/link'
 
 
@@ -292,7 +292,7 @@ if (sidebarItems.length < 10) {
         })}
                     </ul>
                         </nav>
-                        <ArticleNewsletterBox />
+                        <ArticleNewsletterBoxSmall />
     <div className="border border-dashed border-gray-300 rounded-md p-6 text-center text-xs text-gray-400">
      Ads
     </div>

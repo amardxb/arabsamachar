@@ -19,6 +19,7 @@ import {
 import { getReadTime } from '@/lib/readTime'
 import ReadTimeBadge from '@/app/components/ReadTimeBadge'
 import ArticleFAQ from '@/app/components/ArticleFAQ'
+import ArticleNewsletterBox from '@/app/components/ArticleNewsletterBox'
  
 
 
