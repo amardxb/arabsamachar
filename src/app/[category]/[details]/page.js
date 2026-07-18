@@ -30,13 +30,19 @@ export const dynamicParams = true
 export async function generateMetadata({ params }) {
   const { category, details: slug } = await params
   const meta = await sanityFetch(
-    `*[_type=='news' && slug.current==$slug][0]{ title, description, image }`,
-    { slug },
+    `*[
+  _type == "news" &&
+  slug.current == $slug &&
+  category == $category
+][0]{ title, description, image }`,
+    { slug, category },
     [`article-${slug}`]
   )
   if (!meta) {
-  notFound();
-}
+    notFound();
+    
+  }
+  
 
   const ogImage = meta?.image ? urlForImage(meta.image) : 'https://www.arabsamachar.com/arabsamacharwidelogo.jpg'
   return {
@@ -59,6 +65,7 @@ export async function generateMetadata({ params }) {
       images: [ogImage],
     },
   }
+ 
 }
 
 /* ─── STATIC PARAMS ──────────────────────────────────────────────────────
@@ -83,7 +90,11 @@ export default async function ArticlePage({ params }) {
   const [news_content, relatedRaw, mixRaw] = await Promise.all([
     // Article content
     sanityFetch(
-      `*[_type=='news' && slug.current==$slug][0]{
+      `*[
+  _type == "news" &&
+  slug.current == $slug &&
+  category == $category
+][0]{
         image, intro, "caption":image.caption, "alt":image.alt,
         content, tag, _updatedAt, title, description,
         heading, "highlight":highlight[], author,
@@ -95,7 +106,7 @@ export default async function ArticlePage({ params }) {
         },
        date, "faq":faq[]{ question, answer }
         }`,
-      { slug },
+      { slug, category },
       [`article-${slug}`]
     ),
     // Related articles (same category)
@@ -124,7 +135,9 @@ export default async function ArticlePage({ params }) {
 
   const carosuelNews = relatedRaw ?? []
   const sidebarNews  = (mixRaw ?? []).slice(0, 6)
-  const bottomNews   = (mixRaw ?? []).slice(6, 15)
+  const bottomNews = (mixRaw ?? []).slice(6, 15)
+  
+ 
 
   /* ── Structured data ──────────────────────────────────────────────*/
   const breadcrumbSchema = {
