@@ -118,7 +118,7 @@ export default async function RootLayout({ children }) {
         <GoogleAnalytics gaId="G-BK1NC8WCM9" />
         <SpeedInsights />
         <Footer />
-        newslettermodal
+        
         <NewsletterMobileModal />
         <Toaster position="top-center" />
       </body>
