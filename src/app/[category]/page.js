@@ -5,12 +5,37 @@ import ImageSlider from '../components/ImageSlider'
 import SuggestionCard from '../components/SuggestionCard'
 import DateTimeCard from '../components/DateTimeCard'
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
+
 
 export const revalidate = false // on-demand revalidation via webhook
+
+/* ─── VALID CATEGORIES ────────────────────────────────────────────────*/
+// Apni site ki saari actual category URLs yahan list karo
+const VALID_CATEGORIES = [
+  'breaking',
+  'national',
+  'world',
+  'entertainment',
+  'technology',
+  'finance',
+  'lifestyle',
+  'sports',
+  'auto',
+]
 
 /* ─── METADATA ───────────────────────────────────────────────────────────*/
 export async function generateMetadata({ params }) {
   const { category } = await params
+
+  // Invalid category ke liye SEO metadata generate mat karo
+  if (!VALID_CATEGORIES.includes(category)) {
+    return {
+      title: 'Page Not Found | Arab Samachar',
+      description: 'यह पेज उपलब्ध नहीं है।',
+    }
+  }
+
   const label = category[0].toUpperCase() + category.slice(1).toLowerCase()
   return {
     title: `${label} News Hindi | अरब समाचार Arab Samachar | हिंदी समाचार`,
@@ -32,6 +57,11 @@ export async function generateMetadata({ params }) {
 export default async function CategoryPage({ params }) {
   const { category } = await params
 
+  // Agar category valid list mein nahi hai to turant 404 dikhao
+  if (!VALID_CATEGORIES.includes(category)) {
+    notFound()
+  }
+
   /* ── Targeted GROQ queries ────────────────────────────────────────────
      BEFORE: one query fetching 100 articles of ALL categories, then
      filtering in JS. This downloaded data for articles that were thrown
@@ -47,6 +77,7 @@ export default async function CategoryPage({ params }) {
     lifestyle: 'sports',
     breaking: 'world',
     world: 'national',
+    technology: 'finance',
   }
   const crossCategory = crossMap[category] || 'breaking'
 

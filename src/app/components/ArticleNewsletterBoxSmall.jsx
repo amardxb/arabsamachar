@@ -78,8 +78,8 @@ export default function ArticleNewsletterBox() {
   const showMessageState = state === 'already' || state === 'success';
 
   return (
-   <div className="w-full  border border-gray-300 p-1">
-    <div className="w-full max-w-sm mx-auto bg-red-700 text-white p-4 shadow-sm">
+   <div className="w-full border border-gray-300 p-1">
+      <div className="w-full max-w-sm mx-auto bg-[#C4132A] text-white p-4 shadow-sm">
       {!showMessageState ? (
         <>
           {/* Envelope icon - flat golden line design, no 3D */}

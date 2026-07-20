@@ -92,6 +92,7 @@ const FINANCE_QUERY = `
 *[_type == "news" && category == "finance"]
 | order(_createdAt desc)[10...17]{
   heading,
+  category,
   "slug": slug.current
 }
 `
@@ -100,6 +101,7 @@ const FEATURED_QUERY = `
 *[_type == "news" && category == "finance"]
 | order(_createdAt desc)[9]{
   heading,
+  category,
   "slug": slug.current,
   "image": image.asset->url,
   "alt": image.alt
@@ -112,6 +114,7 @@ const NATIONAL_QUERY = `
 *[_type == "news" && category == "national"]
 | order(_createdAt desc)[10...17]{
   heading,
+  category,
   "slug": slug.current
 }
 `
@@ -120,6 +123,7 @@ const NATIONAL_FEATURED_QUERY = `
 *[_type == "news" && category == "national"]
 | order(_createdAt desc)[9]{
   heading,
+  category,
   "slug": slug.current,
   "image": image.asset->url,
   "alt": image.alt
@@ -347,7 +351,7 @@ export default async function Page({ params }) {
           {/* FEATURED ARTICLE CARD */}
           {featuredArticle && (
             <Link
-              href={`/news/${featuredArticle.slug}`}
+              href={`/${featuredArticle.category}/${featuredArticle.slug}`}
               className="flex items-center gap-2 border border-gray-200 rounded p-2 mt-6 hover:bg-gray-50 transition w-full lg:w-[70%]"
             >
               <div className="w-[60%]">
@@ -458,7 +462,7 @@ export default async function Page({ params }) {
             {(financeArticles || []).map((item) => (
               <Link
                 key={item.slug}
-                href={`/news/${item.slug}`}
+                href={`/${item.category}/${item.slug}`}
                 className="block px-3 py-4 text-md font-bold text-gray-700 border-b hover:bg-gray-100 transition line-clamp-2"
               >
                 {item.heading}

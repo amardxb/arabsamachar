@@ -125,7 +125,7 @@ export default function Footer() {
                     type="submit"
                     value="Send"
                     disabled={loading}
-                    className="mt-1 w-full bg-[#da251d] px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-none hover:bg-teal-600 sm:mt-0 sm:w-auto sm:shrink-0 disabled:opacity-60"
+                    className="mt-1 w-full bg-[#C4132A] px-6 py-3 text-sm font-bold uppercase tracking-wide text-white transition-none hover:bg-teal-600 sm:mt-0 sm:w-auto sm:shrink-0 disabled:opacity-60"
                   >
                     {loading ? '...' : 'Sign Up'}
                   </button>
@@ -286,7 +286,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-4 border-t border-red-500 pt-4 dark:border-gray-800">
+        <div className="mt-4 border-t border-[#C4132A] pt-4 dark:border-gray-800">
           <div className="sm:flex sm:justify-between">
             <ul className="col-span-2 flex justify-center gap-6 lg:col-span-5 lg:justify-end">
               <li>

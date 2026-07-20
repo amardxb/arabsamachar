@@ -24,6 +24,7 @@ const LATEST_NEWS_QUERY = `
 *[_type == "news"]
 | order(_createdAt desc)[0...8]{
   heading,
+  category,
   "slug": slug.current
 }
 `
@@ -231,7 +232,7 @@ export default async function Page({ params }) {
                         {(latestNews || []).map((item) => (
                             <Link
                                 key={item.slug}
-                                href={`/news/${item.slug}`}
+                                href={`/${item.category}/${item.slug}`}
                                 className="block px-3 py-4 text-md font-bold text-gray-700 border-b hover:bg-gray-100 transition line-clamp-2"
                             >
                                 {item.heading}

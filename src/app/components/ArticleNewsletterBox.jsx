@@ -95,14 +95,14 @@ export default function ArticleNewsletterBox() {
 
     if (status === 'success') {
         return (
-            <div className="rounded-xl bg-red-50 border border-red-200 p-6 my-8 text-center min-h-[220px] flex items-center justify-center  ">
+            <div className="rounded-xl bg-red-50 border border-[#C4132A] p-6 my-8 text-center min-h-[220px] flex items-center justify-center  ">
                 <p className="font-semibold text-red-900">सबस्क्राइब हो गए! धन्यवाद</p>
             </div>
         );
     }
 
     return (
-        <div className="rounded-xl bg-red-50 border border-red-100 p-6 my-8 mt-20">
+        <div className="rounded-xl bg-red-50 border border-[#C4132A] p-6 my-8 mt-20">
             <h3 suppressHydrationWarning className="text-xl font-bold text-red-950 mb-5 flex items-center gap-2">
                 अपनी पसंद के टॉपिक पर अपडेट्स पाएं
                 <EnvelopeIcon3D />
@@ -139,13 +139,13 @@ export default function ArticleNewsletterBox() {
                             setErrors((er) => ({ ...er, email: '' }));
                         }}
                         placeholder="Email"
-                        className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 ${errors.email ? 'border-red-600 focus:ring-red-600' : 'border-gray-300 focus:ring-red-600'
+                        className={`w-full rounded-md border px-4 py-2.5 text-sm bg-white focus:outline-none focus:ring-1 ${errors.email ? 'border-[#C4132A] focus:ring-red-600' : 'border-gray-300 focus:ring-red-600'
                             }`}
                     />
                     <button
                         onClick={handleSubmit}
                         disabled={status === 'loading'}
-                        className="w-full sm:w-auto shrink-0 bg-red-600 hover:bg-red-700 transition-colors text-white px-6 py-2.5 rounded-md text-sm font-semibold tracking-wide whitespace-nowrap"
+                        className="w-full sm:w-auto shrink-0 bg-[#C4132A] hover:bg-red-600 transition-colors text-white px-6 py-2.5 rounded-md text-sm font-semibold tracking-wide whitespace-nowrap"
                     >
                         {status === 'loading' ? '...' : 'GET UPDATES'}
                     </button>
