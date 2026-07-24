@@ -76,3 +76,36 @@ export async function getDailyDigestByISODate(isoDate) {
         return null
     }
 }
+
+export async function getAdjacentDigests(currentDate) {
+    try {
+        const [prev, next] = await Promise.all([
+            client.fetch(
+                `*[_type == "dailyDigest" && date < $currentDate] | order(date desc)[0]{
+                    title,
+                    "slug": slug.current,
+                    date
+                }`,
+                { currentDate },
+                { next: { revalidate: 300 } }
+            ),
+            client.fetch(
+                `*[_type == "dailyDigest" && date > $currentDate] | order(date asc)[0]{
+                    title,
+                    "slug": slug.current,
+                    date
+                }`,
+                { currentDate },
+                { next: { revalidate: 300 } }
+            ),
+        ])
+
+        return {
+            prevDigest: prev || null,
+            nextDigest: next || null,
+        }
+    } catch (err) {
+        console.error('getAdjacentDigests error:', err)
+        return { prevDigest: null, nextDigest: null }
+    }
+}

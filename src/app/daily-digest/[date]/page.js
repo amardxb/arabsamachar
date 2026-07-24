@@ -4,10 +4,19 @@ import { notFound } from 'next/navigation'
 import { PortableText } from '@portabletext/react'
 import { getDailyDigest } from '@/lib/getDailyDigest'
 import { getDailyDigestByISODate } from '@/lib/getDailyDigest'
+import { getAdjacentDigests } from '@/lib/getDailyDigest'
 import Image from 'next/image'
 import CopyLinkButton from '@/app/components/CopyLinkButton'
 import ArticleNewsletterBoxSmall from '@/app/components/ArticleNewsletterBoxSmall'
 import Link from 'next/link'
+
+function formatDDMMYYYY(isoDate) {
+    const d = new Date(isoDate)
+    const day = String(d.getUTCDate()).padStart(2, '0')
+    const month = String(d.getUTCMonth() + 1).padStart(2, '0')
+    const year = d.getUTCFullYear()
+    return `${day}-${month}-${year}`
+}
 
 
 export async function generateMetadata({ params }) {
@@ -81,6 +90,8 @@ if (sidebarItems.length < 10) {
         usingYesterday = true
     }
     }
+
+    const { prevDigest, nextDigest } = await getAdjacentDigests(digest.date)
     
     const jsonLd = {
         '@context': 'https://schema.org',
@@ -130,8 +141,8 @@ if (sidebarItems.length < 10) {
             dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
-        <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
-            {/* baaki sab same */}
+        <div className="max-w-6xl mx-auto px-4 py-2 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
+            
         </div>
    
         <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
@@ -141,6 +152,35 @@ if (sidebarItems.length < 10) {
                 <h1 className="text-2xl md:text-3xl font-semibold text-center mb-4">
                     {digest.title}
                     </h1>
+                    <div className="flex items-center justify-center gap-2 text-xs whitespace-nowrap overflow-x-auto mb-6">
+                        {prevDigest ? (
+                            <Link
+                                href={`/daily-digest/${prevDigest.slug}`}
+                                className="text-gray-600 hover:text-red-700 font-medium shrink-0"
+                            >
+                                ← {formatDDMMYYYY(prevDigest.date)} की खबरें
+                            </Link>
+                        ) : (
+                            <span className="text-gray-300 font-medium shrink-0 cursor-not-allowed">
+                                ← पिछली खबरें
+                            </span>
+                        )}
+
+                        <span className="text-gray-300 shrink-0">|</span>
+
+                        {nextDigest ? (
+                            <Link
+                                href={`/daily-digest/${nextDigest.slug}`}
+                                className="text-gray-600 hover:text-red-700 font-medium shrink-0"
+                            >
+                                {formatDDMMYYYY(nextDigest.date)} की खबरें →
+                            </Link>
+                        ) : (
+                            <span className="text-gray-300 font-medium shrink-0 cursor-not-allowed">
+                                अगली खबरें →
+                            </span>
+                        )}
+                    </div>
                     {digest.author && (
                         <p className="text-center text-sm text-gray-500 mb-6">
                             संकलन एवं संपादन:{' '}
@@ -245,7 +285,48 @@ if (sidebarItems.length < 10) {
 </article>
                 )
                     })}
-        </div>
+                    </div>
+                    <div className="mt-4 mb-4 grid grid-cols-2 gap-3">
+                        {/* PREVIOUS */}
+                        {prevDigest ? (
+                            <Link
+                                href={`/daily-digest/${prevDigest.slug}`}
+                                className="block border-2 border-gray-700 rounded-md p-1 text-center hover:bg-gray-50 transition"
+                            >
+                                <p className="text-xs text-gray-500 mb-1">पिछला डाइजेस्ट</p>
+                                <p className="text-xs md:text-lg font-semibold text-gray-800">
+                                    ← {formatDDMMYYYY(prevDigest.date)} की खबरें
+                                </p>
+                            </Link>
+                        ) : (
+                            <div className="block border-2 border-gray-200 rounded-md p-1 text-center cursor-not-allowed">
+                                <p className="text-xs text-gray-300 mb-1">पिछला डाइजेस्ट</p>
+                                <p className="text-xs md:text-lg font-semibold text-gray-300">
+                                    कोई पुराना डाइजेस्ट नहीं
+                                </p>
+                            </div>
+                        )}
+
+                        {/* NEXT */}
+                        {nextDigest ? (
+                            <Link
+                                href={`/daily-digest/${nextDigest.slug}`}
+                                className="block border-2 border-red-700 rounded-md p-1 text-center hover:bg-red-50 transition"
+                            >
+                                <p className="text-xs text-gray-500 mb-1">अगला डाइजेस्ट</p>
+                                <p className="text-xs md:text-lg font-semibold text-red-700">
+                                    {formatDDMMYYYY(nextDigest.date)} की खबरें →
+                                </p>
+                            </Link>
+                        ) : (
+                            <div className="block border-2 border-gray-200 rounded-md p-1 text-center cursor-not-allowed">
+                                <p className="text-xs text-gray-300 mb-1">अगला डाइजेस्ट</p>
+                                <p className="text-xs md:text-lg font-semibold text-gray-300">
+                                    यही सबसे नया डाइजेस्ट है
+                                </p>
+                            </div>
+                        )}
+                    </div>
             </main >
 
         {/* SIDEBAR (Desktop Only) */ }
