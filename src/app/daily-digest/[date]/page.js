@@ -9,6 +9,8 @@ import Image from 'next/image'
 import CopyLinkButton from '@/app/components/CopyLinkButton'
 import ArticleNewsletterBoxSmall from '@/app/components/ArticleNewsletterBoxSmall'
 import Link from 'next/link'
+import { getReadTime } from '@/lib/readTime'
+import ReadTimeBadge from '@/app/components/ReadTimeBadge'
 
 function formatDDMMYYYY(isoDate) {
     const d = new Date(isoDate)
@@ -92,6 +94,8 @@ if (sidebarItems.length < 10) {
     }
 
     const { prevDigest, nextDigest } = await getAdjacentDigests(digest.date)
+    const combinedBlocks = digest.items?.flatMap((item) => item.body || []) || []
+    const digestReadTime = getReadTime(combinedBlocks)
     
     const jsonLd = {
         '@context': 'https://schema.org',
@@ -192,6 +196,11 @@ if (sidebarItems.length < 10) {
                             </Link>
                         </p>
                     )}
+                    <div className="flex items-center justify-center gap-3 text-sm text-gray-500 mb-4">
+                        {/* <span>{digest.items?.length || 0} खबरें</span> */}
+                        {/* <span className="text-gray-300">·</span> */}
+                        <ReadTimeBadge readTime={digestReadTime} />
+                    </div>
 
                 {digest.intro && (
                     <p className="text-gray-600 mb-8">

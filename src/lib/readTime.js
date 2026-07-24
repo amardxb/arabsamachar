@@ -1,12 +1,4 @@
-/**
- * Calculates estimated read time for an article.
- * Works with plain text strings OR Sanity Portable Text (block array).
- *
- * Usage:
- *   import { getReadTime } from '@/lib/readTime'
- *   const time = getReadTime(post.body)  // Sanity blocks
- *   const time = getReadTime(post.content) // plain string
- */
+ 
 
 const WORDS_PER_MINUTE = 200;
 
