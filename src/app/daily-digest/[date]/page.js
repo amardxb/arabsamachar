@@ -96,6 +96,9 @@ if (sidebarItems.length < 10) {
     const { prevDigest, nextDigest } = await getAdjacentDigests(digest.date)
     const combinedBlocks = digest.items?.flatMap((item) => item.body || []) || []
     const digestReadTime = getReadTime(combinedBlocks)
+
+    const ogImage = digest.items?.find(i => i.image?.asset?.url)?.image?.asset?.url
+        || 'https://www.arabsamachar.com/daily-digest-default.webp'
     
     const jsonLd = {
         '@context': 'https://schema.org',
@@ -104,9 +107,11 @@ if (sidebarItems.length < 10) {
                 '@type': 'NewsArticle',
                 headline: digest.title,
                 description: digest.intro || digest.title,
+                image:  [ogImage],
                 author: {
                     '@type': 'Person',
                     name: digest.author || 'Arab Samachar Team',
+                    url: 'https://www.arabsamachar.com/author/amar-deep-dwivedi',
                 },
                 datePublished: digest.items?.[digest.items.length - 1]?.publishedAt,
                 dateModified: digest.items?.[0]?.publishedAt,
