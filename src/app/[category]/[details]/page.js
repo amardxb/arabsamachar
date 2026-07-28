@@ -157,7 +157,13 @@ export default async function ArticlePage({ params }) {
     headline: news_content?.title || news_content?.heading,
     description: news_content?.description,
     image: [news_content?.image ? urlForImage(news_content.image) : 'https://www.arabsamachar.com/arabsamacharwidelogo.jpg'],
-    author: { '@type': 'Person', name: news_content?.author || 'Arab Samachar' },
+    author: {
+      '@type': 'Person',
+      name: news_content?.authorRef?.name || news_content?.author || 'Arab Samachar',
+      url: news_content?.authorRef?.slug
+        ? `https://www.arabsamachar.com/author/${news_content.authorRef.slug}`
+        : 'https://www.arabsamachar.com',
+    },
     publisher: {
       '@type': 'Organization',
       name: 'Arab Samachar',
