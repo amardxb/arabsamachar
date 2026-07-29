@@ -1,3 +1,5 @@
+import { after } from "next/server";
+
 export async function POST(req) {
   try {
     const body = await req.json();
@@ -17,10 +19,11 @@ export async function POST(req) {
 
     console.log("IndexNow submitting URL:", url);
 
-    // 🔥 IMPORTANT: don't block request on external API
-    setTimeout(async () => {
+    // 🔥 after() Vercel ko batata hai ki response bhejne ke baad bhi
+    // ye kaam background me complete hone do, function ko freeze mat karo
+    after(async () => {
       try {
-        await fetch("https://api.indexnow.org/indexnow", {
+        const res = await fetch("https://api.indexnow.org/indexnow", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -33,10 +36,12 @@ export async function POST(req) {
             urlList: [url],
           }),
         });
+        const text = await res.text();
+        console.log("IndexNow response:", res.status, text);
       } catch (err) {
-        // ❌ silently fail, do nothing
+        console.log("IndexNow fetch failed:", err?.message || err);
       }
-    }, 0);
+    });
 
     // 🔥 respond immediately to Sanity (fast webhook)
     return Response.json({ ok: true });
