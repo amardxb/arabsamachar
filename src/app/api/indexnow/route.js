@@ -2,14 +2,15 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-    const slug = body?.slug?.current;
+    const slug = body?.slug?.current || body?.slug;
+    const category = body?.category?.current || body?.category;
 
-    if (!slug) {
-      // silently ignore invalid webhook
+    // dono me se koi bhi missing ho to silently ignore
+    if (!slug || !category) {
       return Response.json({ ok: true });
     }
 
-    const url = `https://www.arabsamachar.com/${slug}`;
+    const url = `https://www.arabsamachar.com/${category}/${slug}`;
 
     // 🔥 IMPORTANT: don't block request on external API
     setTimeout(async () => {
@@ -37,5 +38,5 @@ export async function POST(req) {
   } catch (err) {
     // even if everything fails, don't break site
     return Response.json({ ok: true });
-  }  
+  }
 }

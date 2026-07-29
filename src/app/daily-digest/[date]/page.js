@@ -255,14 +255,16 @@ if (sidebarItems.length < 10) {
                                 )}
 
                                 {item.image?.asset?.url && (
-                                    <figure className="mb-3 relative w-full aspect-video rounded-md overflow-hidden">
-                                        <Image
-                                            src={item.image.asset.url}
-                                            alt={item.image.alt || item.headline}
-                                            fill
-                                            className="object-cover"
-                                            sizes="(max-width: 768px) 100vw, 700px"
-                                        />
+                                    <figure className="mb-3">
+                                        <div className="relative w-full aspect-video rounded-md overflow-hidden">
+                                            <Image
+                                                src={item.image.asset.url}
+                                                alt={item.image.alt || item.headline}
+                                                fill
+                                                className="object-cover"
+                                                sizes="(max-width: 768px) 100vw, 700px"
+                                            />
+                                        </div>
                                         {item.image.caption && (
                                             <figcaption className="text-xs text-gray-500 mt-1">
                                                 {item.image.caption}
