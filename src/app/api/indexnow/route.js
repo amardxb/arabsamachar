@@ -2,20 +2,20 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-    console.log("IndexNow webhook payload:", JSON.stringify(body));
+   
 
     const slug = body?.slug?.current || body?.slug;
     const category = body?.category?.current || body?.category;
 
     // dono me se koi bhi missing ho to silently ignore
     if (!slug || !category) {
-      console.log("IndexNow webhook: missing slug or category, skipping", { slug, category });
+      
       return Response.json({ ok: true });
     }
 
     const url = `https://www.arabsamachar.com/${category}/${slug}`;
 
-    console.log("IndexNow submitting URL:", url);
+    
 
     // 🔥 seedha await karo — serverless function me setTimeout/after()
     // ke bharose reh ke background task drop hone se behtar hai thoda wait karna
@@ -34,9 +34,9 @@ export async function POST(req) {
         }),
       });
       const text = await res.text();
-      console.log("IndexNow response:", res.status, text);
+      
     } catch (err) {
-      console.log("IndexNow fetch failed:", err?.message || err);
+      
     }
 
     return Response.json({ ok: true });
