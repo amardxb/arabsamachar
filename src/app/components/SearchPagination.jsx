@@ -3,15 +3,16 @@ import { useRouter } from "next/navigation";
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from "react-icons/ai";
 
 const SearchPagination = ({ currentPage, totalPages, query, sort }) => {
-  if (totalPages <= 1) return null;
-
   const router = useRouter();
+
+  if (totalPages <= 1) return null;
 
   const goToPage = (page) => {
     const params = new URLSearchParams({ q: query, sort, page: page.toString() });
     router.push(`/search?${params.toString()}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
 
   // Simple window: current page ke aas-paas 2 pages dikhao, + first/last
   const pages = [];
