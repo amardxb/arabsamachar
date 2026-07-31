@@ -1,5 +1,3 @@
- 
-
 import { createClient } from 'next-sanity';
 import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
 
@@ -15,11 +13,16 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL; // e.g. news@arabsamachar.com
 const SITE_URL = 'https://arabsamachar.com';
 
-function buildEmailHtml({ title, excerpt, image, slug, category, unsubscribeToken }) {
-    // NOTE: URL pattern abhi /category/slug maan ke chala hai (jaise /national/xxx).
-    // Agar tumhare actual article URL ka pattern different hai (jaise sirf /slug),
-    // to neeche wali line update kar dena.
-    const postUrl = `${SITE_URL}/${category}/${slug}`;
+function buildPostUrl({ docType, category, slug }) {
+    if (docType === 'dailyDigest') {
+        return `${SITE_URL}/daily-digest/${slug}`;
+    }
+    // default: news article
+    return `${SITE_URL}/${category}/${slug}`;
+}
+
+function buildEmailHtml({ title, excerpt, image, docType, category, slug, unsubscribeToken }) {
+    const postUrl = buildPostUrl({ docType, category, slug });
     const unsubUrl = `${SITE_URL}/api/unsubscribe?token=${unsubscribeToken}`;
     return `
     <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto;">
@@ -51,8 +54,16 @@ export async function POST(req) {
         }
 
         const news = JSON.parse(rawBody);
+        console.log('Newsletter webhook payload:', JSON.stringify(news));
+
         if (!news?.title || !news?.slug) {
             return Response.json({ error: 'Missing news data' }, { status: 400 });
+        }
+
+        // dailyDigest ke liye category nahi hoti — sirf news ke liye zaroori hai
+        if (news.docType === 'news' && !news.category) {
+            console.log('Newsletter webhook: news item missing category, skipping');
+            return Response.json({ error: 'Missing category for news item' }, { status: 400 });
         }
 
         // Har active subscriber ko email — category filter nahi lagega

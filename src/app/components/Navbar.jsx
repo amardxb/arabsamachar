@@ -1,18 +1,20 @@
 "use client";
 import Link from "next/link";
 import React, { useState } from "react";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineMenu, AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import { MdArrowForwardIos } from "react-icons/md";
 import Image from "next/image";
+import SearchModal from "./SearchModal";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const handleNav = () => {
     setNav(!nav);
   };
   return (
     <div className="fixed left-0 top-0 w-full z-10 ease-in duration-300  bg-[#0a112d]">
-      <div className="max-w-screen m-auto flex justify-between items-center text-white h-12 sm:h-10">
+      <div className="max-w-screen m-auto flex items-center gap-6 text-white h-12 sm:h-10">
         <Link href="/" className="pl-8">
           <Image
             src='/arabsamacharwidelogotp.png'
@@ -22,12 +24,12 @@ const Navbar = () => {
             style={{ width: '64px', height: '36px' }}
           />
         </Link>
-        <ul className="hidden sm:flex w-5/6 justify-between pr-8">
+        <ul className="hidden sm:flex flex-1 justify-between items-center pr-8">
           <li className="p-2 hover:underline decoration decoration-2 underline-offset-4">
             <Link href="/">होम</Link>
           </li>
           <li className="p-2 hover:underline decoration decoration-2 underline-offset-4">
-            <Link href="/breaking" className="relative flex h-2 w-2">
+            <Link href="/breaking" className="relative flex items-center gap-1">
               ब्रेकिंग
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c4132a] opacity-75"></span>
@@ -35,7 +37,7 @@ const Navbar = () => {
               </span>
             </Link>
           </li>
-          <li className="p-2 pl-8 hover:underline decoration decoration-2 underline-offset-4">
+          <li className="p-2 hover:underline decoration decoration-2 underline-offset-4">
             <Link href="/national">राष्ट्रीय</Link>
           </li>
           <li className="p-2   hover:underline decoration   decoration-2 underline-offset-4">
@@ -56,11 +58,22 @@ const Navbar = () => {
           <li className="p-2   hover:underline decoration   decoration-2 underline-offset-4">
             <Link href="/sports">खेल</Link>
           </li>
+          {/* Search icon - desktop, after खेल */}
+          <li className="p-2 flex items-center">
+            <button onClick={() => setSearchOpen(true)} aria-label="खोजें">
+              <AiOutlineSearch size={22} className="hover:text-gray-300" />
+            </button>
+          </li>
         </ul>
 
-        {/* Mobile Button */}
-        <div onClick={handleNav} className="block sm:hidden z-20  mr-2 ">
-          {nav ? <AiOutlineClose size={35} /> : <AiOutlineMenu size={35} />}
+        {/* Mobile: Search icon + Menu button */}
+        <div className="flex sm:hidden items-center gap-[19px] mr-2">
+          <button onClick={() => setSearchOpen(true)} aria-label="खोजें" className="z-20">
+            <AiOutlineSearch size={26} />
+          </button>
+          <div onClick={handleNav} className="z-20">
+            {nav ? <AiOutlineClose size={35} /> : <AiOutlineMenu size={35} />}
+          </div>
         </div>
 
         <div
@@ -161,6 +174,7 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   );
 };

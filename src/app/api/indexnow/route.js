@@ -2,18 +2,29 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-   
+     
 
+    const docType = body?._type;
     const slug = body?.slug?.current || body?.slug;
     const category = body?.category?.current || body?.category;
 
-    // dono me se koi bhi missing ho to silently ignore
-    if (!slug || !category) {
+    let url = null;
+
+    if (docType === "news") {
+      if (slug && category) {
+        url = `https://www.arabsamachar.com/${category}/${slug}`;
+      }
+    } else if (docType === "dailyDigest") {
+      if (slug) {
+        url = `https://www.arabsamachar.com/daily-digest/${slug}`;
+      }
+    }
+
+    // koi bhi required field missing ho ya document type unknown ho to silently ignore
+    if (!url) {
       
       return Response.json({ ok: true });
     }
-
-    const url = `https://www.arabsamachar.com/${category}/${slug}`;
 
     
 
@@ -36,7 +47,7 @@ export async function POST(req) {
       const text = await res.text();
       
     } catch (err) {
-      
+     
     }
 
     return Response.json({ ok: true });

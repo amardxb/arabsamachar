@@ -64,6 +64,18 @@ export const news = {
       validation: (Rule) =>
         Rule.required().min(3).max(15),
     },
+     
+    {
+      name: "keywords",
+      type: "array",
+      title: "Search Keywords (English)",
+      description:
+        "3-6 English/Roman keywords jo log search kar sakte hain, jaise: uae visa fees, tourist visa cost, visa price dubai. Type karo aur Enter/Tab dabao har keyword ke baad.",
+      of: [{ type: "string" }],
+      options: {
+        layout: "tags",  
+      },
+    },
 
     {
       name: "isBreaking",
