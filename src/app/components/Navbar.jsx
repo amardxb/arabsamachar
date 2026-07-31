@@ -13,8 +13,8 @@ const Navbar = () => {
     setNav(!nav);
   };
   return (
-    <div className="fixed left-0 top-0 w-full z-10 ease-in duration-300  bg-[#0a112d]">
-      <div className="max-w-screen m-auto flex items-center gap-6 text-white h-12 sm:h-10">
+    <div className="fixed left-0 top-0 w-full z-10 ease-in duration-300 bg-[#0a112d]">
+      <div className="max-w-screen m-auto flex items-center justify-between sm:justify-start gap-6 text-white h-12 sm:h-10">
         <Link href="/" className="pl-8">
           <Image
             src='/arabsamacharwidelogotp.png'
@@ -67,7 +67,7 @@ const Navbar = () => {
         </ul>
 
         {/* Mobile: Search icon + Menu button */}
-        <div className="flex sm:hidden items-center gap-[19px] mr-2">
+        <div className="flex sm:hidden items-center gap-[19px] mr-4">
           <button onClick={() => setSearchOpen(true)} aria-label="खोजें" className="z-20">
             <AiOutlineSearch size={26} />
           </button>
